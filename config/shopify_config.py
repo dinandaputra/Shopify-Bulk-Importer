@@ -14,7 +14,7 @@ class ShopifyConfig:
         self.SHOP_DOMAIN = os.getenv("SHOPIFY_SHOP_DOMAIN", "")
         
         # API settings
-        self.API_VERSION = "2024-01"
+        self.API_VERSION = "2025-07"
         self.RATE_LIMIT_DELAY = 0.5  # seconds between API calls
         
         # Validate configuration

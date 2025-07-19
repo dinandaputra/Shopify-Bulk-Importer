@@ -145,6 +145,131 @@ class ShopifyAPIClient:
     def update_product_metafield(self, product_id: int, metafield_id: int, metafield_data: dict) -> dict:
         """Update a product metafield"""
         return self._make_request('PUT', f'products/{product_id}/metafields/{metafield_id}.json', data={'metafield': metafield_data})
+    
+    def _make_graphql_request(self, query: str, variables: dict = None) -> dict:
+        """
+        Make a GraphQL request to Shopify API
+        
+        Args:
+            query: GraphQL query or mutation string
+            variables: Optional variables for the query
+            
+        Returns:
+            Response data as dictionary
+            
+        Raises:
+            ShopifyAPIError: If the request fails
+        """
+        url = f"https://{self.config.SHOP_DOMAIN}/admin/api/{self.config.API_VERSION}/graphql.json"
+        
+        payload = {
+            'query': query
+        }
+        if variables:
+            payload['variables'] = variables
+            
+        try:
+            # Rate limiting
+            time.sleep(self.config.RATE_LIMIT_DELAY)
+            
+            # Make the request
+            response = self.session.post(
+                url=url,
+                json=payload,
+                headers={
+                    'Content-Type': 'application/json',
+                    'X-Shopify-Access-Token': self.config.ACCESS_TOKEN
+                }
+            )
+            
+            # Check for success
+            if response.status_code in [200, 201]:
+                result = response.json()
+                
+                # Check for GraphQL errors
+                if 'errors' in result:
+                    raise ShopifyAPIError(
+                        f"GraphQL errors: {result['errors']}",
+                        status_code=response.status_code,
+                        response=result
+                    )
+                
+                return result
+            else:
+                error_data = response.json() if response.text else {}
+                raise ShopifyAPIError(
+                    f"GraphQL request failed: {error_data}",
+                    status_code=response.status_code,
+                    response=error_data
+                )
+                
+        except requests.exceptions.RequestException as e:
+            raise ShopifyAPIError(f"Network error: {str(e)}")
+    
+    def update_product_category(self, product_id: int, taxonomy_category_id: str) -> dict:
+        """
+        Update a product's category using GraphQL
+        
+        Args:
+            product_id: Shopify product ID
+            taxonomy_category_id: Taxonomy category ID (e.g., "gid://shopify/TaxonomyCategory/5173")
+            
+        Returns:
+            Updated product data
+        """
+        query = """
+        mutation UpdateProductCategory($product: ProductUpdateInput!) {
+          productUpdate(product: $product) {
+            product {
+              id
+              title
+              category {
+                id
+                name
+              }
+            }
+            userErrors {
+              field
+              message
+            }
+          }
+        }
+        """
+        
+        variables = {
+            "product": {
+                "id": f"gid://shopify/Product/{product_id}",
+                "category": taxonomy_category_id
+            }
+        }
+        
+        return self._make_graphql_request(query, variables)
+    
+    def get_taxonomy_categories(self) -> dict:
+        """
+        Get available taxonomy categories to find the correct category ID
+        
+        Returns:
+            Available taxonomy categories
+        """
+        query = """
+        query GetTaxonomyCategories {
+          taxonomy {
+            categories(search: "mobile", first: 50) {
+              nodes {
+                id
+                name
+                fullName
+                level
+                isLeaf
+                isRoot
+              }
+            }
+          }
+        }
+        """
+        
+        return self._make_graphql_request(query)
 
 # Global API client instance
 shopify_api = ShopifyAPIClient()

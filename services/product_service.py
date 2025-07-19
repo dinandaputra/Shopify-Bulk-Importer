@@ -39,14 +39,25 @@ class ProductService:
             created_product = response['product']
             product_id = created_product['id']
             
-            # Step 2: Add metafields
+            # Step 2: Set product category using GraphQL
+            category_result = None
+            try:
+                category_result = self.api.update_product_category(
+                    product_id, 
+                    "gid://shopify/TaxonomyCategory/el-4-8-5"  # Mobile & Smart Phones category
+                )
+            except Exception as e:
+                print(f"Warning: Failed to set product category: {str(e)}")
+            
+            # Step 3: Add metafields
             metafield_results = self._add_smartphone_metafields(product_id, smartphone)
             
             return {
                 'success': True,
                 'product_id': product_id,
                 'product': created_product,
-                'metafields': metafield_results
+                'metafields': metafield_results,
+                'category_update': category_result
             }
             
         except ShopifyAPIError as e:
@@ -71,8 +82,7 @@ class ProductService:
             'title': smartphone.title,
             'body_html': '',
             'vendor': smartphone.vendor,
-            'product_type': '',  # Keep product type empty
-            'product_category': 'Mobile & Smart Phones',  # Set the actual product category
+            'product_type': '',  # Keep product type empty - category will be set via GraphQL
             'tags': smartphone.tags,
             'published': smartphone.published.lower() == 'true',
             'status': 'draft' if smartphone.published.lower() == 'false' else 'active',
