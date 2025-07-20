@@ -1,0 +1,56 @@
+# Environment variables (CRITICAL - contains API keys)
+.env
+.env.local
+.env.production
+
+# Python cache files
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+
+# Virtual environment
+venv/
+env/
+ENV/
+
+# IDE files
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# OS files
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+
+# Logs
+*.log
+logs/
+
+# Temporary files
+*.tmp
+*.temp
+
+# Test files (optional - keep some for documentation)
+test_*.py
+!test_api.py
+
+# Screenshots (these are large and not needed in git)
+SS/
+*.png
+*.jpg
+*.jpeg
+*.gif
+
+# Handle counter (contains session data)
+handle_counter.json
+
+# Streamlit cache
+.streamlit/
