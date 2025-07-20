@@ -104,10 +104,10 @@ def smartphone_entry_page():
         with col2:
             st.write("**Product Details**")
             
-            sim_carriers = st.selectbox(
-                "SIM Carriers (recommended)",
-                options=[""] + SIM_CARRIERS,
-                index=0
+            sim_carrier_variants = st.multiselect(
+                "Available SIM Carrier Variants *",
+                options=SIM_CARRIERS,
+                help="Select which SIM carrier variants are available for this specific device"
             )
             
             product_rank = st.selectbox(
@@ -162,9 +162,9 @@ def smartphone_entry_page():
             if price <= 0:
                 errors.append("Price must be greater than 0")
             
-            # Warnings (don't block submission)
-            if not sim_carriers:
-                warnings.append("SIM Carriers not selected (recommended)")
+            # SIM Carrier variants validation (required)
+            if not sim_carrier_variants:
+                errors.append("At least one SIM Carrier Variant must be selected")
             
             # Show errors and warnings
             if errors:
@@ -185,7 +185,7 @@ def smartphone_entry_page():
                     "storage": storage.strip() if storage else None,
                     "price": price,
                     "color": color.strip() if color else None,
-                    "sim_carriers": sim_carriers if sim_carriers else None,
+                    "sim_carrier_variants": sim_carrier_variants,
                     "product_rank": product_rank if product_rank else None,
                     "ram_size": ram_size if ram_size else None,
                     "product_inclusions": inclusions if inclusions else None,
@@ -230,7 +230,7 @@ def smartphone_entry_page():
                     st.write(f"**Handle:** `{product.handle}`")
                 
                 with col2:
-                    st.write(f"**SIM Carriers:** {product.sim_carriers or 'N/A'}")
+                    st.write(f"**SIM Carrier Variants:** {', '.join(product.sim_carrier_variants) if product.sim_carrier_variants else 'N/A'}")
                     st.write(f"**Rank:** {product.product_rank or 'N/A'}")
                     st.write(f"**RAM:** {product.ram_size or 'N/A'}")
                     st.write(f"**Inclusions:** {', '.join(product.product_inclusions) if product.product_inclusions else 'N/A'}")

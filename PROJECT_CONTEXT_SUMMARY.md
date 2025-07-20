@@ -1,9 +1,9 @@
 # Shopify Bulk Importer - Project Context Summary
 
 ## 📋 **Current Session Status**
-**Date**: July 16, 2025  
-**Session Focus**: Implementing Shopify API integration for direct product upload with metafields  
-**Status**: 🟡 **IN PROGRESS** - Category fixed, metafields partially working  
+**Date**: July 20, 2025  
+**Session Focus**: SIM carrier variants implementation and metafield fixes  
+**Status**: 🟢 **MAJOR PROGRESS** - 5/6 metafields working, SIM variants implemented  
 
 ---
 
@@ -14,7 +14,7 @@ User requested 5 key improvements for Shopify CSV import:
 2. ✅ **Uncheck "Charge tax"** on products (taxable: false)
 3. ✅ **Enable "Track quantity"** (inventory_management: shopify)
 4. ✅ **Set default status to draft** (published: false)
-5. 🟡 **Fill metafields** during import (partially working)
+5. ✅ **Fill metafields** during import (5/6 working via API)
 
 ## 🔧 **What Was Built**
 
@@ -30,7 +30,9 @@ User requested 5 key improvements for Shopify CSV import:
 - ✅ **Progress Tracking** - Real-time feedback
 - ✅ **Error Handling** - Detailed error reporting
 - ✅ **Auto Category Setting** - Products get correct category
-- ✅ **Metafield Integration** - Uses actual metaobject IDs
+- ✅ **Metafield Integration** - 5/6 metafields working via API
+- ✅ **SIM Carrier Variants** - Staff-selected variants per product
+- ✅ **Smart Inventory Distribution** - Quantity split across variants
 
 ---
 
@@ -49,9 +51,11 @@ config/
 
 ### **Modified Files**
 ```
-pages/smartphone_entry.py   # Added "Upload to Shopify" button
-models/smartphone.py        # Added to_api_data() method
-requirements.txt           # Added shopifyapi>=12.0.0
+pages/smartphone_entry.py   # Added SIM carrier multiselect & Upload button
+models/smartphone.py        # Updated for sim_carrier_variants field
+services/product_service.py # Variant creation logic & metafield fixes
+services/metaobject_service.py # Corrected metaobject GIDs & mappings
+requirements.txt           # Added requests for API calls
 ```
 
 ---
@@ -81,13 +85,15 @@ requirements.txt           # Added shopifyapi>=12.0.0
 4. **Inventory Tracking** - Products have `inventory_management: shopify`
 5. **Draft Status** - Products default to draft (published: false)
 6. **Basic Fields** - Title, price, quantity, handle, vendor all work
+7. **SIM Carrier Variants** - Staff can select 1-5 variants per product
+8. **Metafields (5/6)** - product_rank, product_inclusions, ram_size, minus working
+9. **Variant-Metafield Connection** - SIM variants auto-connect to metafield
 
 ### **🟡 Partially Working**
-1. **Metafields** - API calls fail but metafield forms should appear in admin
+1. **Color Metafield** - Disabled pending metafield definition setup in admin
 
 ### **❌ Known Issues**
-1. **Metafield API Calls Failing** - Getting "Owner subtype does not match" errors
-2. **Some Metaobject References** - May need correct metaobject definition IDs
+1. **Color Metafield Setup** - Requires custom metafield definition creation in Shopify admin
 
 ---
 
@@ -101,9 +107,9 @@ Based on screenshots in `/SS/` folder:
    - Type: list.metaobject_reference
    - Namespace: shopify
 
-2. SIM Carriers (custom.sim_carriers)
-   - Type: list.metaobject_reference
-   - Namespace: custom
+2. SIM Carriers (VARIANTS)
+   - Handled by product variants (not metafields)
+   - Auto-connects to SIM Carriers metafield
 
 3. Product Rank (custom.product_rank)
    - Type: metaobject_reference
@@ -122,29 +128,32 @@ Based on screenshots in `/SS/` folder:
    - Namespace: custom
 ```
 
-### **Metaobject IDs Retrieved**
-Actual metaobject IDs from Shopify store:
-- **SIM Carriers**: SIM Free (gid://shopify/Metaobject/116965343381)
-- **Product Ranks**: A (gid://shopify/Metaobject/117058338965)
-- **Colors**: Pacific Blue (gid://shopify/Metaobject/126233608341)
-- **Inclusions**: Full set (gid://shopify/Metaobject/117085601941)
+### **Metaobject IDs Retrieved & Working**
+Via GraphQL API fetch:
+- **RAM Size**: 3GB→16GB (gid://shopify/Metaobject/127463915669 to 127584370837)
+- **Minus/Issues**: White spot, Shadow, Dead Pixel, Speaker pecah, Battery service
+- **Product Ranks**: BNIB→A (gid://shopify/Metaobject/117057519765 to 117058338965)
+- **Inclusions**: Full set cable, With box, Bonus items (116985528469+)
+- **SIM Carriers**: Handled by variants (SIM Free, Softbank (-), Docomo (-), AU (-), Rakuten Mobile (-))
 
 ---
 
 ## 🧪 **Test Results**
 
-### **Latest Test Product**
-- **Product ID**: 8838589186197
-- **URL**: https://jufbtk-ut.myshopify.com/admin/products/8838589186197
-- **Title**: "Category Fix Test - iPhone 15"
-- **Category**: Should show "Mobile & Smart Phones"
-- **Metafields**: 0/6 successful (API calls failed)
+### **Latest Test Results**
+- **Test Date**: July 20, 2025
+- **SIM Variant Tests**: 4 test cases (single/multi variants) - ALL PASSED
+- **Metafield Tests**: 5/6 metafields working via API
+- **Variant Creation**: Products with 1-4 variants created successfully
+- **Inventory Distribution**: Quantity properly split across variants
 
-### **Error Patterns**
-Common API errors:
-- "Owner subtype does not match the metafield definition's constraints"
-- "value can't be blank"
-- "must belong to the specified metaobject definition"
+### **Success Metrics**
+Recent API test results:
+- ✅ Single variant: "SIM Free" → 1 variant created
+- ✅ Dual variant: "SIM Free" + "Softbank (-)" → 2 variants created  
+- ✅ Multi variant: 4 carriers → 4 variants created
+- ✅ Metafields: product_rank, product_inclusions, ram_size, minus all working
+- ✅ List metafields: JSON string format fixed
 
 ---
 
@@ -152,13 +161,16 @@ Common API errors:
 
 ### **For Users**
 1. Add products through the smartphone entry form
-2. Click "🚀 Upload to Shopify" button
-3. Products will be created with:
+2. **NEW**: Select which SIM carrier variants are available for each device
+3. Click "🚀 Upload to Shopify" button
+4. Products will be created with:
    - ✅ Correct category
    - ✅ Tax disabled
    - ✅ Inventory tracking enabled
    - ✅ Draft status
-   - 🟡 Metafield forms will appear (but may be empty)
+   - ✅ Selected SIM carrier variants (1-5 variants per product)
+   - ✅ 5/6 metafields auto-populated
+   - 🟡 Color metafield empty (requires admin setup)
 
 ### **For Developers**
 ```python
@@ -187,20 +199,20 @@ print(f'Product ID: {result.get(\"product_id\")}')
 ## 🔄 **Next Steps**
 
 ### **Immediate Priority**
-1. **Verify Category Fix** - Check if latest test product shows correct category
-2. **Debug Metafield API** - If metafields still fail, investigate API call format
-3. **Test Metafield Visibility** - Confirm metafield forms appear in admin
+1. **Color Metafield Setup** - Create metafield definition in Shopify admin for color field
+2. **Production Testing** - Test SIM variants with real product data
+3. **Documentation Update** - Update user training materials for new variant workflow
 
-### **Potential Solutions**
-1. **Option A**: Let category trigger metafield forms, manually fill in admin
-2. **Option B**: Debug and fix metafield API calls for full automation
-3. **Option C**: Use third-party app like Matrixify for metafield import
+### **Optional Enhancements**
+1. **Additional Variant Types** - Could extend to product condition variants
+2. **Bulk Variant Operations** - Tools for managing variants across multiple products
+3. **Inventory Management** - Advanced inventory distribution logic
 
-### **Code Improvements**
-- Error handling for specific metafield types
-- Better logging for debugging API calls
-- Retry logic for failed API calls
-- Validation of metaobject IDs before API calls
+### **Code Quality**
+- Remove debug logging from production code
+- Add unit tests for variant creation logic
+- Performance optimization for large batches
+- User interface improvements for variant selection
 
 ---
 
