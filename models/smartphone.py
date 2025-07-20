@@ -13,7 +13,7 @@ class SmartphoneProduct(BaseModel):
     
     # Metafields (exact Shopify metaobject names)
     color: Optional[str] = Field(None, description="Color")
-    sim_carriers: Optional[str] = Field(None, description="SIM carrier information")
+    sim_carrier_variants: Optional[List[str]] = Field(None, description="Available SIM carrier variants for this device")
     minus: Optional[List[str]] = Field(None, description="Issues/problems with the product")
     product_inclusions: Optional[List[str]] = Field(None, description="What's included with the product")
     product_rank: Optional[str] = Field(None, description="Product condition rank")

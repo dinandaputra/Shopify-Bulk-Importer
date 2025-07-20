@@ -245,6 +245,60 @@ class ShopifyAPIClient:
         
         return self._make_graphql_request(query, variables)
     
+    def update_product_option_with_metafield(self, product_id: int, option_name: str, option_values: List[str], metafield_definition_id: str) -> dict:
+        """
+        Update a product's option to connect with a metafield definition using GraphQL
+        
+        Args:
+            product_id: Shopify product ID
+            option_name: Name of the option (e.g., "SIM Carriers")
+            option_values: List of option values
+            metafield_definition_id: GID of the metafield definition to connect to
+            
+        Returns:
+            Updated product data
+        """
+        query = """
+        mutation UpdateProductOption($product: ProductUpdateInput!) {
+          productUpdate(product: $product) {
+            product {
+              id
+              title
+              options {
+                id
+                name
+                values
+                optionValues {
+                  id
+                  name
+                }
+              }
+            }
+            userErrors {
+              field
+              message
+            }
+          }
+        }
+        """
+        
+        # Build the options input - Shopify automatically connects when name matches metafield
+        options_input = [
+            {
+                "name": option_name,
+                "values": option_values
+            }
+        ]
+        
+        variables = {
+            "product": {
+                "id": f"gid://shopify/Product/{product_id}",
+                "options": options_input
+            }
+        }
+        
+        return self._make_graphql_request(query, variables)
+    
     def get_taxonomy_categories(self) -> dict:
         """
         Get available taxonomy categories to find the correct category ID
@@ -270,6 +324,179 @@ class ShopifyAPIClient:
         """
         
         return self._make_graphql_request(query)
+    
+    def create_product_with_linked_metafields(self, product_data: dict) -> dict:
+        """
+        Create a product using GraphQL productSet with linked metafields for variants
+        
+        Args:
+            product_data: Product data including linked metafield options
+            
+        Returns:
+            GraphQL response
+        """
+        mutation = """
+        mutation productSet($input: ProductSetInput!) {
+          productSet(input: $input) {
+            product {
+              id
+              title
+              handle
+              status
+              options {
+                id
+                name
+                linkedMetafield {
+                  namespace
+                  key
+                }
+                optionValues {
+                  id
+                  name
+                  linkedMetafieldValue
+                }
+              }
+              variants(first: 10) {
+                nodes {
+                  id
+                  title
+                  selectedOptions {
+                    name
+                    value
+                  }
+                  price
+                  inventoryQuantity
+                }
+              }
+            }
+            userErrors {
+              field
+              message
+            }
+          }
+        }
+        """
+        
+        variables = {
+            "input": product_data
+        }
+        
+        return self._make_graphql_request(mutation, variables)
+    
+    def connect_variant_option_to_metafield(self, product_id: int, option_name: str, metafield_namespace: str, metafield_key: str) -> dict:
+        """
+        Connect a product variant option to an existing metafield definition
+        
+        Args:
+            product_id: Product ID
+            option_name: Name of the variant option
+            metafield_namespace: Metafield namespace (e.g., 'custom')
+            metafield_key: Metafield key (e.g., 'sim_carriers')
+            
+        Returns:
+            API response
+        """
+        # Use productUpdate to update the entire product with linked metafield options
+        mutation = """
+        mutation productUpdate($input: ProductInput!) {
+          productUpdate(input: $input) {
+            product {
+              id
+              options {
+                id
+                name
+                linkedMetafield {
+                  namespace
+                  key
+                }
+              }
+            }
+            userErrors {
+              field
+              message
+            }
+          }
+        }
+        """
+        
+        # First get the current product options
+        get_product_query = """
+        query getProduct($id: ID!) {
+          product(id: $id) {
+            options {
+              id
+              name
+              values
+            }
+          }
+        }
+        """
+        
+        product_result = self._make_graphql_request(get_product_query, {
+            "id": f"gid://shopify/Product/{product_id}"
+        })
+        
+        if not product_result.get('data', {}).get('product', {}).get('options'):
+            return {'error': 'Could not find product options'}
+        
+        # Build the options array with the linked metafield for the matching option
+        options = []
+        for option in product_result['data']['product']['options']:
+            if option['name'] == option_name:
+                # Add linkedMetafield to this option
+                options.append({
+                    'name': option['name'],
+                    'values': option['values'],
+                    'linkedMetafield': {
+                        'namespace': metafield_namespace,
+                        'key': metafield_key
+                    }
+                })
+            else:
+                # Keep other options as-is
+                options.append({
+                    'name': option['name'],
+                    'values': option['values']
+                })
+        
+        variables = {
+            "input": {
+                "id": f"gid://shopify/Product/{product_id}",
+                "options": options
+            }
+        }
+        
+        return self._make_graphql_request(mutation, variables)
+    
+    def get_product(self, product_id: int) -> dict:
+        """
+        Get product details via REST API
+        
+        Args:
+            product_id: Product ID
+            
+        Returns:
+            Product data
+        """
+        endpoint = f"admin/api/{self.config.API_VERSION}/products/{product_id}.json"
+        response = self._make_request('GET', endpoint)
+        return response
+    
+    def update_variant(self, variant_id: int, variant_data: dict) -> dict:
+        """
+        Update variant via REST API
+        
+        Args:
+            variant_id: Variant ID
+            variant_data: Variant update data
+            
+        Returns:
+            Updated variant data
+        """
+        endpoint = f"admin/api/{self.config.API_VERSION}/variants/{variant_id}.json"
+        payload = {'variant': variant_data}
+        response = self._make_request('PUT', endpoint, payload)
+        return response
 
 # Global API client instance
 shopify_api = ShopifyAPIClient()
