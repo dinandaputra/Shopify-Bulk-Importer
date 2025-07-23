@@ -6,10 +6,16 @@ class SmartphoneProduct(BaseModel):
     # Core fields
     title: str = Field(..., min_length=1, description="Product title")
     brand: str = Field(..., min_length=1, description="Brand name")
-    model: str = Field(..., min_length=1, description="Model name")
-    storage: Optional[str] = Field(None, description="Storage capacity (e.g., 128GB)")
+    model: Optional[str] = Field(None, description="Model name (optional - auto-extracted from templates)")
+    storage: Optional[str] = Field(None, description="Storage capacity (auto-extracted from templates)")
     price: float = Field(..., gt=0, description="Price in JPY")
     quantity: int = Field(1, ge=1, description="Quantity")
+    
+    # New fields for enhanced template system
+    collections: Optional[List[str]] = Field(None, description="Shopify collections to assign product to")
+    sales_channels: List[str] = Field(["online_store", "pos", "shop"], description="Sales channels where product should be available")
+    color_metafield_gid: Optional[str] = Field(None, description="Shopify color metaobject GID")
+    template: Optional[str] = Field(None, description="Source template used for product creation")
     
     # Metafields (exact Shopify metaobject names)
     color: Optional[str] = Field(None, description="Color")
@@ -23,7 +29,7 @@ class SmartphoneProduct(BaseModel):
     handle: Optional[str] = Field(None, description="Auto-generated product handle")
     vendor: str = Field("myByte International", description="Vendor name")
     tags: str = Field("smartphone", description="Product tags")
-    published: str = Field("FALSE", description="Published status")
+    published: str = Field("TRUE", description="Published status")
     
     # Timestamps
     created_at: Optional[datetime] = Field(None, description="Creation timestamp")
@@ -75,12 +81,23 @@ class SmartphoneProduct(BaseModel):
             "Variant Price": self.price,
             "Variant Barcode": "",
             "Color (product.metafields.custom.color)": self.color or "",
-            "SIM Carriers (product.metafields.custom.sim_carriers)": self.sim_carriers or "",
+            "SIM Carriers (product.metafields.custom.sim_carriers)": ", ".join(self.sim_carrier_variants) if self.sim_carrier_variants else "",
             "Minus (product.metafields.custom.minus)": ", ".join(self.minus) if self.minus else "",
             "Product Inclusions (product.metafields.custom.product_inclusions)": ", ".join(self.product_inclusions) if self.product_inclusions else "",
             "Product Rank (product.metafields.custom.product_rank)": self.product_rank or "",
             "RAM Size (product.metafields.custom.ram_size)": self.ram_size or "",
         }
+    
+    def get_display_model_storage(self) -> str:
+        """Get display string for model and storage combination"""
+        if self.model and self.storage:
+            return f"{self.model} {self.storage}"
+        elif self.model:
+            return self.model
+        elif self.storage:
+            return self.storage
+        else:
+            return "N/A"
     
     def to_api_data(self) -> dict:
         """Convert to format suitable for Shopify API upload"""
@@ -93,7 +110,7 @@ class SmartphoneProduct(BaseModel):
             'price': self.price,
             'quantity': self.quantity,
             'color': self.color,
-            'sim_carriers': self.sim_carriers,
+            'sim_carrier_variants': self.sim_carrier_variants,
             'minus': self.minus,
             'product_inclusions': self.product_inclusions,
             'product_rank': self.product_rank,

@@ -190,5 +190,83 @@ class MetaobjectService:
             }
         return None
 
+    def get_metaobject_gids_by_handles(self, handles: List[str], definition_type: str = "sim_carrier") -> Dict[str, str]:
+        """
+        Fetch metaobject GIDs by their handles using GraphQL
+        
+        Args:
+            handles: List of metaobject handles (e.g., ['sim-free', 'softbank', 'au'])
+            definition_type: The metaobject definition type (default: 'sim_carrier')
+            
+        Returns:
+            Dictionary mapping handles to GIDs
+        """
+        gid_mapping = {}
+        
+        for handle in handles:
+            try:
+                # GraphQL query to get metaobjects by handle and type
+                query = """
+                query getMetaobjects($type: String!, $handle: String!) {
+                  metaobjects(type: $type, first: 1, query: $handle) {
+                    edges {
+                      node {
+                        id
+                        handle
+                      }
+                    }
+                  }
+                }
+                """
+                
+                variables = {"type": definition_type, "handle": f"handle:{handle}"}
+                result = self.api._make_graphql_request(query, variables)
+                
+                if result.get('data', {}).get('metaobjects', {}).get('edges'):
+                    edges = result['data']['metaobjects']['edges']
+                    if edges:
+                        metaobject = edges[0]['node']
+                        gid_mapping[handle] = metaobject['id']
+                        print(f"DEBUG: Found GID for handle '{handle}': {metaobject['id']}")
+                    else:
+                        print(f"WARNING: No metaobject found for handle '{handle}'")
+                else:
+                    print(f"WARNING: No metaobject found for handle '{handle}'")
+                    
+            except Exception as e:
+                print(f"ERROR: Failed to fetch metaobject for handle '{handle}': {str(e)}")
+        
+        return gid_mapping
+    
+    def get_sim_carrier_metaobject_gids(self) -> Dict[str, str]:
+        """
+        Get all SIM carrier metaobject GIDs by their handles
+        
+        Returns:
+            Dictionary mapping SIM carrier names to GIDs
+        """
+        # Map SIM carrier names to handles from your screenshots
+        sim_carrier_handles = {
+            'SIM Free': 'sim-free',
+            'Rakuten Mobile (-)': 'rakuten-mobile', 
+            'Softbank (-)': 'softbank',
+            'AU (-)': 'au',
+            'Docomo (-)': 'docomo'
+        }
+        
+        # Get handles list
+        handles = list(sim_carrier_handles.values())
+        
+        # Fetch GIDs by handles
+        handle_to_gid = self.get_metaobject_gids_by_handles(handles, "sim_carrier")
+        
+        # Map back to SIM carrier names
+        name_to_gid = {}
+        for name, handle in sim_carrier_handles.items():
+            if handle in handle_to_gid:
+                name_to_gid[name] = handle_to_gid[handle]
+        
+        return name_to_gid
+
 # Global service instance
 metaobject_service = MetaobjectService()
