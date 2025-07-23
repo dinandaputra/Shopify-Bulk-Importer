@@ -34,15 +34,25 @@ def smartphone_entry_page():
         col1, col2 = st.columns([3, 1])
         
         with col1:
-            # Title input with suggestions
+            # Title input with suggestions  
             title_input = st.text_input(
                 "Product Title *",
                 value=st.session_state.form_data.get("title", ""),
-                placeholder="Start typing (e.g., iPhone 15 Pro) or select from suggestions below"
+                placeholder="Start typing (e.g., iPhone 15 Pro) or select from suggestions below",
+                key="title_input"
             )
         
         with col2:
             use_template = st.checkbox("Use Template", value=False)
+        
+        # Template selection callback
+        def on_template_change():
+            selected = st.session_state.template_select
+            if selected != "Custom title":
+                # Auto-fill form data from template
+                extracted_info = extract_info_from_template(selected)
+                st.session_state.form_data.update(extracted_info)
+                st.session_state.form_data['title'] = selected
         
         # Title suggestions
         if title_input and len(title_input) > 2:
@@ -52,14 +62,17 @@ def smartphone_entry_page():
                 selected_template = st.selectbox(
                     "Select a template or continue with custom title",
                     ["Custom title"] + suggestions,
-                    key="template_select"
+                    key="template_select",
+                    on_change=on_template_change
                 )
                 
-                if selected_template != "Custom title":
+                # Apply template immediately if selected
+                if selected_template != "Custom title" and selected_template != st.session_state.form_data.get('title', ''):
                     title_input = selected_template
                     # Auto-fill form data from template
                     extracted_info = extract_info_from_template(selected_template)
                     st.session_state.form_data.update(extracted_info)
+                    st.session_state.form_data['title'] = selected_template
         
         # Two-column layout for main form
         col1, col2 = st.columns(2)
@@ -72,19 +85,22 @@ def smartphone_entry_page():
                 options=[""] + COMMON_BRANDS,
                 index=0 if not st.session_state.form_data.get("brand") else 
                       COMMON_BRANDS.index(st.session_state.form_data.get("brand")) + 1
-                      if st.session_state.form_data.get("brand") in COMMON_BRANDS else 0
+                      if st.session_state.form_data.get("brand") in COMMON_BRANDS else 0,
+                key="brand_select"
             )
             
             model = st.text_input(
                 "Model *",
                 value=st.session_state.form_data.get("model", ""),
-                placeholder="e.g., 15 Pro"
+                placeholder="e.g., 15 Pro",
+                key="model_input"
             )
             
             storage = st.text_input(
                 "Storage",
                 value=st.session_state.form_data.get("storage", ""),
-                placeholder="e.g., 128GB"
+                placeholder="e.g., 128GB",
+                key="storage_input"
             )
             
             price = st.number_input(
@@ -98,7 +114,8 @@ def smartphone_entry_page():
             color = st.text_input(
                 "Color",
                 value=st.session_state.form_data.get("color", ""),
-                placeholder="e.g., Space Gray"
+                placeholder="e.g., Space Gray",
+                key="color_input"
             )
         
         with col2:
@@ -124,10 +141,12 @@ def smartphone_entry_page():
             
             # Multi-select fields
             st.write("**Inclusions** (multi-select)")
+            # Use pre-selected inclusions from template if available
+            default_inclusions = st.session_state.form_data.get('product_inclusions', [])
             inclusions = st.multiselect(
                 "What's included?",
                 options=PRODUCT_INCLUSIONS,
-                default=[]
+                default=default_inclusions
             )
             
             st.write("**Issues/Minus** (multi-select)")
@@ -190,6 +209,9 @@ def smartphone_entry_page():
                     "ram_size": ram_size if ram_size else None,
                     "product_inclusions": inclusions if inclusions else None,
                     "minus": minus if minus else None,
+                    # Collections and sales channels from template or defaults
+                    "collections": st.session_state.form_data.get('collections', ['All Products', 'iPhone'] if brand == 'iPhone' else ['All Products']),
+                    "sales_channels": st.session_state.form_data.get('sales_channels', ["online_store", "pos", "shop"]),
                 }
                 
                 # Generate handle

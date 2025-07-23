@@ -6,6 +6,7 @@ import os
 sys.path.append(os.path.dirname(os.path.abspath(__file__)))
 
 from pages.smartphone_entry import smartphone_entry_page
+from pages.smartphone_entry_enhanced import smartphone_entry_page as smartphone_entry_enhanced_page
 
 def main():
     st.set_page_config(
@@ -23,8 +24,8 @@ def main():
         st.header("Navigation")
         page = st.radio(
             "Select Category",
-            ["Smartphone", "Laptop (Coming Soon)"],
-            index=0
+            ["Smartphone (Legacy)", "Smartphone (Simplified)", "Laptop (Coming Soon)"],
+            index=1  # Default to simplified version
         )
         
         st.divider()
@@ -43,8 +44,10 @@ def main():
                 st.rerun()
     
     # Main content
-    if page == "Smartphone":
+    if page == "Smartphone (Legacy)":
         smartphone_entry_page()
+    elif page == "Smartphone (Simplified)":
+        smartphone_entry_enhanced_page()
     else:
         st.info("Laptop category coming in Phase 2!")
 

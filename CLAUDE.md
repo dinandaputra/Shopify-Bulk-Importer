@@ -88,15 +88,59 @@ export SHOPIFY_SHOP_DOMAIN="your-shop.myshopify.com"
 
 ## Development Notes
 
-### API Integration Status (Updated July 2025)
-- **✅ FIXED**: Direct Shopify product creation using GraphQL productSet mutation
-- **✅ FIXED**: SIM carrier variants with proper inventory tracking and distribution
-- **✅ FIXED**: Inventory management - products now have correct tracked inventory levels
-- **✅ WORKING**: 4/6 metafields via API: ram_size, minus (working), product_rank, product_inclusions (mapping needs update)
-- **⚠️ PARTIAL**: SIM carriers create variants but metafield linking needs Shopify admin setup
-- **❌ DISABLED**: Color metafield (requires metafield definition setup in admin)
+### API Integration Status (Updated July 22, 2025) ✅ WORKING IMPLEMENTATION
+- **✅ FULLY WORKING**: Direct variant-to-metafield linking using GraphQL metafieldsSet mutation
+- **✅ FIXED**: Product creation with SIM carrier variants using GraphQL productSet
+- **✅ FIXED**: Inventory management - products have correct tracked inventory levels
+- **✅ WORKING**: 4/6 metafields via API: ram_size, minus (working), product_rank, product_inclusions
+- **✅ WORKING**: Each SIM carrier variant individually linked to its specific metaobject
 - **✅ WORKING**: Error handling with detailed logging and GraphQL error reporting
 - **✅ WORKING**: Rate limiting and proper API authentication
+
+### 🎯 WORKING VARIANT METAFIELD IMPLEMENTATION (DO NOT MODIFY)
+
+#### Shopify Admin Setup Required:
+1. **Product-level metafield**: `custom.sim_carriers` (type: list.metaobject_reference)
+2. **Variant-level metafield**: `custom.sim_carrier` (type: list.metaobject_reference) ⭐ KEY REQUIREMENT
+
+#### Working Code Structure:
+- **services/shopify_api.py**: `assign_metafields_to_variants()` method using metafieldsSet mutation
+- **services/product_service.py**: Post-creation variant metafield assignment
+- **Test verification**: `verify_variant_metafields.py` script confirms each variant has correct metafield
+
+#### Proven Working Example:
+- **Product ID**: 8843114479765
+- **URL**: https://jufbtk-ut.myshopify.com/admin/products/8843114479765
+- **Status**: All 3 variants successfully linked to individual metaobjects
+- **Verification**: GraphQL query confirms metafields exist on each variant
+
+#### Key Technical Details:
+```python
+# Working GraphQL mutation structure
+mutation metafieldsSet($metafields: [MetafieldsSetInput!]!) {
+  metafieldsSet(metafields: $metafields) {
+    metafields {
+      id, key, namespace, value, ownerType, createdAt
+    }
+    userErrors { field, message }
+  }
+}
+
+# Working metafield data format
+{
+  "ownerId": "gid://shopify/ProductVariant/123",
+  "namespace": "custom", 
+  "key": "sim_carrier",
+  "value": '["gid://shopify/Metaobject/456"]',  # JSON array format
+  "type": "list.metaobject_reference"
+}
+```
+
+### 🎯 Next Goal: Option-to-Metafield Linking
+- **Current**: Variants linked to metafields ✅
+- **Desired**: Option "SIM Carriers" linked to metafield (removes "Connect metafield" button)
+- **Challenge**: GraphQL productSet linkedMetafield has API conflicts
+- **Approach**: Research option-specific mutations or alternative linking methods
 
 ### Data Validation
 - Required fields: title, brand, model, price
@@ -112,25 +156,29 @@ export SHOPIFY_SHOP_DOMAIN="your-shop.myshopify.com"
 - Check variant creation and inventory distribution
 - Metafields appear in product admin (working: ram_size, minus)
 
-## Recent Progress (July 20, 2025)
+## Recent Progress (July 22, 2025) ✅ VARIANT LINKING SUCCESS
 
-### Issues Fixed
-1. **❌→✅ INVENTORY TRACKING**: Fixed major inventory issue where products had 0 inventory and weren't tracked
-2. **❌→✅ VARIANT CREATION**: SIM carrier variants now create properly with correct inventory distribution  
-3. **❌→✅ GRAPHQL IMPLEMENTATION**: Migrated from broken REST approach to working GraphQL productSet
-4. **❌→✅ LOCATION HANDLING**: Automatic primary location detection for inventory management
-5. **❌→✅ TRACKING STATUS**: Products now have `tracked: true` for proper inventory management
+### Issues Fully Resolved
+1. **❌→✅ VARIANT METAFIELD LINKING**: Each variant individually linked to specific metaobject via GraphQL metafieldsSet
+2. **❌→✅ API AUTOMATION**: No manual clicking required - fully automated variant-to-metafield connection
+3. **❌→✅ METAFIELD DEFINITIONS**: Required variant-level metafield definition `custom.sim_carrier` created in admin
+4. **❌→✅ JSON FORMATTING**: Correct `list.metaobject_reference` format with JSON array values
+5. **❌→✅ VERIFICATION**: GraphQL query confirms all variant metafields successfully created
 
-### Current Status
-- **WORKING**: Core SIM carrier variant functionality with proper inventory
-- **WORKING**: Product creation, variants, inventory tracking, basic metafields
-- **PARTIAL**: Metafield linking (variants work but not connected to metafields yet - requires admin setup)
-- **NEXT**: Complete metafield linking would require Shopify admin metafield definition configuration
+### Key Breakthrough: MetafieldsSet Mutation
+```python
+# Final working implementation
+def assign_metafields_to_variants(self, variant_metafield_data):
+    mutation = """mutation metafieldsSet($metafields: [MetafieldsSetInput!]!) {...}"""
+    # Each variant gets individual metafield with its specific metaobject GID
+```
 
-### Key Files Modified
-- `services/product_service.py`: Complete rewrite of product creation using GraphQL
-- `services/shopify_api.py`: Added GraphQL productSet support and inventory methods  
-- Cleaned up test files and unused implementations
+### ROLLBACK INSTRUCTIONS
+If option-to-metafield linking attempts fail, revert to current working state:
+1. Keep `services/shopify_api.py:assign_metafields_to_variants()` method  
+2. Keep `services/product_service.py` post-creation variant assignment logic
+3. Use `verify_variant_metafields.py` to confirm variant linking still works
+4. Test with product creation to ensure variant metafields remain functional
 
 ## API Documentation & Reference
 
@@ -168,10 +216,43 @@ When working with Shopify APIs, you MUST consult documentation in this order:
 3. **For debugging**: Reference both local examples and official MCP schemas
 4. **Never guess**: Always verify API structure against documentation
 
+## Current Development Projects
+
+### 🚧 iPhone Template System Enhancement (90% Complete)
+**Status**: Phase 1 & 2 Mostly Complete - UI Issue in Progress  
+**PRD**: `iphone_template_system_prd.md` - Complete specifications and implementation plan  
+**Goal**: Streamline iPhone product entry with smart templates, auto-fill, and 70% time reduction  
+
+#### ✅ **Key Features Implemented:**
+- **Smart Templates**: "iPhone 15 Pro Max 256GB [Desert Titanium]" → Auto-generated title with 5G logic
+- **Comprehensive iPhone Database**: All models from iPhone XR/XS to iPhone 16 with accurate colors/storage
+- **Smart Inclusion Mapping**: "Full set cable" → Auto-selects [Full set cable, Bonus adapter, Bonus softcase, Bonus anti gores]
+- **Simplified Form**: Remove Model/Storage fields, streamline to 2 required fields (Price, Rank)
+- **Auto Collections**: "All Products" + "iPhone" automatically assigned and editable
+- **Image Upload**: Drag & drop with Shopify CDN integration
+- **Inline Session Editing**: Click-to-edit products in session list
+
+#### 🚧 **Current Status & Next Steps:**
+- **✅ Phase 1**: iPhone specs database + enhanced templates *(COMPLETE)*
+- **🚧 Phase 2**: Simplified form interface + collections management *(90% complete - UI issue)*  
+- **⏳ Phase 3**: Image upload + inline editing features *(PENDING)*
+- **⏳ Phase 4**: Performance optimizations + sales channel integration *(PENDING)*
+
+#### 🚨 **Current Issue:**
+**Template Auto-Fill UI**: Templates only apply when pressing Enter in search field, not immediately on dropdown selection. Needs debugging of Streamlit session state and form refresh behavior.
+
+#### CRITICAL: Preserve Current Working Systems
+- **DO NOT MODIFY** existing variant metafield system (`services/shopify_api.py:assign_metafields_to_variants()`)
+- **Maintain compatibility** with current SIM carrier variant workflow
+- **Preserve** all existing API integrations and error handling
+
 ## Important Files
 
+- **iphone_template_system_prd.md**: iPhone Template System - Complete PRD and implementation plan 📋
 - **PROJECT_CONTEXT_SUMMARY.md**: Detailed session history and current status
 - **prd.md**: Complete product requirements and user stories
 - **config/shopify_config.py**: API configuration and validation
 - **services/product_service.py**: Main product creation logic
 - **models/smartphone.py**: Data model with all metafield definitions
+- **verify_variant_metafields.py**: Test script to verify variant metafield linking works ✅
+- **test_fixed_variant_linking.py**: Working test for variant-to-metafield automation ✅

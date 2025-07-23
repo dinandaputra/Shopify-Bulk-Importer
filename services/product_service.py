@@ -3,6 +3,7 @@ import json
 from models.smartphone import SmartphoneProduct
 from services.shopify_api import shopify_api, ShopifyAPIError
 from services.metaobject_service import metaobject_service
+from services.collection_service import collection_service
 
 class ProductService:
     """
@@ -12,6 +13,7 @@ class ProductService:
     def __init__(self):
         self.api = shopify_api
         self.metaobject_service = metaobject_service
+        self.collection_service = collection_service
     
     def create_smartphone_product(self, smartphone: SmartphoneProduct) -> Dict[str, Any]:
         """
@@ -316,12 +318,109 @@ class ProductService:
                 # Add remaining metafields (non-variant ones) using REST API
                 metafield_results = self._add_non_variant_metafields(product_id, smartphone)
                 
+                # Link the "SIM Carriers" option to the metafield (removes "Connect metafield" button)
+                option_link_result = None
+                if smartphone.sim_carrier_variants and len(smartphone.sim_carrier_variants) > 0:
+                    try:
+                        # Get SIM carrier mappings for option values
+                        sim_carrier_mappings = self.metaobject_service.get_sim_carrier_metaobject_gids()
+                        
+                        option_link_result = self.api.link_product_option_to_metafield(
+                            product_id, 
+                            "SIM Carriers", 
+                            "custom", 
+                            "sim_carriers",
+                            sim_carrier_mappings  # Pass the option value mappings
+                        )
+                        print(f"DEBUG: Option-to-metafield link result: {option_link_result}")
+                    except Exception as e:
+                        print(f"WARNING: Failed to link option to metafield: {str(e)}")
+                        option_link_result = {'error': str(e)}
+
+                # Assign metafields directly to variants (working implementation)
+                variant_metafield_result = None
+                if smartphone.sim_carrier_variants and len(smartphone.sim_carrier_variants) > 0:
+                    try:
+                        # Get variant GIDs from the created product
+                        variants = created_product.get('variants', {}).get('nodes', [])
+                        sim_carrier_mappings = self.metaobject_service.get_sim_carrier_metaobject_gids()
+                        
+                        # Build variant metafield data
+                        variant_metafield_data = []
+                        for i, variant in enumerate(variants):
+                            if i < len(smartphone.sim_carrier_variants):
+                                carrier_name = smartphone.sim_carrier_variants[i]
+                                metaobject_gid = sim_carrier_mappings.get(carrier_name)
+                                
+                                if metaobject_gid:
+                                    variant_metafield_data.append({
+                                        'variant_gid': variant['id'],  # Already a GID
+                                        'metaobject_gid': metaobject_gid,
+                                        'namespace': 'custom',
+                                        'key': 'sim_carrier'  # Match the variant metafield definition (singular)
+                                    })
+                        
+                        if variant_metafield_data:
+                            variant_metafield_result = self.api.assign_metafields_to_variants(variant_metafield_data)
+                            print(f"DEBUG: Direct variant metafield assignment result: {variant_metafield_result}")
+                        else:
+                            print(f"WARNING: No variant metafield data to assign")
+                            
+                    except Exception as e:
+                        print(f"WARNING: Failed to assign variant metafields: {str(e)}")
+                        variant_metafield_result = {'error': str(e)}
+                
+                # Assign product to collections (new feature)
+                collection_result = None
+                if smartphone.collections:
+                    try:
+                        collection_result = self.collection_service.add_product_to_collections(
+                            product_id, smartphone.collections
+                        )
+                        print(f"DEBUG: Collection assignment result: {collection_result}")
+                        
+                        if collection_result['successful'] > 0:
+                            print(f"SUCCESS: Added product to {collection_result['successful']} collections")
+                        if collection_result['failed'] > 0:
+                            print(f"WARNING: Failed to add product to {collection_result['failed']} collections")
+                            
+                    except Exception as e:
+                        print(f"WARNING: Failed to assign collections: {str(e)}")
+                        collection_result = {'error': str(e)}
+                
+                # Assign product to sales channels
+                sales_channel_result = None
+                if smartphone.sales_channels:
+                    try:
+                        sales_channel_result = self._assign_to_sales_channels(
+                            product_id, smartphone.sales_channels
+                        )
+                        print(f"DEBUG: Sales channel assignment result: {sales_channel_result}")
+                        
+                        if sales_channel_result.get('successful', 0) > 0:
+                            print(f"SUCCESS: Added product to {sales_channel_result['successful']} sales channels")
+                        if sales_channel_result.get('failed', 0) > 0:
+                            print(f"WARNING: Failed to add product to {sales_channel_result['failed']} sales channels")
+                            
+                    except Exception as e:
+                        print(f"WARNING: Failed to assign sales channels: {str(e)}")
+                        sales_channel_result = {'error': str(e)}
+                else:
+                    sales_channel_result = {
+                        'success': False,
+                        'message': 'No sales channels specified'
+                    }
+                
                 return {
                     'success': True,
                     'product_id': product_id,
                     'product': created_product,
                     'metafields': metafield_results,
+                    'option_link': option_link_result,
+                    'variant_metafields': variant_metafield_result,
                     'category_update': category_result,
+                    'collections': collection_result,
+                    'sales_channels': sales_channel_result,
                     'graphql_response': response
                 }
                 
@@ -356,31 +455,34 @@ class ProductService:
         quantity_per_variant = smartphone.quantity // len(sim_carriers) if len(sim_carriers) > 0 else smartphone.quantity
         remaining_quantity = smartphone.quantity % len(sim_carriers) if len(sim_carriers) > 0 else 0
         
-        # Get SIM carrier metaobject mappings
-        sim_carrier_mappings = {
-            'SIM Free': 'gid://shopify/Metaobject/116965343381',
-            'Rakuten Mobile (-)': 'gid://shopify/Metaobject/116971733141',
-            'Softbank (-)': 'gid://shopify/Metaobject/116971765909',
-            'Docomo (-)': 'gid://shopify/Metaobject/116971798677',
-            'AU (-)': 'gid://shopify/Metaobject/116971831445'
-        }
+        # Get SIM carrier metaobject GIDs dynamically
+        try:
+            sim_carrier_mappings = self.metaobject_service.get_sim_carrier_metaobject_gids()
+            print(f"DEBUG: Dynamic SIM carrier mappings: {sim_carrier_mappings}")
+        except Exception as e:
+            print(f"WARNING: Failed to fetch dynamic GIDs, using fallback: {str(e)}")
+            # Fallback to hardcoded mappings if dynamic lookup fails
+            sim_carrier_mappings = {
+                'SIM Free': 'gid://shopify/Metaobject/116965343381',
+                'Rakuten Mobile (-)': 'gid://shopify/Metaobject/116971733141',
+                'Softbank (-)': 'gid://shopify/Metaobject/116971765909',
+                'Docomo (-)': 'gid://shopify/Metaobject/116971798677',
+                'AU (-)': 'gid://shopify/Metaobject/116971831445'
+            }
         
         for i, carrier in enumerate(sim_carriers):
             # Give extra quantity to first variant if there's remainder
             variant_quantity = quantity_per_variant + (1 if i == 0 and remaining_quantity > 0 else 0)
             
-            # Get metaobject GID for this carrier
-            carrier_metaobject_gid = sim_carrier_mappings.get(carrier)
+            # Build option value - Shopify will auto-link via linkedMetafield
+            option_value = {
+                'optionName': 'SIM Carriers',
+                'name': carrier  # This will be matched against displayName in metaobjects
+            }
             
             # All variants in this method have option values (since we filtered out no-SIM-carrier case)
             variant = {
-                'optionValues': [
-                    {
-                        'optionName': 'SIM Carriers',
-                        'name': carrier
-                        # Temporarily removed linkedMetafieldValue to test basic functionality
-                    }
-                ],
+                'optionValues': [option_value],
                 'price': str(smartphone.price),
                 'inventoryItem': {
                     'tracked': True
@@ -405,17 +507,23 @@ class ProductService:
             'tags': smartphone.tags.split(', ') if smartphone.tags else [],
             'status': 'DRAFT' if smartphone.published.lower() == 'false' else 'ACTIVE',
             'handle': smartphone.handle,
+            'category': 'gid://shopify/TaxonomyCategory/el-4-8-5',  # Mobile & Smart Phones category
             'variants': variants
         }
         
-        # Add productOptions for SIM Carriers (required when using optionValues in variants)
+        # Add productOptions with standard values first (will link metafield post-creation)
+        # The 2025-07 GraphQL API has conflicts with linkedMetafield + values in productSet
         if sim_carriers and sim_carriers[0] != 'Default Title':
             product_data['productOptions'] = [
                 {
                     'name': 'SIM Carriers',
+                    'position': 1,
                     'values': [{'name': carrier} for carrier in sim_carriers]
                 }
             ]
+            print(f"DEBUG: Added standard productOptions (linkedMetafield will be added post-creation)")
+            print(f"DEBUG: Values: {sim_carriers}")
+            print(f"DEBUG: Will link to metafield custom.sim_carriers after product creation")
         
         return product_data
     
@@ -659,6 +767,120 @@ class ProductService:
         
         # Fallback - use the known primary location for this store
         return "gid://shopify/Location/79305801877"
+    
+    def _assign_to_sales_channels(self, product_id: int, sales_channels: List[str]) -> Dict[str, Any]:
+        """
+        Assign product to specific sales channels using GraphQL publications
+        
+        Args:
+            product_id: Shopify product ID
+            sales_channels: List of sales channel names (e.g., ['online_store', 'pos', 'shop'])
+            
+        Returns:
+            Dictionary with assignment results
+        """
+        try:
+            # Discover available publications first
+            publications_result = self.api.discover_publications()
+            
+            if not publications_result.get('success'):
+                return {
+                    'successful': 0,
+                    'failed': len(sales_channels),
+                    'error': f"Failed to discover publications: {publications_result.get('error')}"
+                }
+            
+            publication_map = publications_result['publication_map']
+            print(f"DEBUG: Available publications: {list(publication_map.keys())}")
+            
+            # Map sales channel names to publication names
+            channel_mapping = {
+                'online_store': 'online store',
+                'pos': 'point of sale', 
+                'shop': 'shop'
+            }
+            
+            results = []
+            successful = 0
+            failed = 0
+            
+            for channel in sales_channels:
+                publication_name = channel_mapping.get(channel.lower())
+                if not publication_name:
+                    print(f"WARNING: Unknown sales channel '{channel}', skipping")
+                    failed += 1
+                    results.append({
+                        'channel': channel,
+                        'success': False,
+                        'error': f'Unknown sales channel: {channel}'
+                    })
+                    continue
+                
+                # Find the publication by name
+                publication_info = publication_map.get(publication_name)
+                if not publication_info:
+                    print(f"WARNING: Publication '{publication_name}' not found in store")
+                    failed += 1
+                    results.append({
+                        'channel': channel,
+                        'publication_name': publication_name,
+                        'success': False,
+                        'error': f'Publication not found: {publication_name}'
+                    })
+                    continue
+                
+                publication_id = publication_info['id']
+                
+                try:
+                    print(f"DEBUG: Publishing to {publication_info['name']} ({publication_id})")
+                    
+                    # Use GraphQL to publish product to this specific channel
+                    result = self.api.publish_product_to_channel(product_id, publication_id)
+                    
+                    if result.get('success', False):
+                        successful += 1
+                        results.append({
+                            'channel': channel,
+                            'publication_name': publication_info['name'],
+                            'publication_id': publication_id,
+                            'success': True,
+                            'message': f'Successfully published to {publication_info["name"]}'
+                        })
+                        print(f"SUCCESS: Published to {publication_info['name']}")
+                    else:
+                        failed += 1
+                        results.append({
+                            'channel': channel,
+                            'publication_name': publication_info['name'],
+                            'publication_id': publication_id,
+                            'success': False,
+                            'error': result.get('error', 'Unknown error')
+                        })
+                        print(f"FAILED: Could not publish to {publication_info['name']}: {result.get('error')}")
+                        
+                except Exception as e:
+                    failed += 1
+                    results.append({
+                        'channel': channel,
+                        'publication_name': publication_name,
+                        'success': False,
+                        'error': str(e)
+                    })
+                    print(f"ERROR: Exception publishing to {publication_name}: {str(e)}")
+            
+            return {
+                'successful': successful,
+                'failed': failed,
+                'results': results
+            }
+            
+        except Exception as e:
+            print(f"ERROR: Failed to assign sales channels: {str(e)}")
+            return {
+                'successful': 0,
+                'failed': len(sales_channels),
+                'error': str(e)
+            }
 
 # Global service instance
 product_service = ProductService()
