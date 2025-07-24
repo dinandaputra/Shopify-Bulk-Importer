@@ -226,12 +226,13 @@ class ProductService:
         
         return results
     
-    def upload_multiple_products(self, smartphones: List[SmartphoneProduct]) -> Dict[str, Any]:
+    def upload_multiple_products(self, smartphones: List[SmartphoneProduct], product_images: Dict[str, List] = None) -> Dict[str, Any]:
         """
-        Upload multiple smartphone products
+        Upload multiple smartphone products with optional image uploads
         
         Args:
             smartphones: List of SmartphoneProduct instances
+            product_images: Dictionary mapping product handles to lists of uploaded files
             
         Returns:
             Dictionary with batch upload results
@@ -251,6 +252,21 @@ class ProductService:
             if result['success']:
                 results['successful'] += 1
                 print(f"✅ Successfully created: {smartphone.title}")
+                
+                # Handle image upload if images exist for this product
+                if product_images and smartphone.handle in product_images:
+                    from services.image_service import image_service
+                    product_id = result.get('product_id')
+                    uploaded_files = product_images[smartphone.handle]
+                    
+                    if product_id and uploaded_files:
+                        print(f"📸 Uploading {len(uploaded_files)} image(s) for {smartphone.title}")
+                        image_success = image_service.handle_post_creation_upload(product_id, uploaded_files)
+                        if image_success:
+                            result['images_uploaded'] = len(uploaded_files)
+                        else:
+                            result['image_upload_partial'] = True
+                    
             else:
                 results['failed'] += 1
                 print(f"❌ Failed to create: {smartphone.title} - {result.get('error', 'Unknown error')}")
