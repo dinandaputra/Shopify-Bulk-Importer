@@ -295,42 +295,40 @@ if __name__ == "__main__":
 # Global logger instance
 missing_logger = MissingMetaobjectLogger()
 
-# Import existing mapping functions (these should be replaced with actual mappings)
-try:
-    from config.laptop_metafield_mapping_full import get_metaobject_gid_full
-    from config.laptop_metafield_mapping import (
-        get_processor_metafield_gid,
-        get_graphics_metafield_gid,
-        get_display_metafield_gid,
-        get_storage_metafield_gid,
-        get_vga_metafield_gid,
-        get_os_metafield_gid,
-        get_keyboard_layout_metafield_gid,
-        get_keyboard_backlight_metafield_gid,
-        get_color_metafield_gid
-    )
-except ImportError:
-    # Fallback functions if mapping module not available
-    def get_metaobject_gid_full(field_name: str, value: str) -> Optional[str]:
-        return None
-    def get_processor_metafield_gid(value: str) -> Optional[str]:
-        return None
-    def get_graphics_metafield_gid(value: str) -> Optional[str]:
-        return None
-    def get_display_metafield_gid(value: str) -> Optional[str]:
-        return None
-    def get_storage_metafield_gid(value: str) -> Optional[str]:
-        return None
-    def get_vga_metafield_gid(value: str) -> Optional[str]:
-        return None
-    def get_os_metafield_gid(value: str) -> Optional[str]:
-        return None
-    def get_keyboard_layout_metafield_gid(value: str) -> Optional[str]:
-        return None
-    def get_keyboard_backlight_metafield_gid(value: str) -> Optional[str]:
-        return None
-    def get_color_metafield_gid(value: str) -> Optional[str]:
-        return None
+# Import existing mapping functions
+from config.laptop_metafield_mapping_full import get_metaobject_gid_full
+from config.laptop_metafield_mapping_actual import get_metaobject_gid
+
+# Define lookup functions that delegate to the full mapping
+def get_processor_metafield_gid(value: str) -> Optional[str]:
+    return get_metaobject_gid_full('processor', value)
+
+def get_graphics_metafield_gid(value: str) -> Optional[str]:
+    return get_metaobject_gid_full('graphics', value)
+
+def get_display_metafield_gid(value: str) -> Optional[str]:
+    return get_metaobject_gid_full('display', value)
+
+def get_storage_metafield_gid(value: str) -> Optional[str]:
+    return get_metaobject_gid_full('storage', value)
+
+def get_vga_metafield_gid(value: str) -> Optional[str]:
+    return get_metaobject_gid_full('vga', value)
+
+def get_os_metafield_gid(value: str) -> Optional[str]:
+    return get_metaobject_gid_full('os', value)
+
+def get_keyboard_layout_metafield_gid(value: str) -> Optional[str]:
+    return get_metaobject_gid_full('keyboard_layout', value)
+
+def get_keyboard_backlight_metafield_gid(value: str) -> Optional[str]:
+    # Keyboard backlight doesn't have metaobjects, return None
+    return None
+
+def get_color_metafield_gid(value: str) -> Optional[str]:
+    # Color metafield mapping - placeholder for now
+    # TODO: Add proper color metaobject mapping when available
+    return None
 
 def get_metaobject_gid_enhanced(field_name: str, value: str, context: Dict[str, Any] = None) -> Tuple[Optional[str], bool]:
     """
