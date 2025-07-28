@@ -30,10 +30,20 @@ export SHOPIFY_SHOP_DOMAIN="your-shop.myshopify.com"
 
 ### Core Application Structure
 - **streamlit_app.py**: Main entry point with navigation and session management
-- **pages/**: Streamlit pages for different product categories (currently smartphone_entry.py)
-- **models/**: Pydantic models for data validation (smartphone.py)
+- **pages/**: Streamlit pages for different product categories:
+  - **smartphone_entry.py**: Smartphone product entry with iPhone template system
+  - **laptop_entry.py**: Laptop product entry with template system (NEW)
+- **models/**: Pydantic models for data validation:
+  - **smartphone.py**: Smartphone data model with metafield definitions
+  - **laptop.py**: Laptop data model with specifications and metafields (NEW)
 - **services/**: Business logic and external API integrations
-- **config/**: Configuration management including Shopify API settings
+- **config/**: Configuration management including:
+  - **shopify_config.py**: API configuration and validation
+  - **master_data.py**: Centralized product data and templates
+  - **laptop_specs.py**: Laptop specifications database (NEW)
+  - **laptop_metafields.py**: Laptop metafield definitions (NEW)
+  - **laptop_inclusions.py**: Laptop inclusion options (NEW)
+  - **laptop_metafield_mapping_enhanced.py**: Enhanced metafield mapping with logging (NEW)
 - **utils/**: Utility functions like handle generation
 - **database/**: Session state and counter management
 
@@ -43,6 +53,8 @@ export SHOPIFY_SHOP_DOMAIN="your-shop.myshopify.com"
 - **metaobject_service.py**: Handles Shopify metaobject reference mapping
 - **export_service.py**: CSV export functionality for fallback workflows
 - **validation_service.py**: Business rule validation
+- **image_service.py**: Image upload and management with Shopify CDN
+- **laptop_metafield_service.py**: Laptop-specific metafield processing (NEW)
 
 ### Data Flow
 1. User enters product data via Streamlit forms
@@ -59,11 +71,23 @@ export SHOPIFY_SHOP_DOMAIN="your-shop.myshopify.com"
 - Handles stored in `handle_counter.json` for persistence
 
 ### Metafield Management
+
+#### Smartphone Metafields
 - Uses actual Shopify metaobject IDs for references
 - 5/6 metafields working: product_rank, product_inclusions, ram_size, minus, sim_carriers (via variants)
 - Color metafield disabled (requires metafield definition setup in admin)
 - Supports both single and list metaobject references with JSON string formatting
 - Graceful error handling when metafield creation fails
+
+#### Laptop Metafields (NEW)
+- **CPU**: Processor specifications mapped to metaobjects
+- **RAM**: Memory size options (4GB, 8GB, 16GB, 32GB, 64GB)
+- **GPU**: Graphics card specifications
+- **Display**: Screen size and resolution
+- **Storage**: SSD/HDD capacity and type
+- **OS**: Operating system (Windows 11, Windows 10, etc.)
+- **Keyboard**: Layout and backlight options
+- **Missing Entry Logging**: Automatic detection and logging of unmapped values
 
 ### Product Configuration
 - Products default to draft status (`published: false`)
@@ -88,7 +112,7 @@ export SHOPIFY_SHOP_DOMAIN="your-shop.myshopify.com"
 
 ## Development Notes
 
-### API Integration Status (Updated July 22, 2025) ✅ WORKING IMPLEMENTATION
+### API Integration Status (Updated July 28, 2025) ✅ WORKING IMPLEMENTATION
 - **✅ FULLY WORKING**: Direct variant-to-metafield linking using GraphQL metafieldsSet mutation
 - **✅ FIXED**: Product creation with SIM carrier variants using GraphQL productSet
 - **✅ FIXED**: Inventory management - products have correct tracked inventory levels
@@ -156,7 +180,16 @@ mutation metafieldsSet($metafields: [MetafieldsSetInput!]!) {
 - Check variant creation and inventory distribution
 - Metafields appear in product admin (working: ram_size, minus)
 
-## Recent Progress (July 22, 2025) ✅ VARIANT LINKING SUCCESS
+## Recent Progress
+
+### July 28, 2025 - Laptop Product Support
+- **✅ COMPLETED**: Full laptop product entry system with templates
+- **✅ ADDED**: Comprehensive laptop metafield mapping system
+- **✅ IMPLEMENTED**: Enhanced logging for missing metaobject entries
+- **✅ CREATED**: Laptop-specific inclusions and specifications
+- **✅ INTEGRATED**: Laptop templates with auto-population
+
+### July 22, 2025 - ✅ VARIANT LINKING SUCCESS
 
 ### Issues Fully Resolved
 1. **❌→✅ VARIANT METAFIELD LINKING**: Each variant individually linked to specific metaobject via GraphQL metafieldsSet
@@ -218,6 +251,26 @@ When working with Shopify APIs, you MUST consult documentation in this order:
 
 ## Current Development Projects
 
+### 🎉 Laptop Product Entry System (COMPLETED)
+**Status**: Fully Implemented and Operational  
+**Goal**: Support laptop product entry with intelligent templates and metafield mapping  
+
+#### ✅ **Features Implemented:**
+- **Laptop Templates**: Pre-defined templates for popular laptop models (ASUS, Dell, HP, etc.)
+- **Smart Component Detection**: Extracts CPU, RAM, GPU, Display, Storage from templates
+- **Comprehensive Metafield Mapping**: Maps laptop specifications to Shopify metaobjects
+- **Enhanced Logging System**: Tracks missing metaobject entries for future improvements
+- **Laptop-Specific Inclusions**: Power adapter, laptop bag, mouse options
+- **Automatic Field Population**: Templates auto-fill specifications when selected
+- **Image Management**: Full image upload support for laptop products
+
+#### 🔧 **Technical Implementation:**
+- **models/laptop.py**: Pydantic model with laptop-specific fields
+- **pages/laptop_entry.py**: Streamlit UI for laptop product entry
+- **config/laptop_specs.py**: Laptop specifications database
+- **config/laptop_metafield_mapping_enhanced.py**: Missing entry detection with logging
+- **services/laptop_metafield_service.py**: Metafield processing for laptops
+
 ### 🚧 iPhone Template System Enhancement (90% Complete)
 **Status**: Phase 1 & 2 Mostly Complete - UI Issue in Progress  
 **PRD**: `iphone_template_system_prd.md` - Complete specifications and implementation plan  
@@ -256,11 +309,31 @@ When working with Shopify APIs, you MUST consult documentation in this order:
 
 ## Important Files
 
+### Documentation
 - **iphone_template_system_prd.md**: iPhone Template System - Complete PRD and implementation plan 📋
 - **PROJECT_CONTEXT_SUMMARY.md**: Detailed session history and current status
 - **prd.md**: Complete product requirements and user stories
+
+### Core Configuration
 - **config/shopify_config.py**: API configuration and validation
+- **config/master_data.py**: Centralized product templates and data
+- **config/laptop_metafield_mapping_enhanced.py**: Enhanced laptop metafield mapping with logging
+
+### Models
+- **models/smartphone.py**: Smartphone data model with metafield definitions
+- **models/laptop.py**: Laptop data model with specifications (NEW)
+
+### Services
 - **services/product_service.py**: Main product creation logic
-- **models/smartphone.py**: Data model with all metafield definitions
+- **services/shopify_api.py**: Core Shopify API integration
+- **services/laptop_metafield_service.py**: Laptop metafield processing (NEW)
+
+### Pages
+- **pages/smartphone_entry.py**: Smartphone product entry UI
+- **pages/laptop_entry.py**: Laptop product entry UI (NEW)
+
+### Testing & Scripts
 - **verify_variant_metafields.py**: Test script to verify variant metafield linking works ✅
 - **test_fixed_variant_linking.py**: Working test for variant-to-metafield automation ✅
+- **create_laptop_metaobjects_final.py**: Script to create laptop metaobjects (NEW)
+- **laptop_metaobject_data.py**: Laptop metaobject data definitions (NEW)

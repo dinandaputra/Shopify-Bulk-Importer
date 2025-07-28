@@ -110,8 +110,12 @@ STANDARDIZED_COMPONENTS = {
         "RX 6600M": "AMD Radeon RX 6600M 8GB",
         "RX 6700M": "AMD Radeon RX 6700M 10GB",
         
-        # Integrated graphics
+        # Integrated graphics (these will map to graphics field)
         "Integrated": "Intel Iris Xe Graphics",
+        "Intel UHD": "Intel UHD Graphics",
+        "Intel Iris Xe": "Intel Iris Xe Graphics",
+        "AMD Radeon": "AMD Radeon Graphics",
+        "Apple GPU": "Apple GPU (M1)",
     },
     
     "display": {
@@ -1774,7 +1778,36 @@ def expand_laptop_template_specs(template_info: Dict[str, str]) -> Dict[str, str
         expanded['cpu_full'] = get_full_component_name('cpu', template_info['cpu'])
     
     if 'gpu' in template_info and template_info['gpu']:
-        expanded['gpu_full'] = get_full_component_name('gpu', template_info['gpu'])
+        gpu_full = get_full_component_name('gpu', template_info['gpu'])
+        expanded['gpu_full'] = gpu_full
+        
+        # Determine if GPU is integrated or dedicated
+        integrated_keywords = ['Intel Iris', 'Intel UHD', 'Intel HD', 'AMD Radeon Graphics', 'Apple GPU', 'Integrated']
+        is_integrated = any(keyword in gpu_full for keyword in integrated_keywords)
+        
+        if is_integrated:
+            # Put integrated graphics in the graphics field, don't use the vga field from config
+            expanded['integrated_graphics'] = gpu_full
+            expanded['vga'] = ''  # Clear VGA for integrated-only systems
+            expanded['gpu_full'] = ''  # Clear GPU full since it's integrated
+        else:
+            # Put dedicated graphics in gpu_full (which maps to VGA in UI), set integrated graphics based on CPU
+            expanded['gpu_full'] = gpu_full  # This will be used for VGA field
+            
+            # Auto-detect integrated graphics based on CPU
+            cpu = template_info.get('cpu', '')
+            if 'Intel' in cpu or cpu.startswith('i'):
+                expanded['integrated_graphics'] = 'Intel Iris Xe Graphics'
+            elif 'Ryzen' in cpu or 'AMD' in cpu:
+                expanded['integrated_graphics'] = 'AMD Radeon Graphics'
+            elif 'Apple' in cpu or cpu.startswith('M'):
+                expanded['integrated_graphics'] = f'Apple GPU ({cpu})'
+            else:
+                expanded['integrated_graphics'] = ''
+        
+        # Don't copy the vga field from template - it contains port info, not graphics card info
+        if 'vga' in expanded:
+            del expanded['vga']
         
     if 'display' in template_info and template_info['display']:
         expanded['display_full'] = get_full_component_name('display', template_info['display'])

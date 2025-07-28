@@ -335,7 +335,9 @@ def extract_info_from_laptop_template(template: str) -> Dict[str, str]:
         'ram_full': expanded_info.get('ram_full', ram),
         'gpu_full': expanded_info.get('gpu_full', gpu),
         'display_full': expanded_info.get('display_full', display),
-        'storage_full': expanded_info.get('storage_full', storage)
+        'storage_full': expanded_info.get('storage_full', storage),
+        # Add integrated graphics from expanded info
+        'integrated_graphics': expanded_info.get('integrated_graphics', '')
     }
     
     return result

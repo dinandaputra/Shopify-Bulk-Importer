@@ -229,15 +229,15 @@ def laptop_entry_page():
             
             gpu = st.text_input(
                 "VGA",
-                value=template_info.get('gpu_full', template_info.get('gpu', '')),
-                help="VGA specification from template"
+                value=template_info.get('gpu_full', ''),
+                help="Dedicated graphics card (VGA) specification"
             )
             
             # Integrated Graphics field (also connects to 03 Graphics metafield)
             integrated_gpu = st.text_input(
                 "Integrated Graphics", 
-                value="",
-                help="Integrated graphics specification (if applicable)"
+                value=template_info.get('integrated_graphics', ''),
+                help="Integrated graphics specification (auto-detected from CPU)"
             )
         
         with col2:

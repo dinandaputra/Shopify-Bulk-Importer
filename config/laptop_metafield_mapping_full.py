@@ -109,6 +109,49 @@ PROCESSOR_FULL_NAME_MAPPING = {
     "Apple M1 Chip": "gid://shopify/Metaobject/131307798677",
 }
 
+# GRAPHICS (Integrated Graphics) Full Name Mapping
+GRAPHICS_FULL_NAME_MAPPING = {
+    # Intel Integrated Graphics
+    "Intel Iris Xe Graphics": "gid://shopify/Metaobject/125934829717",
+    "Intel UHD Graphics": "gid://shopify/Metaobject/117180858517",
+    "Intel UHD Graphics 630": "gid://shopify/Metaobject/125796810901",
+    "Intel UHD Graphics Family": "gid://shopify/Metaobject/125935190165",
+    "Intel UHD Graphics 617": "gid://shopify/Metaobject/125936795797",
+    "Intel Iris Plus Graphics": "gid://shopify/Metaobject/131307896981",
+    "Intel Iris Plus 645": "gid://shopify/Metaobject/125802479765",
+    "Intel Iris Plus 650": "gid://shopify/Metaobject/125802578069",
+    "Intel Iris Plus 640": "gid://shopify/Metaobject/125795369109",
+    "Intel Iris Pro": "gid://shopify/Metaobject/118603317397",
+    "Intel Iris Graphics 540": "gid://shopify/Metaobject/125936697493",
+    "Intel HD Graphics 620": "gid://shopify/Metaobject/125788225685",
+    "Intel HD Graphics 630": "gid://shopify/Metaobject/125801726101",
+    "Intel HD Graphics 6000": "gid://shopify/Metaobject/125802086549",
+    "Intel HD Graphics 5000": "gid://shopify/Metaobject/125802250389",
+    "Intel HD Graphics 515": "gid://shopify/Metaobject/125936599189",
+    "Intel HD Graphics 530": "gid://shopify/Metaobject/131307929749",
+    
+    # AMD Integrated Graphics
+    "AMD Radeon Graphics": "gid://shopify/Metaobject/125803397269",
+    "AMD Radeon 780M Graphics": "gid://shopify/Metaobject/131307962517",
+    "AMD Radeon 680M Graphics": "gid://shopify/Metaobject/131307995285",
+    "AMD Radeon Vega 8 Graphics": "gid://shopify/Metaobject/131308028053",
+    "AMD Radeon Vega 7 Graphics": "gid://shopify/Metaobject/131308060821",
+    "AMD Radeon Vega 6 Graphics": "gid://shopify/Metaobject/131308093589",
+    
+    # Apple Integrated Graphics
+    "Apple GPU (M3 Max)": "gid://shopify/Metaobject/131308126357",
+    "Apple GPU (M3 Pro)": "gid://shopify/Metaobject/131308159125",
+    "Apple GPU (M3)": "gid://shopify/Metaobject/131308191893",
+    "Apple GPU (M2 Ultra)": "gid://shopify/Metaobject/131308224661",
+    "Apple GPU (M2 Max)": "gid://shopify/Metaobject/131308257429",
+    "Apple GPU (M2 Pro)": "gid://shopify/Metaobject/131308290197",
+    "Apple GPU (M2)": "gid://shopify/Metaobject/131308322965",
+    "Apple GPU (M1 Ultra)": "gid://shopify/Metaobject/131308355733",
+    "Apple GPU (M1 Max)": "gid://shopify/Metaobject/131308388501",
+    "Apple GPU (M1 Pro)": "gid://shopify/Metaobject/131308421269",
+    "Apple GPU (M1)": "gid://shopify/Metaobject/131308454037",
+}
+
 # VGA (Dedicated Graphics) Full Name Mapping
 VGA_FULL_NAME_MAPPING = {
     # NVIDIA RTX 40 Series
@@ -159,6 +202,7 @@ def get_metaobject_gid_full(field_name: str, value: str) -> Optional[str]:
     # Map field names to appropriate full name mappings
     full_name_mappings = {
         'processor': PROCESSOR_FULL_NAME_MAPPING,
+        'graphics': GRAPHICS_FULL_NAME_MAPPING,
         'vga': VGA_FULL_NAME_MAPPING,
         # Add more mappings as needed
     }
