@@ -5,8 +5,15 @@ from config.master_data import (
     get_laptop_template_suggestions, extract_info_from_template,
     get_collections_for_brand, detect_template_brand
 )
+from config.laptop_specs import get_abbreviated_component_name
 from config.laptop_inclusions import LAPTOP_INCLUSION_LABELS
 from config.laptop_metafields import LAPTOP_FIELD_ORDER
+from config.laptop_metafield_mapping_enhanced import (
+    convert_laptop_data_to_metafields_enhanced,
+    missing_logger,
+    get_missing_entries_report,
+    clear_session_data
+)
 from utils.handle_generator import preview_handle, generate_handle
 from services.export_service import export_to_csv
 from services.product_service import product_service
@@ -42,8 +49,48 @@ def clean_stale_image_references():
         del st.session_state.product_images[handle]
 
 def laptop_entry_page():
-    """Laptop entry page with laptop template selector"""
+    """Laptop entry page with laptop template selector and enhanced logging"""
     st.header("💻 Laptop Entry")
+    
+    # Sidebar: Missing Metaobjects Report
+    with st.sidebar:
+        st.subheader("📊 Missing Metaobjects Report")
+        
+        # Get current missing entries report
+        report = get_missing_entries_report()
+        stats = report.get('statistics', {})
+        
+        # Show summary statistics
+        col1, col2 = st.columns(2)
+        with col1:
+            st.metric("Missing Fields", stats.get('total_fields', 0))
+        with col2:
+            st.metric("Missing Values", stats.get('total_unique_values', 0))
+        
+        st.metric("Total Frequency", stats.get('total_frequency', 0))
+        
+        # Show session missing entries
+        session_missing = report.get('session_missing', [])
+        if session_missing:
+            st.write("**This Session:**")
+            st.write(f"🔍 {len(session_missing)} missing entries detected")
+            
+            with st.expander("View Session Missing"):
+                for entry in session_missing[-5:]:  # Show last 5
+                    field = entry['field_name'].replace('_', ' ').title()
+                    st.write(f"• **{field}**: {entry['value']}")
+        
+        # Show most frequent missing overall
+        most_frequent = stats.get('most_frequent_overall', [])[:3]
+        if most_frequent:
+            st.write("**Most Frequent Missing:**")
+            for entry in most_frequent:
+                field = entry['field'].replace('_', ' ').title()
+                st.write(f"• **{field}**: {entry['value']} ({entry['frequency']}x)")
+        
+        # Link to admin report
+        if st.button("📋 View Full Report", use_container_width=True):
+            st.info("Navigate to Admin → Missing Metaobjects Report for detailed analysis")
     
     # Clean up any stale image references first
     clean_stale_image_references()
@@ -170,20 +217,27 @@ def laptop_entry_page():
             
             cpu = st.text_input(
                 "Processor",
-                value=template_info.get('cpu', ''),
+                value=template_info.get('cpu_full', template_info.get('cpu', '')),
                 help="CPU specification from template"
             )
             
             ram = st.text_input(
                 "RAM",
-                value=template_info.get('ram', ''),
+                value=template_info.get('ram_full', template_info.get('ram', '')),
                 help="Memory specification from template"
             )
             
             gpu = st.text_input(
-                "Graphics",
-                value=template_info.get('gpu', ''),
-                help="GPU specification from template"
+                "VGA",
+                value=template_info.get('gpu_full', template_info.get('gpu', '')),
+                help="VGA specification from template"
+            )
+            
+            # Integrated Graphics field (also connects to 03 Graphics metafield)
+            integrated_gpu = st.text_input(
+                "Integrated Graphics", 
+                value="",
+                help="Integrated graphics specification (if applicable)"
             )
         
         with col2:
@@ -192,13 +246,13 @@ def laptop_entry_page():
             
             display = st.text_input(
                 "Display",
-                value=template_info.get('display', ''),
+                value=template_info.get('display_full', template_info.get('display', '')),
                 help="Display specification from template"
             )
             
             storage = st.text_input(
                 "Storage",
-                value=template_info.get('storage', ''),
+                value=template_info.get('storage_full', template_info.get('storage', '')),
                 help="Storage specification from template"
             )
             
@@ -252,7 +306,7 @@ def laptop_entry_page():
                 specs = f"{cpu}-{ram}".replace(' ', '') if cpu and ram else 'specs'
                 handle = generate_handle(title)
                 
-                # Create laptop product
+                # Create laptop product data - use full detailed names for metafield processing
                 laptop_data = {
                     'title': title,
                     'brand': brand,
@@ -261,14 +315,14 @@ def laptop_entry_page():
                     'handle': handle,
                     'collections': collections,
                     'rank': rank,
-                    'cpu': cpu,
+                    'processor': cpu,  # Use full detailed name for metafield processing
                     'ram': ram,
-                    'gpu': gpu,
+                    'vga': gpu,   # VGA field for dedicated graphics cards
+                    'graphics': integrated_gpu,  # Graphics field for integrated graphics
                     'display': display,
                     'storage': storage,
                     'color': color,
-                    'vga': template_info.get('vga', ''),
-                    'os': template_info.get('os', 'Windows 11'),
+                    'operating_system': template_info.get('os', 'Windows 11'),
                     'keyboard_layout': template_info.get('keyboard_layout', 'US'),
                     'keyboard_backlight': template_info.get('keyboard_backlight', 'Yes'),
                     'inclusions': inclusions,
@@ -276,13 +330,66 @@ def laptop_entry_page():
                     'metafield_mappings': template_info.get('metafield_mappings', {})
                 }
                 
-                # Validate with Pydantic model
-                laptop_product = LaptopProduct(**laptop_data)
+                # Check for missing metaobjects using enhanced logging
+                metafields, missing_entries = convert_laptop_data_to_metafields_enhanced(laptop_data)
                 
-                # Add to session
-                st.session_state.products.append(laptop_product.model_dump())
+                # Show warnings for missing metaobject entries
+                if missing_entries:
+                    st.warning("⚠️ Some specifications don't have metaobject entries yet:")
+                    
+                    missing_details = []
+                    for field_name, values in missing_entries.items():
+                        field_display = field_name.replace('_', ' ').title()
+                        missing_details.append(f"**{field_display}**: {', '.join(values)}")
+                    
+                    for detail in missing_details:
+                        st.write(f"  • {detail}")
+                    
+                    with st.expander("📝 What this means"):
+                        st.info("""
+                        **Impact on your product:**
+                        - These specifications will be saved as text until proper metaobject entries are created
+                        - Product will be created successfully but may have limited filtering/search capabilities in Shopify
+                        - Missing entries are automatically logged for the next batch update
+                        
+                        **Next steps:**
+                        - You can proceed with product creation - it will work fine
+                        - Missing entries will be included in the next batch metaobject update
+                        - Check the admin panel for reports on frequently missing entries
+                        """)
+                    
+                    # Allow user to proceed or cancel
+                    proceed_anyway = st.checkbox(
+                        "Proceed anyway (specifications will be saved as text)",
+                        help="Product will be created successfully with text specifications"
+                    )
+                    
+                    if not proceed_anyway:
+                        st.info("Please check the checkbox above to proceed with product creation.")
+                        st.stop()
                 
-                st.success(f"✅ Laptop added to session: {title}")
+                # Validate with Pydantic model (convert back to original field names for validation)
+                validation_data = laptop_data.copy()
+                validation_data['cpu'] = validation_data.pop('processor', '')
+                validation_data['gpu'] = validation_data.pop('graphics', '')
+                validation_data['os'] = validation_data.pop('operating_system', '')
+                
+                laptop_product = LaptopProduct(**validation_data)
+                
+                # Add to session with enhanced metafield info
+                session_product = laptop_product.model_dump()
+                session_product['missing_metafields'] = missing_entries
+                session_product['available_metafields'] = len(metafields)
+                
+                st.session_state.products.append(session_product)
+                
+                # Show success message with metafield info
+                success_msg = f"✅ Laptop added to session: {title}"
+                if missing_entries:
+                    missing_count = sum(len(values) for values in missing_entries.values())
+                    success_msg += f" (⚠️ {missing_count} missing metafields logged)"
+                
+                st.success(success_msg)
                 st.rerun()
                 
             except ValidationError as e:
@@ -297,7 +404,14 @@ def laptop_entry_page():
         
         # Display products in session
         for i, product in enumerate(st.session_state.products):
-            with st.expander(f"Product {i+1}: {product.get('title', 'Unknown')}"):
+            # Show missing metafield indicator in title
+            missing_count = 0
+            if 'missing_metafields' in product:
+                missing_count = sum(len(values) for values in product['missing_metafields'].values())
+            
+            title_suffix = f" ⚠️ ({missing_count} missing)" if missing_count > 0 else ""
+            
+            with st.expander(f"Product {i+1}: {product.get('title', 'Unknown')}{title_suffix}"):
                 col1, col2, col3 = st.columns([2, 1, 1])
                 
                 with col1:
@@ -310,11 +424,24 @@ def laptop_entry_page():
                 with col2:
                     st.write(f"**Handle:** {product.get('handle', 'N/A')}")
                     st.write(f"**Collections:** {len(product.get('collections', []))}")
+                    
+                    # Show metafield status
+                    available_count = product.get('available_metafields', 0)
+                    st.write(f"**Metafields:** {available_count} available")
+                    if missing_count > 0:
+                        st.write(f"**Missing:** {missing_count} metafields")
                 
                 with col3:
                     if st.button(f"Remove", key=f"remove_{i}"):
                         st.session_state.products.pop(i)
                         st.rerun()
+                
+                # Show missing metafields details if any
+                if missing_count > 0:
+                    with st.expander("⚠️ Missing Metafields Details"):
+                        for field_name, values in product['missing_metafields'].items():
+                            field_display = field_name.replace('_', ' ').title()
+                            st.write(f"**{field_display}:** {', '.join(values)}")
         
         # Session actions
         col1, col2, col3 = st.columns(3)
@@ -346,8 +473,12 @@ def laptop_entry_page():
                         status_text.text(f"Creating product {i+1}/{len(st.session_state.products)}")
                         
                         try:
+                            # Filter out extra fields that aren't part of LaptopProduct model
+                            product_data = {k: v for k, v in product.items() 
+                                          if k not in ['missing_metafields', 'available_metafields']}
+                            
                             # Create laptop product using the service
-                            result = product_service.create_laptop_product(LaptopProduct(**product))
+                            result = product_service.create_laptop_product(LaptopProduct(**product_data))
                             
                             if result.get('success'):
                                 success_count += 1
@@ -368,6 +499,7 @@ def laptop_entry_page():
                     # Clear session after successful creation
                     if success_count > 0:
                         st.session_state.products = []
+                        clear_session_data()  # Clear enhanced logging session data
                         st.rerun()
                         
                 except Exception as e:

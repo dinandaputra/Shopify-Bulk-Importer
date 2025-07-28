@@ -16,7 +16,7 @@ from config.galaxy_specs import (
 from config.laptop_specs import (
     generate_all_laptop_templates, search_laptop_templates, parse_laptop_template,
     generate_product_title as generate_laptop_title, validate_laptop_combination,
-    get_laptop_colors, get_laptop_configurations
+    get_laptop_colors, get_laptop_configurations, expand_laptop_template_specs
 )
 from config.laptop_metafield_mapping_interim import (
     convert_laptop_specs_to_metafields, validate_laptop_metafield_mapping_interim as validate_laptop_metafields
@@ -302,6 +302,9 @@ def extract_info_from_laptop_template(template: str) -> Dict[str, str]:
     # Convert specs to metafield GIDs
     metafield_mappings = convert_laptop_specs_to_metafields(parsed)
     
+    # Expand specifications to include full names for display
+    expanded_info = expand_laptop_template_specs(parsed)
+    
     result = {
         'title': product_title,
         'brand': brand,
@@ -319,7 +322,13 @@ def extract_info_from_laptop_template(template: str) -> Dict[str, str]:
         'collections': ['All Products', 'Laptop', brand],  # Auto-assigned collections
         'template': template,
         'category': parsed.get('category', 'Gaming'),
-        'metafield_mappings': metafield_mappings  # Add metafield GID mappings
+        'metafield_mappings': metafield_mappings,  # Add metafield GID mappings
+        # Add full component names for display
+        'cpu_full': expanded_info.get('cpu_full', cpu),
+        'ram_full': expanded_info.get('ram_full', ram),
+        'gpu_full': expanded_info.get('gpu_full', gpu),
+        'display_full': expanded_info.get('display_full', display),
+        'storage_full': expanded_info.get('storage_full', storage)
     }
     
     return result

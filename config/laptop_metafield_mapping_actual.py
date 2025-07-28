@@ -135,6 +135,15 @@ LAPTOP_MINUS_METAOBJECTS = {
 def get_metaobject_gid(field_name: str, value: str) -> Optional[str]:
     """Get metaobject GID for a given field and value"""
     
+    # Try using the enhanced mapping first
+    try:
+        from config.laptop_metafield_mapping_full import get_metaobject_gid_full
+        result = get_metaobject_gid_full(field_name, value)
+        if result:
+            return result
+    except ImportError:
+        pass
+    
     # Handle laptop-specific metaobjects
     if field_name == "rank" and value in LAPTOP_RANK_METAOBJECTS:
         return LAPTOP_RANK_METAOBJECTS[value]
@@ -160,6 +169,24 @@ def get_metaobject_gid(field_name: str, value: str) -> Optional[str]:
         # Try exact match first
         if value in mappings[field_name]:
             return mappings[field_name][value]
+        
+        # For Display: handle format conversions
+        if field_name == 'display':
+            # Try to match "15-inch FHD (144Hz)" to "15 FHD 144Hz"
+            if '15-inch FHD (144Hz)' in value and '15 FHD 144Hz' in mappings[field_name]:
+                return mappings[field_name]['15 FHD 144Hz']
+            elif '15.6-inch FHD (144Hz)' in value and '15.6 FHD 144Hz' in mappings[field_name]:
+                return mappings[field_name]['15.6 FHD 144Hz']
+            elif '15-inch FHD (240Hz)' in value and '15 FHD 240Hz' in mappings[field_name]:
+                return mappings[field_name]['15 FHD 240Hz']
+            elif '15-inch FHD (300Hz)' in value and '15 FHD 300Hz' in mappings[field_name]:
+                return mappings[field_name]['15 FHD 300Hz']
+            elif '15-inch FHD (60Hz)' in value and '15 FHD 60Hz' in mappings[field_name]:
+                return mappings[field_name]['15 FHD 60Hz']
+            elif '15-inch HD (60Hz)' in value and '15 HD 60Hz' in mappings[field_name]:
+                return mappings[field_name]['15 HD 60Hz']
+            elif '14-inch FHD (144Hz)' in value and '14 FHD 144Hz' in mappings[field_name]:
+                return mappings[field_name]['14 FHD 144Hz']
         
         # Try partial matches
         for key, gid in mappings[field_name].items():
