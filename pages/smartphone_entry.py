@@ -3,8 +3,8 @@ from models.smartphone import SmartphoneProduct
 from config.master_data import (
     SIM_CARRIERS, PRODUCT_RANKS, PRODUCT_INCLUSIONS, 
     MINUS_OPTIONS, RAM_OPTIONS, COMMON_BRANDS,
-    get_iphone_template_suggestions, extract_info_from_template,
-    get_collections_for_brand
+    get_unified_template_suggestions, extract_info_from_template,
+    get_collections_for_brand, detect_template_brand
 )
 from utils.handle_generator import preview_handle, generate_handle
 from services.export_service import export_to_csv
@@ -59,14 +59,14 @@ def smartphone_entry_page():
         st.error("⚠️ Session limit reached (10 products). Please export current products before adding more.")
         return
     
-    # TOP SECTION: Single Template Selector (outside form for immediate updates)
+    # TOP SECTION: Unified Template Selector (outside form for immediate updates)
     st.subheader("📋 Product Information")
-    st.markdown("### 🔍 Select iPhone Template")
+    st.markdown("### 🔍 Select Product Template")
     col1, col2 = st.columns([4, 1])
     
     with col1:
-        # Single searchable template selector
-        all_templates = get_iphone_template_suggestions()
+        # Unified searchable template selector
+        all_templates = get_unified_template_suggestions()
         
         # Template selection callback
         def on_template_change():
@@ -79,11 +79,11 @@ def smartphone_entry_page():
                     st.session_state.current_template = selected
         
         selected_template = st.selectbox(
-            "Search and select iPhone template:",
+            "Search and select product template:",
             [""] + all_templates,
             format_func=lambda x: x if x else "Type to search templates...",
             key="template_selector",
-            help="Type part of iPhone model to filter (e.g., 'iPhone 15 Pro')",
+            help="Type part of iPhone/Galaxy model to filter (e.g., 'iPhone 15 Pro', 'Galaxy S24')",
             on_change=on_template_change
         )
         
@@ -91,13 +91,19 @@ def smartphone_entry_page():
         if selected_template and selected_template != "":
             extracted_info = extract_info_from_template(selected_template)
             if extracted_info:
+                brand = detect_template_brand(selected_template)
+                brand_emoji = "📱" if brand == "iPhone" else "🤖" if brand == "Samsung" else "📱"
+                
                 # Show success message with extracted info
                 st.success(f"✅ **{extracted_info.get('title', selected_template)}**")
                 
                 # Show quick preview of extracted info
                 col_a, col_b, col_c = st.columns(3)
                 with col_a:
-                    st.caption(f"📱 {extracted_info.get('model', 'N/A')} {extracted_info.get('storage', '')}")
+                    model_info = f"{extracted_info.get('model', 'N/A')} {extracted_info.get('storage', '')}"
+                    if extracted_info.get('ram'):  # Show RAM for Galaxy products
+                        model_info += f" ({extracted_info.get('ram')})"
+                    st.caption(f"{brand_emoji} {model_info}")
                 with col_b:
                     st.caption(f"🎨 {extracted_info.get('color', 'N/A')}")
                 with col_c:
@@ -108,6 +114,7 @@ def smartphone_entry_page():
     with col2:
         st.markdown("##### Quick Tips")
         st.caption("💡 Type to search")
+        st.caption("📱 iPhone & 🤖 Galaxy")
         st.caption("⚡ Auto-fills all fields")
         st.caption("✏️ All fields editable")
     
@@ -152,13 +159,15 @@ def smartphone_entry_page():
             )
         
         with col2:
-            # RAM Size - optional
+            # RAM Size - auto-filled for Galaxy, optional for iPhone
+            ram_auto_filled = st.session_state.form_data.get("ram")
             ram_size = st.selectbox(
-                "RAM Size",
+                "RAM Size" + (" (Auto-filled)" if ram_auto_filled else ""),
                 options=[""] + RAM_OPTIONS,
-                index=0 if not st.session_state.form_data.get("ram_size") else 
-                      RAM_OPTIONS.index(st.session_state.form_data.get("ram_size")) + 1
-                      if st.session_state.form_data.get("ram_size") in RAM_OPTIONS else 0,
+                index=0 if not st.session_state.form_data.get("ram") else 
+                      RAM_OPTIONS.index(st.session_state.form_data.get("ram")) + 1
+                      if st.session_state.form_data.get("ram") in RAM_OPTIONS else 0,
+                help="Auto-filled for Galaxy products from template",
                 key="ram_size_input"
             )
             
@@ -287,7 +296,7 @@ def smartphone_entry_page():
                     "color": color.strip() if color else None,
                     "sim_carrier_variants": sim_carrier_variants,
                     "product_rank": product_rank,
-                    "ram_size": ram_size if ram_size else None,
+                    "ram_size": ram_size if ram_size else st.session_state.form_data.get("ram"),  # Use form input or auto-filled
                     "product_inclusions": inclusions if inclusions else None,
                     "minus": minus if minus else None,
                     "collections": parsed_collections,

@@ -1,9 +1,11 @@
 from typing import Dict, List, Optional, Any
 import json
 from models.smartphone import SmartphoneProduct
+from models.laptop import LaptopProduct
 from services.shopify_api import shopify_api, ShopifyAPIError
 from services.metaobject_service import metaobject_service
 from services.collection_service import collection_service
+from services.laptop_metafield_service import laptop_metafield_service
 
 class ProductService:
     """
@@ -783,6 +785,278 @@ class ProductService:
         
         # Fallback - use the known primary location for this store
         return "gid://shopify/Location/79305801877"
+    
+    def create_laptop_product(self, laptop: LaptopProduct) -> Dict[str, Any]:
+        """
+        Create a laptop product in Shopify with all metafields
+        
+        Args:
+            laptop: LaptopProduct instance
+            
+        Returns:
+            Dictionary with creation result
+        """
+        try:
+            # Build laptop product data
+            product_data = self._build_laptop_product_data(laptop)
+            
+            # Create the product using basic REST API
+            response = self.api.create_product(product_data)
+            
+            if response.get('product'):
+                created_product = response['product']
+                product_id = created_product['id']
+                
+                # Set product category - try multiple laptop category possibilities
+                category_result = None
+                laptop_category_ids = [
+                    "gid://shopify/TaxonomyCategory/el-6-6",    # Laptops (confirmed working)
+                ]
+                
+                for i, category_id in enumerate(laptop_category_ids):
+                    try:
+                        print(f"DEBUG: Attempting laptop category #{i+1}: {category_id}")
+                        
+                        category_result = self.api.update_product_category(product_id, category_id)
+                        
+                        # Check for success (no userErrors)
+                        if (category_result.get('data', {}).get('productUpdate', {}).get('userErrors') == [] or 
+                            not category_result.get('data', {}).get('productUpdate', {}).get('userErrors')):
+                            print(f"SUCCESS: Laptop category set to: {category_id}")
+                            break
+                        else:
+                            errors = category_result['data']['productUpdate']['userErrors']
+                            print(f"DEBUG: Category {category_id} failed: {errors}")
+                            
+                    except Exception as e:
+                        print(f"DEBUG: Category {category_id} exception: {str(e)}")
+                        continue
+                
+                if not category_result or category_result.get('error'):
+                    print(f"WARNING: All laptop category attempts failed")
+                    category_result = {'error': 'All category attempts failed'}
+                
+                # Add laptop metafields using the dedicated service
+                metafield_results = self._add_laptop_metafields_with_service(product_id, laptop)
+                
+                # Assign product to collections
+                collection_result = None
+                if laptop.collections:
+                    try:
+                        collection_result = self.collection_service.add_product_to_collections(
+                            product_id, laptop.collections
+                        )
+                        print(f"DEBUG: Collection assignment result: {collection_result}")
+                        
+                        if collection_result['successful'] > 0:
+                            print(f"SUCCESS: Added product to {collection_result['successful']} collections")
+                        if collection_result['failed'] > 0:
+                            print(f"WARNING: Failed to add product to {collection_result['failed']} collections")
+                            
+                    except Exception as e:
+                        print(f"WARNING: Failed to assign collections: {str(e)}")
+                        collection_result = {'error': str(e)}
+                
+                # Assign product to sales channels
+                sales_channel_result = None
+                if laptop.sales_channels:
+                    try:
+                        sales_channel_result = self._assign_to_sales_channels(
+                            product_id, laptop.sales_channels
+                        )
+                        print(f"DEBUG: Sales channel assignment result: {sales_channel_result}")
+                        
+                        if sales_channel_result.get('successful', 0) > 0:
+                            print(f"SUCCESS: Added product to {sales_channel_result['successful']} sales channels")
+                        if sales_channel_result.get('failed', 0) > 0:
+                            print(f"WARNING: Failed to add product to {sales_channel_result['failed']} sales channels")
+                            
+                    except Exception as e:
+                        print(f"WARNING: Failed to assign sales channels: {str(e)}")
+                        sales_channel_result = {'error': str(e)}
+                
+                return {
+                    'success': True,
+                    'product_id': product_id,
+                    'product': created_product,
+                    'metafields': metafield_results,
+                    'category_update': category_result,
+                    'collections': collection_result,
+                    'sales_channels': sales_channel_result
+                }
+                
+            else:
+                return {
+                    'success': False,
+                    'error': 'Failed to create laptop product',
+                    'response': response
+                }
+                
+        except Exception as e:
+            return {
+                'success': False,
+                'error': f'Unexpected error: {str(e)}'
+            }
+    
+    def _build_laptop_product_data(self, laptop: LaptopProduct) -> Dict[str, Any]:
+        """
+        Build laptop product data for Shopify REST API
+        """
+        # Build the main product data
+        product_data = {
+            'title': laptop.title,
+            'body_html': '',
+            'vendor': laptop.vendor,
+            'product_type': 'Laptop',
+            'tags': laptop.tags,
+            'published': laptop.published.lower() == 'true',
+            'handle': laptop.handle,
+            'variants': [
+                {
+                    'price': str(laptop.price),
+                    'inventory_quantity': laptop.quantity,
+                    'inventory_management': 'shopify',
+                    'inventory_policy': 'deny',
+                    'taxable': False
+                }
+            ]
+        }
+        
+        return product_data
+    
+    def _add_laptop_metafields_with_service(self, product_id: int, laptop: LaptopProduct) -> Dict[str, Any]:
+        """
+        Add laptop-specific metafields using actual metaobject GID mappings
+        Uses real metaobject GIDs fetched from Shopify store
+        """
+        try:
+            from config.laptop_metafield_mapping_actual import convert_laptop_data_to_metafields
+            
+            print(f"DEBUG: Creating laptop metafields using actual metaobject GID mapping system")
+            
+            # Convert laptop data to metafield mappings using actual GIDs
+            laptop_data = {
+                'processor': laptop.cpu,  # Note: field name change
+                'ram': laptop.ram,
+                'graphics': laptop.gpu,   # Note: field name change
+                'display': laptop.display,
+                'storage': laptop.storage,
+                'vga': getattr(laptop, 'vga', None),
+                'os': laptop.os,
+                'rank': laptop.rank,
+                'inclusions': laptop.inclusions,
+                'minus': getattr(laptop, 'minus', []),
+                'keyboard_layout': laptop.keyboard_layout
+                # Note: keyboard_backlight has no metaobjects in store
+            }
+            
+            metafield_mappings = convert_laptop_data_to_metafields(laptop_data)
+            print(f"DEBUG: Generated {len(metafield_mappings)} metafield mappings")
+            
+            results = []
+            
+            # Process each metafield mapping (these are complete metafield data structures)
+            for field_key, metafield_data in metafield_mappings.items():
+                if not metafield_data or not metafield_data.get('value'):
+                    continue
+                    
+                try:
+                    result = self.api.create_product_metafield(product_id, metafield_data)
+                    print(f"DEBUG: Created {field_key} metafield: {metafield_data['value']}")
+                    results.append({'field': field_key, 'success': True, 'result': result})
+                        
+                except Exception as e:
+                    print(f"ERROR: Failed to create {field_key} metafield: {str(e)}")
+                    results.append({'field': field_key, 'success': False, 'error': str(e)})
+            
+            successful = len([r for r in results if r.get('success')])
+            failed = len([r for r in results if not r.get('success') and not r.get('skipped')])
+            skipped = len([r for r in results if r.get('skipped')])
+            
+            print(f"DEBUG: Metafield creation complete - {successful} successful, {failed} failed, {skipped} skipped")
+            
+            return {
+                'success': successful > 0,  # Success if at least one metafield was created
+                'created_metafields': results,
+                'successful': successful,
+                'failed': failed,
+                'skipped': skipped,
+                'message': f'Created {successful} metafields using interim mapping system.'
+            }
+            
+        except Exception as e:
+            print(f"ERROR: Failed to create laptop metafields: {str(e)}")
+            return {
+                'success': False,
+                'errors': [str(e)],
+                'created_metafields': []
+            }
+    
+    def _build_laptop_metafield_data(self, field_name: str, field_value) -> Optional[Dict[str, Any]]:
+        """
+        Build metafield data structure for laptop fields
+        
+        Args:
+            field_name: Internal field name (e.g., 'product_rank', 'processor')
+            field_value: Field value (text or GID or list of GIDs)
+            
+        Returns:
+            Metafield data dictionary for Shopify API
+        """
+        # Define metafield key mappings
+        metafield_keys = {
+            'product_rank': '09_rank',
+            'product_inclusions': '08_kelengkapan', 
+            'minus': '12_minus',
+            'ram': '02_ram',
+            'processor': '01_processor',
+            'graphics': '03_graphics',
+            'display': '04_display',
+            'storage': '05_storage',
+            'vga': '06_vga',
+            'operating_system': '07_os',
+            'keyboard_layout': '10_keyboard_layout',
+            'keyboard_backlight': '11_keyboard_backlight'
+        }
+        
+        key = metafield_keys.get(field_name)
+        if not key:
+            print(f"WARNING: No metafield key defined for field '{field_name}'")
+            return None
+        
+        # Determine metafield type and value based on field type
+        if field_name in ['product_rank', 'minus']:
+            # Single metaobject reference
+            if isinstance(field_value, str) and field_value.startswith('gid://shopify/Metaobject/'):
+                return {
+                    'namespace': 'custom',
+                    'key': key,
+                    'type': 'metaobject_reference',
+                    'value': field_value
+                }
+        elif field_name == 'product_inclusions':
+            # List metaobject reference
+            if isinstance(field_value, list):
+                gids = [gid for gid in field_value if isinstance(gid, str) and gid.startswith('gid://shopify/Metaobject/')]
+                if gids:
+                    return {
+                        'namespace': 'custom',
+                        'key': key,
+                        'type': 'list.metaobject_reference',
+                        'value': json.dumps(gids)  # JSON array format
+                    }
+        else:
+            # Text fields (processor, graphics, display, storage, etc.)
+            if isinstance(field_value, str) and field_value.strip():
+                return {
+                    'namespace': 'custom',
+                    'key': key,
+                    'type': 'single_line_text_field',
+                    'value': field_value.strip()
+                }
+        
+        print(f"DEBUG: Could not build metafield data for {field_name}: {field_value}")
+        return None
     
     def _assign_to_sales_channels(self, product_id: int, sales_channels: List[str]) -> Dict[str, Any]:
         """

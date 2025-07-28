@@ -38,9 +38,11 @@ logs/
 *.tmp
 *.temp
 
-# Test files (optional - keep some for documentation)
+# Test files and temporary scripts
 test_*.py
-!test_api.py
+fetch_*.py
+verify_*.py
+final_*.py
 
 # Screenshots (these are large and not needed in git)
 SS/
@@ -51,6 +53,12 @@ SS/
 
 # Handle counter (contains session data)
 handle_counter.json
+
+# Temporary data files
+*_analysis.json
+*_actual.json
+*_specific_metaobjects.json
+metaobject_creation_results_*.json
 
 # Streamlit cache
 .streamlit/

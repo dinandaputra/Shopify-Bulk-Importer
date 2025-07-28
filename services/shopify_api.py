@@ -134,6 +134,10 @@ class ShopifyAPIClient:
         """Get all metaobject definitions"""
         return self._make_request('GET', 'metaobject_definitions.json')
     
+    def get_metafield_definitions(self) -> dict:
+        """Get all metafield definitions from the store"""
+        return self._make_request('GET', 'metafield_definitions.json')
+    
     def get_product_metafields(self, product_id: int) -> dict:
         """Get metafields for a specific product"""
         return self._make_request('GET', f'products/{product_id}/metafields.json')
