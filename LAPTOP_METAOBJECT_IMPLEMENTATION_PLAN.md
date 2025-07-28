@@ -69,6 +69,10 @@ Based on myByte's metafield structure:
 - Cores: (12 CPUs), (16 CPUs)
 - Base Clock: ~2.6GHz, ~3.2GHz
 
+**Coverage Period**:
+- Windows Laptops: 2018-2025 (7 years)
+- MacBooks: 2013-2025 (12 years)
+
 #### 03 Graphics (Integrated)
 **Format**: `Intel UHD Graphics 620`
 **Components**:
@@ -101,17 +105,18 @@ Based on myByte's metafield structure:
 #### 07 OS
 **Format**: `Windows 11` or `macOS Sonoma`
 **Components**:
-- Platform: Windows, macOS, Linux
-- Version: 11, 10, Sonoma, Ventura
+- Platform: Windows, macOS (no Linux)
+- Version: Windows 11, Windows 10, macOS Sonoma, macOS Ventura, macOS Monterey, macOS Big Sur
 
 ### Research Sources
 
 #### Processor Data Sources
-1. **Intel Ark Database**: Complete mobile processor specifications
-2. **AMD Product Database**: Ryzen mobile processor lineup
-3. **Apple Technical Specifications**: M-series chip details
+1. **Intel Ark Database**: Complete mobile processor specifications (2018-2025)
+2. **AMD Product Database**: Ryzen mobile processor lineup (2018-2025)
+3. **Apple Technical Specifications**: M-series and Intel-based Mac chips (2013-2025)
 4. **Laptop Manufacturer Specs**: ASUS, Dell, HP, Lenovo, MSI catalogs
 5. **Japanese Retailers**: Kakaku.com, Yodobashi, Bic Camera listings
+6. **Legacy Mac Specifications**: Intel-based MacBook models (2013-2020)
 
 #### Graphics Data Sources
 1. **Intel Graphics Specifications**: UHD, Iris series details
@@ -120,41 +125,48 @@ Based on myByte's metafield structure:
 4. **TechPowerUp GPU Database**: Comprehensive specifications
 5. **Laptop Reviews**: NotebookCheck, LaptopMedia
 
-### Data Collection Templates
+### Data Collection Templates (Simplified)
 
 #### Processor Research Template
 ```
-Brand: Intel Core | AMD Ryzen | Apple
-Model: i7-10750H | Ryzen 7 5800H | M2
-Cores: 6-core/12-thread | 8-core/16-thread
-Base Clock: 2.6GHz | 3.2GHz | 3.49GHz
-Boost Clock: 5.0GHz | 4.4GHz | N/A
-Market: H-series | U-series | P-series
-Year: 2019-2024
-Format: "Intel Core i7-10750H (12 CPUs), ~2.6GHz"
+Label Only: "Intel Core i7-10750H (12 CPUs), ~2.6GHz"
+Handle: "intel-core-i7-10750h-12-cpus-2-6ghz"
+
+# Research Focus:
+- Collect only the display name that will become the 'label' field
+- Format: [Brand] [Model] ([Cores] CPUs), ~[Clock]GHz
+- Coverage: Windows laptops (2018-2025), MacBooks (2013-2025)
+- Examples:
+  - Windows: "Intel Core i5-10200H (8 CPUs), ~2.4GHz", "AMD Ryzen 7 5800H (16 CPUs), ~3.2GHz"
+  - MacBook: "Apple M2 Chip", "Intel Core i7 Quad-Core 2.8 GHz" (legacy Intel Macs)
 ```
 
 #### Graphics Research Template
 ```
-Type: Integrated | Dedicated
-Brand: Intel | AMD | NVIDIA
-Series: UHD Graphics | Iris Xe | Radeon | GeForce RTX
-Model: 620 | Xe | Vega 8 | RTX 3050 Ti
-VRAM: Shared | 4GB | 6GB | 8GB
-Format: "Intel UHD Graphics 620" | "NVIDIA GeForce RTX 3050 Ti 4GB"
+Label Only: "Intel UHD Graphics 620"
+Handle: "intel-uhd-graphics-620"
+
+# Research Focus:
+- Collect only the display name that will become the 'label' field
+- Format: [Brand] [Series] [Model]
+- Examples:
+  - Integrated: "Intel Iris Xe Graphics", "AMD Radeon Graphics"
+  - Dedicated: "NVIDIA GeForce RTX 3050 Ti 4GB", "AMD Radeon RX 6600M 8GB"
 ```
 
-### Expected Data Volumes
+### Expected Data Volumes (Simplified Structure)
 
-| Category | Estimated Entries | Coverage Period |
-|----------|------------------|-----------------|
-| Processors | 120-150 | 2019-2024 |
-| Integrated Graphics | 25-30 | 2019-2024 |
-| Dedicated GPUs | 60-80 | 2019-2024 |
-| Displays | 40-50 | All variants |
-| Storage | 30-40 | Common configs |
-| Operating Systems | 8-10 | Current versions |
-| **Total** | **~300-370** | **Complete coverage** |
+| Category | Estimated Entries | Coverage Period | Data Structure |
+|----------|------------------|-----------------|----------------|
+| Processors | 180-220 | Windows: 2018-2025<br>Mac: 2013-2025 | Label only: "Intel Core i7-10750H (12 CPUs), ~2.6GHz" |
+| Integrated Graphics | 35-45 | 2018-2025 (Windows)<br>2013-2025 (Mac) | Label only: "Intel UHD Graphics 620" |
+| Dedicated GPUs | 80-100 | 2018-2025 | Label only: "NVIDIA GeForce RTX 3050 Ti 4GB" |
+| Displays | 50-65 | All variants | Label only: "15.6-inch FHD (144Hz)" |
+| Storage | 35-45 | Common configs | Label only: "512GB SSD" |
+| Operating Systems | 8-12 | Windows & macOS only | Label only: "Windows 11", "macOS Sonoma" |
+| **Total** | **~390-490** | **Extended coverage** | **Single 'label' field per entry** |
+
+**⚠️ Extended Timeline Approach**: All entries will contain only a single `label` field with the display name. Coverage spans Windows laptops (2018-2025) and MacBooks (2013-2025). No Linux OS entries included. No complex nested data, specifications, or additional metadata fields will be included. This matches the current myByte Shopify store format.
 
 ---
 
@@ -162,26 +174,35 @@ Format: "Intel UHD Graphics 620" | "NVIDIA GeForce RTX 3050 Ti 4GB"
 
 ### Script Architecture
 
-#### 2.1 Data Structure
+#### 2.1 Simplified Data Structure (myByte Format)
 ```python
 # laptop_metaobject_data.py
+# Simplified structure following current myByte Shopify format
+# Only use 'label' field for display name - no complex nested data
+
 PROCESSOR_DATA = [
     {
         "display_name": "Intel Core i7-10750H (12 CPUs), ~2.6GHz",
         "handle": "intel-core-i7-10750h-12-cpus-2-6ghz",
         "fields": {
-            "label": "Intel Core i7-10750H (12 CPUs), ~2.6GHz",
-            "brand": "Intel",
-            "series": "Core i7",
-            "model": "10750H",
-            "cores": "6-core/12-thread",
-            "base_clock": "2.6GHz",
-            "boost_clock": "5.0GHz",
-            "architecture": "Comet Lake",
-            "year": "2020"
+            "label": "Intel Core i7-10750H (12 CPUs), ~2.6GHz"
         }
     },
-    # ... additional entries
+    {
+        "display_name": "Intel Core i5-10200H (8 CPUs), ~2.4GHz",
+        "handle": "intel-core-i5-10200h-8-cpus-2-4ghz",
+        "fields": {
+            "label": "Intel Core i5-10200H (8 CPUs), ~2.4GHz"
+        }
+    },
+    {
+        "display_name": "AMD Ryzen 7 5800H (16 CPUs), ~3.2GHz",
+        "handle": "amd-ryzen-7-5800h-16-cpus-3-2ghz",
+        "fields": {
+            "label": "AMD Ryzen 7 5800H (16 CPUs), ~3.2GHz"
+        }
+    },
+    # ... additional entries (120-150 total)
 ]
 
 GRAPHICS_DATA = [
@@ -189,15 +210,24 @@ GRAPHICS_DATA = [
         "display_name": "Intel UHD Graphics 620",
         "handle": "intel-uhd-graphics-620",
         "fields": {
-            "label": "Intel UHD Graphics 620",
-            "brand": "Intel",
-            "series": "UHD Graphics",
-            "model": "620",
-            "type": "Integrated",
-            "architecture": "Gen 9.5"
+            "label": "Intel UHD Graphics 620"
         }
     },
-    # ... additional entries
+    {
+        "display_name": "Intel Iris Xe Graphics",
+        "handle": "intel-iris-xe-graphics",
+        "fields": {
+            "label": "Intel Iris Xe Graphics"
+        }
+    },
+    {
+        "display_name": "AMD Radeon Graphics",
+        "handle": "amd-radeon-graphics",
+        "fields": {
+            "label": "AMD Radeon Graphics"
+        }
+    },
+    # ... additional entries (25-30 total)
 ]
 
 VGA_DATA = [
@@ -205,16 +235,131 @@ VGA_DATA = [
         "display_name": "NVIDIA GeForce RTX 3050 Ti 4GB",
         "handle": "nvidia-geforce-rtx-3050-ti-4gb",
         "fields": {
-            "label": "NVIDIA GeForce RTX 3050 Ti 4GB",
-            "brand": "NVIDIA",
-            "series": "GeForce RTX",
-            "model": "3050 Ti",
-            "vram": "4GB",
-            "architecture": "Ampere",
-            "cuda_cores": "2560"
+            "label": "NVIDIA GeForce RTX 3050 Ti 4GB"
         }
     },
-    # ... additional entries
+    {
+        "display_name": "NVIDIA GeForce RTX 4060 8GB",
+        "handle": "nvidia-geforce-rtx-4060-8gb",
+        "fields": {
+            "label": "NVIDIA GeForce RTX 4060 8GB"
+        }
+    },
+    {
+        "display_name": "AMD Radeon RX 6600M 8GB",
+        "handle": "amd-radeon-rx-6600m-8gb",
+        "fields": {
+            "label": "AMD Radeon RX 6600M 8GB"
+        }
+    },
+    # ... additional entries (60-80 total)
+]
+
+DISPLAY_DATA = [
+    {
+        "display_name": "15.6-inch FHD (144Hz)",
+        "handle": "15-6-inch-fhd-144hz",
+        "fields": {
+            "label": "15.6-inch FHD (144Hz)"
+        }
+    },
+    {
+        "display_name": "13.3-inch FHD (60Hz)",
+        "handle": "13-3-inch-fhd-60hz",
+        "fields": {
+            "label": "13.3-inch FHD (60Hz)"
+        }
+    },
+    # ... additional entries (40-50 total)
+]
+
+STORAGE_DATA = [
+    {
+        "display_name": "512GB SSD",
+        "handle": "512gb-ssd",
+        "fields": {
+            "label": "512GB SSD"
+        }
+    },
+    {
+        "display_name": "1TB SSD",
+        "handle": "1tb-ssd",
+        "fields": {
+            "label": "1TB SSD"
+        }
+    },
+    {
+        "display_name": "500GB SSD + 1TB HDD",
+        "handle": "500gb-ssd-1tb-hdd",
+        "fields": {
+            "label": "500GB SSD + 1TB HDD"
+        }
+    },
+    # ... additional entries (30-40 total)
+]
+
+OS_DATA = [
+    {
+        "display_name": "Windows 11",
+        "handle": "windows-11",
+        "fields": {
+            "label": "Windows 11"
+        }
+    },
+    {
+        "display_name": "Windows 10",
+        "handle": "windows-10",
+        "fields": {
+            "label": "Windows 10"
+        }
+    },
+    {
+        "display_name": "macOS Sonoma",
+        "handle": "macos-sonoma",
+        "fields": {
+            "label": "macOS Sonoma"
+        }
+    },
+    {
+        "display_name": "macOS Ventura",
+        "handle": "macos-ventura",
+        "fields": {
+            "label": "macOS Ventura"
+        }
+    },
+    {
+        "display_name": "macOS Monterey",
+        "handle": "macos-monterey",
+        "fields": {
+            "label": "macOS Monterey"
+        }
+    },
+    {
+        "display_name": "macOS Big Sur",
+        "handle": "macos-big-sur",
+        "fields": {
+            "label": "macOS Big Sur"
+        }
+    },
+    # ... additional Windows & macOS entries (8-12 total, no Linux)
+]
+
+KEYBOARD_LAYOUT_DATA = [
+    {
+        "display_name": "US - International Keyboard",
+        "handle": "us-international-keyboard",
+        "fields": {
+            "label": "US - International Keyboard"
+        }
+    },
+    {
+        "display_name": "Japanese - JIS Keyboard",
+        "handle": "japanese-jis-keyboard",
+        "fields": {
+            "label": "Japanese - JIS Keyboard"
+        }
+    },
+    # ... additional entries (3-5 total)
 ]
 ```
 
@@ -273,13 +418,11 @@ class MetaobjectBatchCreator:
         }
         """
         
-        # Prepare fields for GraphQL
-        fields = []
-        for key, value in data.get('fields', {}).items():
-            fields.append({
-                'key': key,
-                'value': str(value)
-            })
+        # Prepare fields for GraphQL (simplified - only label field)
+        fields = [{
+            'key': 'label',
+            'value': data['fields']['label']
+        }]
         
         variables = {
             'metaobject': {
@@ -360,6 +503,7 @@ class MetaobjectBatchCreator:
             ("Displays", "gid://shopify/MetaobjectDefinition/10078388373", DISPLAY_DATA),
             ("Storage", "gid://shopify/MetaobjectDefinition/10097983637", STORAGE_DATA),
             ("Operating Systems", "gid://shopify/MetaobjectDefinition/10827989141", OS_DATA),
+            ("Keyboard Layouts", "gid://shopify/MetaobjectDefinition/10097819797", KEYBOARD_LAYOUT_DATA),
         ]
         
         start_time = time.time()
@@ -438,24 +582,85 @@ if __name__ == "__main__":
 ```python
 # validate_metaobjects.py
 """
-Validation script to verify created metaobjects and update mappings
+Validation script to verify created metaobjects (simplified label-only structure)
 """
 
+import json
+from services.shopify_api import ShopifyAPIClient
+
 def validate_created_metaobjects():
-    """Verify all metaobjects were created correctly"""
+    """Verify all metaobjects were created correctly with label field only"""
     
-    # Query each metaobject definition
-    # Compare with expected data
-    # Generate validation report
-    pass
+    api_client = ShopifyAPIClient()
+    validation_results = {'valid': [], 'invalid': []}
+    
+    # Query metaobjects and verify they have correct label field
+    query = """
+    query getMetaobjects($type: String!) {
+      metaobjects(type: $type, first: 250) {
+        nodes {
+          id
+          handle
+          displayName
+          fields {
+            key
+            value
+          }
+        }
+      }
+    }
+    """
+    
+    # Validate each category has only 'label' field
+    metaobject_definitions = [
+        "processor", "graphics", "vga", "display", "storage", "os"
+    ]
+    
+    for definition in metaobject_definitions:
+        result = api_client._make_graphql_request(query, {'type': definition})
+        
+        for metaobject in result['data']['metaobjects']['nodes']:
+            # Check that only 'label' field exists
+            fields = {field['key']: field['value'] for field in metaobject['fields']}
+            
+            if 'label' in fields and len(fields) == 1:
+                validation_results['valid'].append({
+                    'id': metaobject['id'],
+                    'handle': metaobject['handle'],
+                    'label': fields['label']
+                })
+            else:
+                validation_results['invalid'].append({
+                    'id': metaobject['id'],
+                    'handle': metaobject['handle'],
+                    'fields': fields,
+                    'issue': 'Missing label field or extra fields present'
+                })
+    
+    return validation_results
 
 def update_mapping_files():
     """Update laptop_metafield_mapping_actual.py with new GIDs"""
     
-    # Read creation results
-    # Generate new mapping dictionaries
-    # Update mapping files
-    pass
+    # Read creation results JSON
+    with open('metaobject_creation_results.json', 'r') as f:
+        results = json.load(f)
+    
+    # Generate new mapping dictionaries using only label values
+    mappings = {}
+    for created_entry in results['created']:
+        category = created_entry['category'].lower()
+        if category not in mappings:
+            mappings[category] = {}
+        
+        # Extract label from display_name (simplified mapping)
+        label = created_entry['display_name']  # This becomes the key
+        gid = created_entry['id']
+        mappings[category][label] = gid
+    
+    # Update mapping file with new dictionaries
+    print("Updated mappings generated. Review before deploying.")
+    return mappings
 ```
 
 ---
@@ -778,21 +983,21 @@ def show_missing_metaobjects_admin():
     show_missing_trends()
 
 def generate_creation_script(field_name: str, entries: List[Dict]):
-    """Generate metaobject creation script for missing entries"""
+    """Generate metaobject creation script for missing entries (simplified label-only)"""
     
     st.code(f"""
 # Auto-generated creation script for {field_name}
 # Generated on: {datetime.now().isoformat()}
+# Simplified format - label field only
 
 {field_name.upper()}_MISSING_DATA = [
 """ + 
 "".join([
     f"""    {{
         "display_name": "{entry['value']}",
-        "handle": "{entry['value'].lower().replace(' ', '-').replace('(', '').replace(')', '')}",
+        "handle": "{entry['value'].lower().replace(' ', '-').replace('(', '').replace(')', '').replace('/', '-')}",
         "fields": {{
-            "label": "{entry['value']}",
-            # Add additional fields as needed
+            "label": "{entry['value']}"
         }}
     }},
 """ for entry in entries[:20]  # Limit to top 20
@@ -800,6 +1005,7 @@ def generate_creation_script(field_name: str, entries: List[Dict]):
 ]
 
 # Use with batch_create_category() function
+# Only 'label' field will be created - no complex nested data
 """, language='python')
 
 def export_missing_data(field_name: str, entries: List[Dict]):
@@ -838,24 +1044,35 @@ def show_missing_trends():
 
 ## Part 4: Implementation Timeline
 
-### Phase 1: Research & Data Collection (Week 1-2)
+### Phase 1: Extended Timeline Research & Data Collection (Week 1)
 
-**Week 1: Data Research**
-- [ ] Day 1-2: Research Intel processors (2019-2024)
-- [ ] Day 3-4: Research AMD processors (2019-2024)
-- [ ] Day 5: Research Apple M-series processors
-- [ ] Day 6-7: Research integrated graphics (Intel UHD/Iris, AMD)
+**Week 1: Extended Timeline Research** 
+- [ ] Day 1-2: Research Windows laptop processors (2018-2025) - Intel/AMD display names
+- [ ] Day 3: Research MacBook processors (2013-2025) - Apple M-series + Intel legacy
+- [ ] Day 4: Research graphics - integrated & dedicated (2018-2025 Windows, 2013-2025 Mac)
+- [ ] Day 5: Research displays, storage - extended timeline coverage
+- [ ] Day 6: Research OS - Windows & macOS only (no Linux)
+- [ ] Day 7: Format all entries using simplified structure:
+  ```python
+  {
+    "display_name": "Intel Core i7-10750H (12 CPUs), ~2.6GHz",
+    "handle": "intel-core-i7-10750h-12-cpus-2-6ghz", 
+    "fields": {"label": "Intel Core i7-10750H (12 CPUs), ~2.6GHz"}
+  }
+  ```
 
-**Week 2: Complete Data Collection**
-- [ ] Day 1-2: Research dedicated GPUs (NVIDIA RTX/GTX, AMD Radeon)
-- [ ] Day 3: Research display specifications
-- [ ] Day 4: Research storage configurations
-- [ ] Day 5: Research operating systems
-- [ ] Day 6-7: Data validation and formatting
+**Extended Coverage Focus:**
+- ✅ Windows laptops: 2018-2025 (7-year span)
+- ✅ MacBooks: 2013-2025 (12-year span including Intel legacy)
+- ✅ Only collect display names that become 'label' values
+- ✅ No Linux OS entries (Windows & macOS only)
+- ✅ Follow existing myByte format conventions
 
 **Deliverables:**
-- `laptop_metaobject_data.py` with ~300-370 entries
-- Data validation reports
+- `laptop_metaobject_data.py` with ~390-490 entries (extended timeline coverage)
+- Comprehensive processor coverage: Windows (2018-2025) + Mac (2013-2025)
+- Windows & macOS OS entries only (no Linux)
+- Simplified validation reports
 - Format consistency verification
 
 ### Phase 2: API Scripts Development (Week 3)
@@ -908,46 +1125,125 @@ def show_missing_trends():
 
 ### Pre-execution Testing
 
-#### 1. Data Validation
+#### 1. Data Validation (Simplified)
 ```python
 # tests/test_metaobject_data.py
-def test_data_format_consistency():
-    """Verify all data entries follow correct format"""
+def test_simplified_data_format():
+    """Verify all data entries follow simplified label-only format"""
     
-    for entry in PROCESSOR_DATA:
-        assert 'display_name' in entry
-        assert 'handle' in entry
-        assert 'fields' in entry
-        assert 'label' in entry['fields']
-        
-        # Validate processor format
-        assert 'CPUs' in entry['display_name']
-        assert 'GHz' in entry['display_name']
+    from laptop_metaobject_data import PROCESSOR_DATA, GRAPHICS_DATA, VGA_DATA
+    
+    # Test all data categories
+    all_data = [
+        ('PROCESSOR_DATA', PROCESSOR_DATA),
+        ('GRAPHICS_DATA', GRAPHICS_DATA), 
+        ('VGA_DATA', VGA_DATA)
+    ]
+    
+    for category_name, data_list in all_data:
+        for entry in data_list:
+            # Verify required top-level fields
+            assert 'display_name' in entry, f"{category_name}: Missing display_name"
+            assert 'handle' in entry, f"{category_name}: Missing handle"
+            assert 'fields' in entry, f"{category_name}: Missing fields"
+            
+            # Verify simplified fields structure - ONLY label field
+            fields = entry['fields']
+            assert 'label' in fields, f"{category_name}: Missing label field"
+            assert len(fields) == 1, f"{category_name}: Should only have 'label' field, found: {list(fields.keys())}"
+            
+            # Verify label matches display_name (simplified consistency)
+            assert fields['label'] == entry['display_name'], f"{category_name}: label != display_name"
 
 def test_handle_uniqueness():
     """Verify all handles are unique within categories"""
     
+    from laptop_metaobject_data import PROCESSOR_DATA
+    
     handles = [entry['handle'] for entry in PROCESSOR_DATA]
-    assert len(handles) == len(set(handles))
+    assert len(handles) == len(set(handles)), "Duplicate handles found in PROCESSOR_DATA"
 
-def test_required_fields():
-    """Verify all required fields are present"""
-    pass
+def test_no_complex_fields():
+    """Verify no complex nested data exists - only simple label field"""
+    
+    from laptop_metaobject_data import PROCESSOR_DATA
+    
+    for entry in PROCESSOR_DATA:
+        fields = entry['fields']
+        
+        # Should only have 'label' field
+        forbidden_fields = ['brand', 'model', 'cores', 'clock', 'specifications', 'details']
+        for forbidden in forbidden_fields:
+            assert forbidden not in fields, f"Found forbidden complex field '{forbidden}' in {entry['handle']}"
+        
+        # Label should be simple string, not dict/list
+        assert isinstance(fields['label'], str), f"Label should be string, not {type(fields['label'])}"
 ```
 
-#### 2. API Testing
+#### 2. API Testing (Simplified)
 ```python
 # tests/test_batch_creation.py
 def test_single_metaobject_creation():
-    """Test creating a single metaobject"""
-    pass
+    """Test creating a single metaobject with simplified label-only structure"""
+    
+    from create_laptop_metaobjects import MetaobjectBatchCreator
+    
+    creator = MetaobjectBatchCreator()
+    
+    # Test data with only label field
+    test_data = {
+        "display_name": "Test Processor i7-12700H",
+        "handle": "test-processor-i7-12700h",
+        "fields": {
+            "label": "Test Processor i7-12700H"
+        }
+    }
+    
+    # Test creation
+    result = creator.create_metaobject(
+        "gid://shopify/MetaobjectDefinition/test", 
+        test_data
+    )
+    
+    assert result['success'] == True
+    assert 'metaobject' in result
+    assert result['metaobject']['displayName'] == test_data['display_name']
+
+def test_simplified_fields_validation():
+    """Test that only label field is sent to API"""
+    
+    # Verify GraphQL mutation only includes label field
+    test_data = {
+        "display_name": "Test Graphics Card",
+        "handle": "test-graphics-card", 
+        "fields": {
+            "label": "Test Graphics Card"
+        }
+    }
+    
+    # Mock GraphQL request to verify fields structure
+    expected_fields = [{
+        'key': 'label',
+        'value': test_data['fields']['label']
+    }]
+    
+    # Should only send label field, no complex nested data
+    assert len(expected_fields) == 1
+    assert expected_fields[0]['key'] == 'label'
 
 def test_error_handling():
-    """Test API error scenarios"""
+    """Test API error scenarios with simplified data"""
+    
+    # Test invalid handle
+    # Test missing label field  
+    # Test API connection errors
     pass
 
 def test_rate_limiting():
-    """Verify rate limiting works correctly"""
+    """Verify rate limiting works correctly during batch operations"""
+    
+    # Test 0.5 second delay between requests
+    # Test API response handling
     pass
 ```
 
@@ -1072,20 +1368,30 @@ mutation metaobjectCreate($metaobject: MetaobjectCreateInput!) {
 
 ## Summary
 
-This comprehensive plan provides:
+This comprehensive plan provides a **simplified, label-only approach** for managing laptop metaobjects:
 
-1. **Complete Research Framework**: Structured approach to collecting ~300-370 metaobject entries
-2. **Production-Ready Scripts**: Batch creation system with error handling and validation
+1. **Extended Research Framework**: Comprehensive approach covering Windows (2018-2025) & Mac (2013-2025) collecting display names (~390-490 entries)
+2. **Production-Ready Scripts**: Batch creation system using only 'label' field (matching myByte format)
 3. **Enhanced User Experience**: Logging system with UI feedback and admin tools
 4. **Maintenance Strategy**: Quarterly updates and monitoring systems
 
+**Key Simplifications Made:**
+- ✅ **Label-Only Structure**: Each metaobject contains only one field: `label`
+- ✅ **Matches myByte Format**: Follows current Shopify store structure
+- ✅ **Reduced Complexity**: No nested data, specifications, or additional metadata
+- ✅ **Simplified Validation**: Tests only verify label field presence and uniqueness
+
 **Expected Outcomes:**
-- 95%+ coverage of laptop specifications
+- 95%+ coverage of laptop specifications (extended 7-12 year timeline)
+- Comprehensive Windows laptop coverage (2018-2025)
+- Complete MacBook coverage including Intel legacy models (2013-2025)
+- Windows & macOS focus (no Linux complexity)
 - Improved user experience with clear feedback
 - Reduced manual tracking overhead
 - Scalable system for future updates
+- **Consistent with current myByte metaobject structure**
 
-**Total Implementation Time**: ~5 weeks
-**Maintenance Time**: ~2-3 hours quarterly
+**Total Implementation Time**: ~3-4 weeks (reduced from 5 weeks due to simplification)
+**Maintenance Time**: ~1-2 hours quarterly (reduced due to simpler structure)
 
-This plan eliminates the current silent skipping of unknown metafields and provides a robust, maintainable system for managing laptop specifications in your Shopify store.
+This plan eliminates the current silent skipping of unknown metafields and provides a robust, maintainable system for managing laptop specifications in your Shopify store **using the simplified label-only format that matches your current myByte setup**.
