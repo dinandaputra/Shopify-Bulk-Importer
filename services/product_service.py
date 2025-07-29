@@ -6,6 +6,7 @@ from services.shopify_api import shopify_api, ShopifyAPIError
 from services.metaobject_service import metaobject_service
 from services.collection_service import collection_service
 from services.laptop_metafield_service import laptop_metafield_service
+from config.iphone_specs import IPHONE_COLOR_GIDS
 
 class ProductService:
     """
@@ -177,42 +178,22 @@ class ProductService:
                         'error': str(e)
                     })
         
-        # Handle color (DISABLED - requires metafield definition with key 'color')
-        # TODO: Create a metafield definition in Shopify admin with key 'color' for this to work
-        if False and smartphone.color:  # Temporarily disabled
-            color_mappings = {
-                'Pacific Blue': 'gid://shopify/Metaobject/126233608341',
-                'Black': 'gid://shopify/Metaobject/108876857493',
-                'Blue': 'gid://shopify/Metaobject/111343370389',
-                'Silver': 'gid://shopify/Metaobject/118603284629',
-                'Gold': 'gid://shopify/Metaobject/111343403157',
-                'Space Gray': 'gid://shopify/Metaobject/125795303573',
-                'Natural Titanium': 'gid://shopify/Metaobject/118601449621'
-            }
-            
-            color_id = color_mappings.get(smartphone.color)
+        # Create the product-level color metafield that Shopify uses as a variant option
+        if smartphone.color:
+            print(f"DEBUG: Creating color metafield for '{smartphone.color}'")
+            color_id = IPHONE_COLOR_GIDS.get(smartphone.color)
             if color_id:
                 try:
-                    # Convert to JSON string for Shopify API
-                    color_value = json.dumps([color_id])
-                    
-                    print(f"DEBUG: Creating color metafield - value: {color_value}, type: list.metaobject_reference")
-                    
-                    # Try the standard color namespace and key based on error message
-                    # Error said: requires metafield definition with key: color
-                    # Let's try custom namespace with color key
                     color_result = self.api.create_product_metafield(
                         product_id,
                         {
-                            'namespace': 'custom',  # Changed from 'shopify' to 'custom'
-                            'key': 'color',
-                            'value': color_value,  # JSON string for list type
-                            'type': 'list.metaobject_reference'
+                            'namespace': 'shopify',
+                            'key': 'color-pattern',
+                            'value': color_id,
+                            'type': 'metaobject_reference'
                         }
                     )
-                    
                     print(f"DEBUG: Color metafield result: {color_result}")
-                    
                     results.append({
                         'field': 'color',
                         'success': True,
@@ -225,6 +206,13 @@ class ProductService:
                         'success': False,
                         'error': str(e)
                     })
+            else:
+                print(f"WARNING: No color mapping found for: {smartphone.color}")
+                results.append({
+                    'field': 'color',
+                    'success': False,
+                    'error': f'No mapping found for color: {smartphone.color}'
+                })
         
         return results
     
@@ -336,6 +324,30 @@ class ProductService:
                 # Add remaining metafields (non-variant ones) using REST API
                 metafield_results = self._add_non_variant_metafields(product_id, smartphone)
                 
+                # Link the "Color" option to the shopify.color-pattern metafield (removes "Connect metafield" button)
+                color_option_link_result = None
+                if smartphone.color:
+                    try:
+                        # Import the color GIDs mapping
+                        from config.iphone_specs import IPHONE_COLOR_GIDS
+                        
+                        # Validate that the color exists in our mapping
+                        if smartphone.color not in IPHONE_COLOR_GIDS:
+                            print(f"WARNING: Color '{smartphone.color}' not found in IPHONE_COLOR_GIDS mapping")
+                            # Still attempt to link - the option values will be created but not linked to metaobjects
+                        
+                        color_option_link_result = self.api.link_product_option_to_metafield(
+                            product_id,
+                            "Color",
+                            "shopify",  # Note: shopify namespace, not custom
+                            "color-pattern",  # Note: hyphen, not underscore
+                            IPHONE_COLOR_GIDS  # Pass the color mappings
+                        )
+                        print(f"DEBUG: Color option-to-metafield link result: {color_option_link_result}")
+                    except Exception as e:
+                        print(f"WARNING: Failed to link Color option to metafield: {str(e)}")
+                        color_option_link_result = {'error': str(e)}
+                
                 # Link the "SIM Carriers" option to the metafield (removes "Connect metafield" button)
                 option_link_result = None
                 if smartphone.sim_carrier_variants and len(smartphone.sim_carrier_variants) > 0:
@@ -435,6 +447,7 @@ class ProductService:
                     'product': created_product,
                     'metafields': metafield_results,
                     'option_link': option_link_result,
+                    'color_option_link': color_option_link_result,
                     'variant_metafields': variant_metafield_result,
                     'category_update': category_result,
                     'collections': collection_result,
@@ -492,15 +505,25 @@ class ProductService:
             # Give extra quantity to first variant if there's remainder
             variant_quantity = quantity_per_variant + (1 if i == 0 and remaining_quantity > 0 else 0)
             
-            # Build option value - Shopify will auto-link via linkedMetafield
-            option_value = {
+            # Build option values - include color if present
+            option_values = []
+            
+            # Add color option value if product has color
+            if smartphone.color:
+                option_values.append({
+                    'optionName': 'Color',
+                    'name': smartphone.color
+                })
+            
+            # Add SIM carrier option value
+            option_values.append({
                 'optionName': 'SIM Carriers',
                 'name': carrier  # This will be matched against displayName in metaobjects
-            }
+            })
             
             # All variants in this method have option values (since we filtered out no-SIM-carrier case)
             variant = {
-                'optionValues': [option_value],
+                'optionValues': option_values,
                 'price': str(smartphone.price),
                 'inventoryItem': {
                     'tracked': True
@@ -531,14 +554,26 @@ class ProductService:
         
         # Add productOptions with standard values first (will link metafield post-creation)
         # The 2025-07 GraphQL API has conflicts with linkedMetafield + values in productSet
+        product_options = []
+        
+        # Add Color as first option if product has a color
+        if smartphone.color:
+            product_options.append({
+                'name': 'Color',
+                'position': 1,
+                'values': [{'name': smartphone.color}]
+            })
+        
+        # Add SIM Carriers as second option if applicable
         if sim_carriers and sim_carriers[0] != 'Default Title':
-            product_data['productOptions'] = [
-                {
-                    'name': 'SIM Carriers',
-                    'position': 1,
-                    'values': [{'name': carrier} for carrier in sim_carriers]
-                }
-            ]
+            product_options.append({
+                'name': 'SIM Carriers',
+                'position': 2 if smartphone.color else 1,
+                'values': [{'name': carrier} for carrier in sim_carriers]
+            })
+        
+        if product_options:
+            product_data['productOptions'] = product_options
             print(f"DEBUG: Added standard productOptions (linkedMetafield will be added post-creation)")
             print(f"DEBUG: Values: {sim_carriers}")
             print(f"DEBUG: Will link to metafield custom.sim_carriers after product creation")
@@ -547,12 +582,12 @@ class ProductService:
     
     def _build_simple_product_data(self, smartphone: SmartphoneProduct) -> Dict[str, Any]:
         """
-        Build simple product data without variants/options for products without SIM carriers
+        Build simple product data without SIM carrier variants but may have color option
         """
         primary_location_id = self._get_primary_location_id()
         
-        # Single variant for the entire quantity
-        variant = {
+        # Build variant - if color exists, include option value
+        variant_data = {
             'price': str(smartphone.price),
             'inventoryItem': {
                 'tracked': True
@@ -567,6 +602,13 @@ class ProductService:
             'taxable': False
         }
         
+        # Add color option value if present
+        if smartphone.color:
+            variant_data['optionValues'] = [{
+                'optionName': 'Color',
+                'name': smartphone.color
+            }]
+        
         # Build the main product data
         product_data = {
             'title': smartphone.title,
@@ -576,8 +618,16 @@ class ProductService:
             'tags': smartphone.tags.split(', ') if smartphone.tags else [],
             'status': 'DRAFT' if smartphone.published.lower() == 'false' else 'ACTIVE',
             'handle': smartphone.handle,
-            'variants': [variant]
+            'variants': [variant_data]
         }
+        
+        # Add Color as product option if present
+        if smartphone.color:
+            product_data['productOptions'] = [{
+                'name': 'Color',
+                'position': 1,
+                'values': [{'name': smartphone.color}]
+            }]
         
         return product_data
     
@@ -839,6 +889,9 @@ class ProductService:
                 # Add laptop metafields using the dedicated service
                 metafield_results = self._add_laptop_metafields_with_service(product_id, laptop)
                 
+                # Note: Laptops don't use color as a variant option, only as a product metafield
+                # Color is handled in _add_laptop_metafields_with_service
+                
                 # Assign product to collections
                 collection_result = None
                 if laptop.collections:
@@ -936,6 +989,7 @@ class ProductService:
             
             # Convert laptop data to metafield mappings using actual GIDs
             laptop_data = {
+                'color': laptop.color,     # Add color support
                 'processor': laptop.cpu,  # Note: field name change
                 'ram': laptop.ram,
                 'graphics': laptop.gpu,   # Note: field name change

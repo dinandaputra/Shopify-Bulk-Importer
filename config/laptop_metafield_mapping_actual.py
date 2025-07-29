@@ -9,6 +9,36 @@ from typing import Dict, List, Optional, Any
 import json
 
 # Actual metaobject GID mappings fetched from Shopify store
+
+# Color metaobjects for laptops
+COLOR_METAOBJECTS = {
+    "Graphite Black": "gid://shopify/Metaobject/131501392021",
+    "Eclipse Gray": "gid://shopify/Metaobject/131501260949",
+    "Mecha Gray": "gid://shopify/Metaobject/131501490325",
+    "Jaeger Gray": "gid://shopify/Metaobject/131501457557",
+    "Fortress Gray": "gid://shopify/Metaobject/131501326485",
+    "Bonfire Black": "gid://shopify/Metaobject/131501129877",
+    "Off Black": "gid://shopify/Metaobject/131501588629",
+    "Original Black": "gid://shopify/Metaobject/131501621397",
+    "Moonlight White": "gid://shopify/Metaobject/131501555861",
+    "Electro Punk": "gid://shopify/Metaobject/131501293717",
+    "Volt Green": "gid://shopify/Metaobject/131501883541",
+    "Cool Silver": "gid://shopify/Metaobject/131501195413",
+    "Glacier Blue": "gid://shopify/Metaobject/131501359253",
+    "Quiet Blue": "gid://shopify/Metaobject/131501719701",
+    "Asus Blue": "gid://shopify/Metaobject/131501097109",
+    "Gun Metal": "gid://shopify/Metaobject/131501424789",
+    "Platinum White": "gid://shopify/Metaobject/131501686933",
+    "Phantom Blue": "gid://shopify/Metaobject/131501654165",
+    "Shadow Black": "gid://shopify/Metaobject/131501752469",
+    "Dark Shadow Gray": "gid://shopify/Metaobject/131501228181",
+    "Specter Green": "gid://shopify/Metaobject/131501785237",
+    "Acid Green": "gid://shopify/Metaobject/131501064341",
+    "Stealth Black": "gid://shopify/Metaobject/131501850773",
+    "Brushed Metal": "gid://shopify/Metaobject/131501162645",
+    "Metallic Hairline": "gid://shopify/Metaobject/131501523093",
+    "Starry Black": "gid://shopify/Metaobject/131501818005",
+}
 PROCESSOR_METAOBJECTS = {
     "i7-12650H": "gid://shopify/Metaobject/117180924053",  # Intel Core i7-12650H (16 CPUs), ~2.3GHz
     "i5-10200H": "gid://shopify/Metaobject/117533278357",  # Intel Core i5-10200H, (8CPU)~2.4GHz
@@ -163,6 +193,7 @@ def get_metaobject_gid(field_name: str, value: str) -> Optional[str]:
         "storage": STORAGE_METAOBJECTS,
         "os": OS_METAOBJECTS,
         "keyboard_layout": KEYBOARD_LAYOUT_METAOBJECTS,
+        "color": COLOR_METAOBJECTS,
     }
     
     if field_name in mappings:
@@ -209,6 +240,7 @@ def convert_laptop_data_to_metafields(laptop_data: Dict[str, Any]) -> Dict[str, 
     
     # Define metafield configurations - all laptop metafields from Shopify
     metafield_configs = {
+        'color': {'namespace': 'shopify', 'key': 'color-pattern', 'type': 'metaobject_reference'},  # Shared with smartphones
         'processor': {'namespace': 'custom', 'key': '01_processor', 'type': 'metaobject_reference'},
         'ram': {'namespace': 'custom', 'key': '02_ram', 'type': 'single_line_text_field'},  # Text field
         'graphics': {'namespace': 'custom', 'key': '03_graphics', 'type': 'metaobject_reference'},

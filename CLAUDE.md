@@ -337,3 +337,176 @@ When working with Shopify APIs, you MUST consult documentation in this order:
 - **test_fixed_variant_linking.py**: Working test for variant-to-metafield automation ✅
 - **create_laptop_metaobjects_final.py**: Script to create laptop metaobjects (NEW)
 - **laptop_metaobject_data.py**: Laptop metaobject data definitions (NEW)
+
+## 📚 Adding New Laptop Models Guide
+
+### Overview
+This guide documents the reusable method for adding new laptop models from different brands to the system. The process involves analyzing existing metaobjects, creating missing ones, and testing the implementation.
+
+### Step 1: Analyze Existing Metaobjects
+Use the Shopify API to query and document all laptop-related metaobjects:
+
+```python
+# Run the analysis script
+python scripts/analyze_laptop_metaobjects.py
+```
+
+This will generate a report at `/reports/laptop_metaobjects_analysis.json` containing:
+- All metaobject definitions and their GIDs
+- Existing entries for each metaobject type
+- Statistics on coverage
+
+### Step 2: Add New Laptop Templates
+Add new laptop models to `config/master_data.py`:
+
+```python
+LAPTOP_TEMPLATES = {
+    "Brand Model [CPU/RAM/GPU/Display/Storage] [Color]": {
+        "brand": "Brand",
+        "model": "Model",
+        "cpu": "CPU-Model",
+        "ram": "XGB",
+        "gpu": "GPU-Model",
+        "display": "Size RefreshHz",
+        "storage": "XXXGB",
+        "os": "Windows 11",
+        "keyboard_layout": "US",
+        "keyboard_backlight": "Yes/RGB/White",
+        "color": "Color Name"
+    }
+}
+```
+
+### Step 3: Cross-Reference and Find Gaps
+Run the gap analysis to identify missing metaobjects:
+
+```python
+# This script compares templates with existing Shopify metaobjects
+python scripts/cross_reference_laptop_metaobjects.py
+```
+
+Reports generated:
+- `/reports/laptop_missing_metaobjects_report.md` - Human-readable gap analysis
+- `/reports/laptop_missing_metaobjects_summary.json` - Structured data
+- `/scripts/missing_laptop_metaobjects/` - JSON files for each category
+
+### Step 4: Create Missing Metaobjects
+Use the automated script to create missing metaobjects in Shopify:
+
+```python
+# Create all missing metaobjects
+python scripts/missing_laptop_metaobjects/create_missing_metaobjects_graphql.py
+
+# Or create by category
+python scripts/missing_laptop_metaobjects/create_missing_metaobjects_graphql.py --category processor
+python scripts/missing_laptop_metaobjects/create_missing_metaobjects_graphql.py --category graphics
+python scripts/missing_laptop_metaobjects/create_missing_metaobjects_graphql.py --category display
+```
+
+**Note**: Color metaobjects require manual creation in Shopify Admin due to taxonomy requirements.
+
+### Step 5: Update Metafield Mappings
+If needed, update the mapping in `config/laptop_metafield_mapping_enhanced.py`:
+
+```python
+LAPTOP_METAFIELD_MAPPING = {
+    "processor": {
+        "New CPU Model": "gid://shopify/Metaobject/XXXXX",
+        # Add new processor mappings
+    },
+    "graphics": {
+        "New GPU Model": "gid://shopify/Metaobject/XXXXX",
+        # Add new graphics mappings
+    }
+    # Add other mappings as needed
+}
+```
+
+### Step 6: Test the Implementation
+Run the comprehensive test suite:
+
+```python
+# Test core functionality without API
+python test_laptop_core_functionality.py
+
+# Test with Shopify API (requires credentials)
+python test_laptop_product_creation.py
+
+# Test specific templates
+python test_laptop_product_creation.py --template "Your New Template Name"
+```
+
+### Step 7: Monitor Missing Entries
+The system automatically logs missing metaobject mappings:
+
+```bash
+# Check the missing entries log
+cat logs/missing_metaobjects.json
+```
+
+This file tracks:
+- Missing metaobject values
+- Frequency of missing entries
+- Context (which products tried to use them)
+
+### Important Files for Laptop Management
+
+#### Configuration Files
+- `config/laptop_specs.py` - Database of laptop models and configurations
+- `config/laptop_metafield_mapping_enhanced.py` - Metaobject GID mappings
+- `config/laptop_inclusions.py` - Laptop-specific inclusion options
+
+#### Scripts
+- `scripts/analyze_laptop_metaobjects.py` - Analyze existing metaobjects
+- `scripts/cross_reference_laptop_metaobjects.py` - Find missing entries
+- `scripts/missing_laptop_metaobjects/create_missing_metaobjects_graphql.py` - Create metaobjects
+
+#### Reports
+- `/reports/laptop_metaobjects_analysis.json` - Current metaobject inventory
+- `/reports/laptop_missing_metaobjects_report.md` - Gap analysis
+- `/logs/missing_metaobjects.json` - Runtime missing entry tracking
+
+### Metaobject Naming Conventions
+
+When creating new metaobjects, follow these formats:
+
+1. **Processors**: `"Brand Model (X CPUs), ~Clock GHz"`
+   - Example: `"Intel Core i7-14700HX (24 CPUs), ~2.1GHz"`
+
+2. **Graphics**: `"Brand Model XGB"`
+   - Example: `"NVIDIA GeForce RTX 4060 8GB"`
+
+3. **Display**: `"Size-inch Resolution (RefreshHz)"`
+   - Example: `"15.6-inch FHD (144Hz)"`
+
+4. **Storage**: `"Capacity Type"`
+   - Example: `"512GB SSD"`
+
+5. **RAM**: `"XGB"`
+   - Example: `"16GB"`
+
+### Troubleshooting
+
+1. **Metaobject Creation Fails**
+   - Check API credentials are set correctly
+   - Verify metaobject definition IDs match your store
+   - Check GraphQL error messages in logs
+
+2. **Templates Not Mapping**
+   - Check `logs/missing_metaobjects.json` for unmapped values
+   - Verify naming format matches expected pattern
+   - Run gap analysis to identify missing entries
+
+3. **Product Creation Errors**
+   - Enable debug logging in `services/laptop_metafield_service.py`
+   - Check Shopify API response for specific errors
+   - Verify all required metaobject types exist
+
+### Best Practices
+
+1. **Always run gap analysis** before adding new laptop brands
+2. **Create metaobjects in batches** to avoid rate limits
+3. **Test with one product** before bulk creation
+4. **Monitor missing entries log** regularly
+5. **Document new brand specifications** in laptop_specs.py
+6. **Follow naming conventions** for consistency

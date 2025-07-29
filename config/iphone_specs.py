@@ -6,6 +6,38 @@ Used for template generation and validation.
 from typing import Dict, List, NamedTuple
 from dataclasses import dataclass
 
+# iPhone Color GID Mappings - Updated with actual Shopify metaobject GIDs
+IPHONE_COLOR_GIDS = {
+    "Black": "gid://shopify/Metaobject/108876857493",  # Fixed: Now uses correct Black metaobject
+    "White": "gid://shopify/Metaobject/131501686933",
+    "Blue": "gid://shopify/Metaobject/131501097109",
+    "Green": "gid://shopify/Metaobject/131501785237",
+    "Space Gray": "gid://shopify/Metaobject/131501228181",
+    "Silver": "gid://shopify/Metaobject/131501195413",
+    "Gold": "gid://shopify/Metaobject/131501523093",
+    "Pacific Blue": "gid://shopify/Metaobject/131501359253",
+    "Graphite": "gid://shopify/Metaobject/131501392021",
+    "Sierra Blue": "gid://shopify/Metaobject/131501719701",
+    "Midnight": "gid://shopify/Metaobject/131501752469",
+    "Starlight": "gid://shopify/Metaobject/131501555861",
+    "Space Black": "gid://shopify/Metaobject/131501850773",
+    "Midnight Green": "gid://shopify/Metaobject/131501654165",
+    "Black Titanium": "gid://shopify/Metaobject/131501424789",
+    "White Titanium": "gid://shopify/Metaobject/131501162645",
+    "Natural Titanium": "gid://shopify/Metaobject/131501195413",
+    "Desert Titanium": "gid://shopify/Metaobject/131501523093",
+    "Blue Titanium": "gid://shopify/Metaobject/131501097109",
+    "(PRODUCT)RED": "gid://shopify/Metaobject/131501064341",
+    "Pink": "gid://shopify/Metaobject/131501293717",
+    "Yellow": "gid://shopify/Metaobject/131501883541",
+    "Purple": "gid://shopify/Metaobject/131501654165",
+    "Coral": "gid://shopify/Metaobject/131501293717",
+    "Deep Purple": "gid://shopify/Metaobject/131501654165",
+    "Red": "gid://shopify/Metaobject/131501064341",
+    "Teal": "gid://shopify/Metaobject/131501359253",
+    "Ultramarine": "gid://shopify/Metaobject/131501097109",
+}
+
 @dataclass
 class iPhoneSpec:
     """iPhone model specification"""

@@ -149,6 +149,72 @@ STANDARDIZED_COMPONENTS = {
     }
 }
 
+# CPU to Integrated Graphics mapping - maps CPU models to their actual integrated graphics
+CPU_TO_INTEGRATED_GRAPHICS = {
+    # Intel 14th gen (2024) - Iris Xe or UHD 770
+    "i7-14700HX": "Intel UHD Graphics 770",
+    "i9-14900HX": "Intel UHD Graphics 770",
+    
+    # Intel 13th gen (2023) - Iris Xe or UHD 770
+    "i7-13700H": "Intel Iris Xe Graphics",
+    "i9-13900H": "Intel Iris Xe Graphics",
+    "i5-13500H": "Intel Iris Xe Graphics",
+    
+    # Intel 12th gen (2022) - Iris Xe or UHD 770
+    "i7-12700H": "Intel Iris Xe Graphics",
+    "i7-12650H": "Intel Iris Xe Graphics",
+    "i5-12500H": "Intel Iris Xe Graphics",
+    "i9-12900H": "Intel Iris Xe Graphics",
+    
+    # Intel 11th gen (2021) - Iris Xe or UHD
+    "i5-11400H": "Intel UHD Graphics",
+    "i7-11800H": "Intel UHD Graphics",
+    "i7-11370H": "Intel Iris Xe Graphics",
+    "i9-11900H": "Intel UHD Graphics",
+    
+    # Intel 10th gen (2020) - UHD 630
+    "i5-10300H": "Intel UHD Graphics 630",
+    "i5-10200H": "Intel UHD Graphics 630",
+    "i7-10750H": "Intel UHD Graphics 630",
+    "i7-10700H": "Intel UHD Graphics 630",
+    
+    # Intel 9th gen (2019) - UHD 630
+    "i7-9750H": "Intel UHD Graphics 630",
+    "i5-9300H": "Intel UHD Graphics 630",
+    
+    # Intel 8th gen (2018) - UHD 630
+    "i7-8750H": "Intel UHD Graphics 630",
+    "i5-8300H": "Intel UHD Graphics 630",
+    
+    # AMD Ryzen 8000 series (2024) - RDNA3
+    "Ryzen 9 8945HS": "AMD Radeon 780M Graphics",
+    
+    # AMD Ryzen 8000/7000 series (2023-2024) - RDNA3
+    "Ryzen 7 8845HS": "AMD Radeon 780M Graphics",
+    "Ryzen 7 7840HS": "AMD Radeon 780M Graphics",
+    "Ryzen 9 7945HX": "AMD Radeon 780M Graphics",
+    
+    # AMD Ryzen 7000 series (2022-2023) - RDNA2/RDNA3
+    "Ryzen 7 7735HS": "AMD Radeon 680M Graphics",
+    "Ryzen 9 7940HS": "AMD Radeon 780M Graphics",
+    "Ryzen 7 7040": "AMD Radeon 780M Graphics",
+    "Ryzen 5 7640HS": "AMD Radeon Graphics",
+    
+    # AMD Ryzen 6000 series (2022) - RDNA2
+    "Ryzen 7 6800H": "AMD Radeon 680M Graphics",
+    "Ryzen 9 6900HX": "AMD Radeon 680M Graphics",
+    "Ryzen 5 6600H": "AMD Radeon Graphics",
+    
+    # AMD Ryzen 5000 series (2021) - Vega
+    "Ryzen 7 5800H": "AMD Radeon Graphics",
+    "Ryzen 5 5600H": "AMD Radeon Graphics",
+    "Ryzen 9 5900HX": "AMD Radeon Graphics",
+    
+    # AMD Ryzen 4000 series (2020) - Vega
+    "Ryzen 7 4800H": "AMD Radeon Graphics",
+    "Ryzen 5 4600H": "AMD Radeon Graphics",
+}
+
 # Complete laptop specifications database
 LAPTOP_SPECS: Dict[str, LaptopSpec] = {
     # ASUS TUF Gaming Series
@@ -1794,16 +1860,22 @@ def expand_laptop_template_specs(template_info: Dict[str, str]) -> Dict[str, str
             # Put dedicated graphics in gpu_full (which maps to VGA in UI), set integrated graphics based on CPU
             expanded['gpu_full'] = gpu_full  # This will be used for VGA field
             
-            # Auto-detect integrated graphics based on CPU
+            # Auto-detect integrated graphics based on CPU using accurate mapping
             cpu = template_info.get('cpu', '')
-            if 'Intel' in cpu or cpu.startswith('i'):
-                expanded['integrated_graphics'] = 'Intel Iris Xe Graphics'
-            elif 'Ryzen' in cpu or 'AMD' in cpu:
-                expanded['integrated_graphics'] = 'AMD Radeon Graphics'
+            
+            # Use the CPU_TO_INTEGRATED_GRAPHICS mapping for accurate integrated graphics
+            if cpu in CPU_TO_INTEGRATED_GRAPHICS:
+                expanded['integrated_graphics'] = CPU_TO_INTEGRATED_GRAPHICS[cpu]
             elif 'Apple' in cpu or cpu.startswith('M'):
                 expanded['integrated_graphics'] = f'Apple GPU ({cpu})'
             else:
-                expanded['integrated_graphics'] = ''
+                # Fallback for CPUs not in the mapping
+                if 'Intel' in cpu or cpu.startswith('i'):
+                    expanded['integrated_graphics'] = 'Intel UHD Graphics'
+                elif 'Ryzen' in cpu or 'AMD' in cpu:
+                    expanded['integrated_graphics'] = 'AMD Radeon Graphics'
+                else:
+                    expanded['integrated_graphics'] = ''
         
         # Don't copy the vga field from template - it contains port info, not graphics card info
         if 'vga' in expanded:

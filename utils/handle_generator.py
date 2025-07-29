@@ -58,3 +58,16 @@ def preview_handle(title: str) -> str:
     handle = f"{handle_base}-{today}-{counter_str}"
     
     return handle
+
+def generate_laptop_handle(brand: str, model: str, specs: str) -> str:
+    """
+    Generate a unique handle for a laptop product
+    Format: {brand}-{model}-{specs}-{YYMMDD}-{counter}
+    Example: asus-tuf-f15-i7-16gb-250729-001
+    """
+    # Combine brand, model, and specs
+    title_parts = [brand, model, specs]
+    title = " ".join(part for part in title_parts if part)
+    
+    # Use the main generate_handle function
+    return generate_handle(title)

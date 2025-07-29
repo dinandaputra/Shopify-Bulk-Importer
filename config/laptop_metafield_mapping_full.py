@@ -159,7 +159,7 @@ VGA_FULL_NAME_MAPPING = {
     "NVIDIA GeForce RTX 4080 16GB": "gid://shopify/Metaobject/131308420245",
     "NVIDIA GeForce RTX 4070 Ti 12GB": "gid://shopify/Metaobject/131308453013",
     "NVIDIA GeForce RTX 4070 12GB": "gid://shopify/Metaobject/131308485781",
-    "NVIDIA GeForce RTX 4060 8GB": "gid://shopify/Metaobject/131308518549",
+    "NVIDIA GeForce RTX 4060 8GB": "gid://shopify/Metaobject/131302916245",
     "NVIDIA GeForce RTX 4050 6GB": "gid://shopify/Metaobject/117180891285",
     
     # NVIDIA RTX 30 Series  

@@ -26,6 +26,12 @@ from collections import defaultdict
 
 from config.laptop_metafields import LAPTOP_METAFIELDS, ADDITIONAL_METAFIELDS
 
+# Import the clean dedicated_graphics mapping
+try:
+    from config.dedicated_graphics_mapping import DEDICATED_GRAPHICS_MAPPING
+except ImportError:
+    DEDICATED_GRAPHICS_MAPPING = {}
+
 @dataclass
 class MissingMetaobjectEntry:
     """Represents a missing metaobject entry with tracking info"""
@@ -289,6 +295,7 @@ if __name__ == "__main__":
             'storage': 'gid://shopify/MetaobjectDefinition/10097983637',
             'operating_system': 'gid://shopify/MetaobjectDefinition/10827989141',
             'keyboard_layout': 'gid://shopify/MetaobjectDefinition/10097819797',
+            'color': 'gid://shopify/MetaobjectDefinition/7936606357',  # Color metaobject definition
         }
         return field_mapping.get(field_name)
 
@@ -304,6 +311,10 @@ def get_processor_metafield_gid(value: str) -> Optional[str]:
     return get_metaobject_gid_full('processor', value)
 
 def get_graphics_metafield_gid(value: str) -> Optional[str]:
+    # First try the clean dedicated_graphics mapping
+    if value in DEDICATED_GRAPHICS_MAPPING:
+        return DEDICATED_GRAPHICS_MAPPING[value]
+    # Fallback to full mapping
     return get_metaobject_gid_full('graphics', value)
 
 def get_display_metafield_gid(value: str) -> Optional[str]:
@@ -313,6 +324,10 @@ def get_storage_metafield_gid(value: str) -> Optional[str]:
     return get_metaobject_gid_full('storage', value)
 
 def get_vga_metafield_gid(value: str) -> Optional[str]:
+    # First try the clean dedicated_graphics mapping (VGA and graphics share the same metaobjects)
+    if value in DEDICATED_GRAPHICS_MAPPING:
+        return DEDICATED_GRAPHICS_MAPPING[value]
+    # Fallback to full mapping
     return get_metaobject_gid_full('vga', value)
 
 def get_os_metafield_gid(value: str) -> Optional[str]:
@@ -326,9 +341,13 @@ def get_keyboard_backlight_metafield_gid(value: str) -> Optional[str]:
     return None
 
 def get_color_metafield_gid(value: str) -> Optional[str]:
-    # Color metafield mapping - placeholder for now
-    # TODO: Add proper color metaobject mapping when available
-    return None
+    # Import color mappings from actual mapping file
+    try:
+        from config.laptop_metafield_mapping_actual import COLOR_METAOBJECTS
+        return COLOR_METAOBJECTS.get(value)
+    except ImportError:
+        # Fallback to full mapping
+        return get_metaobject_gid_full('color', value)
 
 def get_metaobject_gid_enhanced(field_name: str, value: str, context: Dict[str, Any] = None) -> Tuple[Optional[str], bool]:
     """

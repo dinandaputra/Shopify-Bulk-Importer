@@ -149,7 +149,7 @@ VGA_METAOBJECTS_NEW = {
     "RTX 4090": "gid://shopify/Metaobject/131308486805",  # NVIDIA GeForce RTX 4090 24GB
     "RTX 4080": "gid://shopify/Metaobject/131308519573",  # NVIDIA GeForce RTX 4080 16GB
     "RTX 4070": "gid://shopify/Metaobject/131308552341",  # NVIDIA GeForce RTX 4070 12GB
-    "RTX 4060": "gid://shopify/Metaobject/131308585109",  # NVIDIA GeForce RTX 4060 8GB
+    "RTX 4060": "gid://shopify/Metaobject/131302916245",  # NVIDIA GeForce RTX 4060 8GB
     "RTX 3080 Ti": "gid://shopify/Metaobject/131308617877",  # NVIDIA GeForce RTX 3080 Ti 16GB
     "RTX 3080": "gid://shopify/Metaobject/131308650645",  # NVIDIA GeForce RTX 3080 10GB
     "RTX 3070 Ti": "gid://shopify/Metaobject/131308683413",  # NVIDIA GeForce RTX 3070 Ti 8GB
