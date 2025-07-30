@@ -302,9 +302,104 @@ if __name__ == "__main__":
 # Global logger instance
 missing_logger = MissingMetaobjectLogger()
 
-# Import existing mapping functions
-from config.laptop_metafield_mapping_full import get_metaobject_gid_full
-from config.laptop_metafield_mapping_actual import get_metaobject_gid
+# Import existing mapping functions from actual mapping (working version)
+from config.laptop_metafield_mapping_actual import (
+    get_metaobject_gid,
+    PROCESSOR_METAOBJECTS,
+    GRAPHICS_METAOBJECTS,
+    VGA_METAOBJECTS,
+    DISPLAY_METAOBJECTS,
+    STORAGE_METAOBJECTS,
+    OS_METAOBJECTS,
+    KEYBOARD_LAYOUT_METAOBJECTS,
+    LAPTOP_RANK_METAOBJECTS,
+    LAPTOP_INCLUSION_METAOBJECTS,
+    LAPTOP_MINUS_METAOBJECTS,
+    COLOR_METAOBJECTS
+)
+
+# Enhanced lookup function with fallback to actual mapping
+def get_metaobject_gid_full(field_name: str, value: str) -> Optional[str]:
+    """
+    Get metaobject GID with enhanced lookup that falls back to actual mapping
+    """
+    # First try the actual mapping function
+    result = get_metaobject_gid(field_name, value)
+    if result:
+        return result
+    
+    # Enhanced processor name extraction for templates
+    if field_name == 'processor':
+        mappings = PROCESSOR_METAOBJECTS
+        
+        # Extract abbreviated form from full processor name
+        # "Intel Core i7-12700H (16 CPUs), ~2.3GHz" → "i7-12700H"
+        if 'Intel Core' in value:
+            parts = value.split()
+            if len(parts) >= 3:
+                abbreviated = parts[2].split('(')[0].strip()
+                if abbreviated in mappings:
+                    return mappings[abbreviated]
+        
+        # Handle AMD processors: "AMD Ryzen 7 4800HS (16 CPUs), ~2.9GHz" → "Ryzen 7 4800HS"
+        elif 'AMD Ryzen' in value:
+            # Extract "Ryzen 7 4800HS" from "AMD Ryzen 7 4800HS (16 CPUs), ~2.9GHz"
+            if '(' in value:
+                ryzen_part = value.split('(')[0].strip()  # "AMD Ryzen 7 4800HS"
+                abbreviated = ryzen_part.replace('AMD ', '')  # "Ryzen 7 4800HS"
+                if abbreviated in mappings:
+                    return mappings[abbreviated]
+        
+        # Handle Apple processors: "Apple M2 Chip" → "Apple M2"
+        elif 'Apple M' in value:
+            apple_part = value.replace(' Chip', '').strip()  # "Apple M2"
+            if apple_part in mappings:
+                return mappings[apple_part]
+    
+    # Enhanced display matching for templates
+    elif field_name == 'display':
+        mappings = DISPLAY_METAOBJECTS
+        # Try to match "15-inch FHD (144Hz)" to "15 FHD 144Hz"
+        if '15-inch FHD (144Hz)' in value:
+            return mappings.get('15 FHD 144Hz')
+        elif '15.6-inch FHD (144Hz)' in value:
+            return mappings.get('15.6 FHD 144Hz')
+        elif '15-inch FHD (240Hz)' in value:
+            return mappings.get('15 FHD 240Hz')
+        elif '15-inch FHD (300Hz)' in value:
+            return mappings.get('15 FHD 300Hz')
+        elif '15-inch FHD (60Hz)' in value:
+            return mappings.get('15 FHD 60Hz')
+        elif '15-inch HD (60Hz)' in value:
+            return mappings.get('15 HD 60Hz')
+        elif '14-inch FHD (144Hz)' in value:
+            return mappings.get('14 FHD 144Hz')
+        elif '13-inch FHD (60Hz) Touch Screen' in value:
+            return mappings.get('13 FHD Touch')
+        elif '13.4 Inch FHD (120Hz) Touchscreen' in value:
+            return mappings.get('13.4 FHD 120Hz Touch')
+        # Retina displays
+        elif '16-inch Retina' in value:
+            return mappings.get('16 Retina')
+        elif '15.4-inch Retina' in value:
+            return mappings.get('15.4 Retina')
+        elif '15-inch Retina' in value:
+            return mappings.get('15 Retina')
+        elif '13.6-inch Retina' in value:
+            return mappings.get('13.6 Retina')
+        elif '13.3-inch Retina' in value:
+            return mappings.get('13.3 Retina')
+        elif '13-inch Retina' in value:
+            return mappings.get('13 Retina')
+        elif '12-inch Retina' in value:
+            return mappings.get('12 Retina')
+        # Basic displays
+        elif '13-inch' in value:
+            return mappings.get('13 inch')
+        elif '11-inch' in value:
+            return mappings.get('11 inch')
+    
+    return None
 
 # Define lookup functions that delegate to the full mapping
 def get_processor_metafield_gid(value: str) -> Optional[str]:
@@ -341,13 +436,8 @@ def get_keyboard_backlight_metafield_gid(value: str) -> Optional[str]:
     return None
 
 def get_color_metafield_gid(value: str) -> Optional[str]:
-    # Import color mappings from actual mapping file
-    try:
-        from config.laptop_metafield_mapping_actual import COLOR_METAOBJECTS
-        return COLOR_METAOBJECTS.get(value)
-    except ImportError:
-        # Fallback to full mapping
-        return get_metaobject_gid_full('color', value)
+    # Use imported color mappings from actual mapping file
+    return COLOR_METAOBJECTS.get(value)
 
 def get_metaobject_gid_enhanced(field_name: str, value: str, context: Dict[str, Any] = None) -> Tuple[Optional[str], bool]:
     """

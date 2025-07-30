@@ -60,6 +60,57 @@ PROCESSOR_METAOBJECTS = {
     "i5-1135G7": "gid://shopify/Metaobject/125934796949",  # Intel Core i5-1135G7 @ 2.40GHz
     "i9-11900H": "gid://shopify/Metaobject/125935124629",  # Intel Core i9-11900H (16 CPUs), ~2.6GHz
     "i5-1035G1": "gid://shopify/Metaobject/125935779989",  # Intel Core i5-1035G1 (8 CPUs), ~1.2GHz
+    
+    # Additional processors from complete mapping (missing from original actual mapping)
+    "i9-13980HX": "gid://shopify/Metaobject/131306291349",  # Intel Core i9-13980HX (32 CPUs), ~3.0GHz
+    "i9-13950HX": "gid://shopify/Metaobject/131306324117",  # Intel Core i9-13950HX (32 CPUs), ~3.0GHz
+    "i9-12950HX": "gid://shopify/Metaobject/131306356885",  # Intel Core i9-12950HX (24 CPUs), ~2.3GHz
+    "i9-12900HX": "gid://shopify/Metaobject/131306389653",  # Intel Core i9-12900HX (24 CPUs), ~2.3GHz
+    "i9-12900HK": "gid://shopify/Metaobject/131306422421",  # Intel Core i9-12900HK (20 CPUs), ~2.5GHz
+    "i9-12900H": "gid://shopify/Metaobject/131306455189",  # Intel Core i9-12900H (20 CPUs), ~2.5GHz
+    "i9-11980HK": "gid://shopify/Metaobject/131306487957",  # Intel Core i9-11980HK (16 CPUs), ~2.6GHz
+    "i9-11950H": "gid://shopify/Metaobject/131306520725",  # Intel Core i9-11950H (16 CPUs), ~2.6GHz
+    "i9-10980HK": "gid://shopify/Metaobject/131306553493",  # Intel Core i9-10980HK (16 CPUs), ~2.4GHz
+    "i9-10885H": "gid://shopify/Metaobject/131306586261",  # Intel Core i9-10885H (16 CPUs), ~2.4GHz
+    "i9-9980HK": "gid://shopify/Metaobject/131306619029",  # Intel Core i9-9980HK (16 CPUs), ~2.4GHz
+    "i9-8950HK": "gid://shopify/Metaobject/131306651797",  # Intel Core i9-8950HK (12 CPUs), ~2.9GHz
+    "i7-13700HX": "gid://shopify/Metaobject/131306684565",  # Intel Core i7-13700HX (24 CPUs), ~2.1GHz
+    "i7-13700H": "gid://shopify/Metaobject/131306717333",  # Intel Core i7-13700H (20 CPUs), ~2.4GHz
+    "i7-12800HX": "gid://shopify/Metaobject/131306750101",  # Intel Core i7-12800HX (20 CPUs), ~2.0GHz
+    "i7-12700H": "gid://shopify/Metaobject/131306782869",  # Intel Core i7-12700H (20 CPUs), ~2.3GHz 🎯 KEY FIX
+    "i7-11800H": "gid://shopify/Metaobject/131306815637",  # Intel Core i7-11800H (16 CPUs), ~2.3GHz
+    "i7-11700H": "gid://shopify/Metaobject/131306848405",  # Intel Core i7-11700H (16 CPUs), ~2.3GHz
+    "i7-11370H": "gid://shopify/Metaobject/131307896981",  # Intel Core i7-11370H (8 CPUs), ~3.3GHz 🎯 MISSING PROCESSOR FIX
+    "i7-10700H": "gid://shopify/Metaobject/131306881173",  # Intel Core i7-10700H (16 CPUs), ~2.6GHz
+    "i7-9750H": "gid://shopify/Metaobject/131306913941",  # Intel Core i7-9750H (12 CPUs), ~2.6GHz
+    "i7-8750H": "gid://shopify/Metaobject/131306946709",  # Intel Core i7-8750H (12 CPUs), ~2.2GHz
+    "i5-13500H": "gid://shopify/Metaobject/131306979477",  # Intel Core i5-13500H (18 CPUs), ~2.6GHz
+    "i5-12500H": "gid://shopify/Metaobject/131307012245",  # Intel Core i5-12500H (16 CPUs), ~2.5GHz
+    "i5-11400H": "gid://shopify/Metaobject/131307045013",  # Intel Core i5-11400H (12 CPUs), ~2.7GHz
+    "i5-9300H": "gid://shopify/Metaobject/131307077781",  # Intel Core i5-9300H (8 CPUs), ~2.4GHz
+    "i5-8300H": "gid://shopify/Metaobject/131307110549",  # Intel Core i5-8300H (8 CPUs), ~2.3GHz
+    "Ryzen 9 8945HS": "gid://shopify/Metaobject/131307143317",  # AMD Ryzen 9 8945HS (16 CPUs), ~4.0GHz
+    "Ryzen 9 7945HX": "gid://shopify/Metaobject/131307176085",  # AMD Ryzen 9 7945HX (32 CPUs), ~2.5GHz
+    "Ryzen 9 6900HX": "gid://shopify/Metaobject/131307208853",  # AMD Ryzen 9 6900HX (16 CPUs), ~3.3GHz
+    "Ryzen 9 5900HX": "gid://shopify/Metaobject/131307241621",  # AMD Ryzen 9 5900HX (16 CPUs), ~3.3GHz
+    "Ryzen 7 8845HS": "gid://shopify/Metaobject/131307274389",  # AMD Ryzen 7 8845HS (16 CPUs), ~3.8GHz
+    "Ryzen 7 7840HS": "gid://shopify/Metaobject/131307339925",  # AMD Ryzen 7 7840HS (16 CPUs), ~3.8GHz
+    "Ryzen 7 7735HS": "gid://shopify/Metaobject/131307372693",  # AMD Ryzen 7 7735HS (16 CPUs), ~3.2GHz
+    "Ryzen 7 6800H": "gid://shopify/Metaobject/131307405461",  # AMD Ryzen 7 6800H (16 CPUs), ~3.2GHz
+    "Ryzen 7 4800H": "gid://shopify/Metaobject/131307438229",  # AMD Ryzen 7 4800H (16 CPUs), ~2.9GHz
+    "Ryzen 5 7640HS": "gid://shopify/Metaobject/131307470997",  # AMD Ryzen 5 7640HS (12 CPUs), ~4.3GHz
+    "Ryzen 5 6600H": "gid://shopify/Metaobject/131307503765",  # AMD Ryzen 5 6600H (12 CPUs), ~3.3GHz
+    "Ryzen 5 5600H": "gid://shopify/Metaobject/131307536533",  # AMD Ryzen 5 5600H (12 CPUs), ~3.3GHz
+    "Ryzen 5 4600H": "gid://shopify/Metaobject/131307569301",  # AMD Ryzen 5 4600H (12 CPUs), ~3.0GHz
+    "Apple M3 Max": "gid://shopify/Metaobject/131307602069",  # Apple M3 Max Chip
+    "Apple M3 Pro": "gid://shopify/Metaobject/131307634837",  # Apple M3 Pro Chip
+    "Apple M3": "gid://shopify/Metaobject/131307667605",  # Apple M3 Chip
+    "Apple M1 Ultra": "gid://shopify/Metaobject/131307700373",  # Apple M1 Ultra Chip
+    "Apple M1 Max": "gid://shopify/Metaobject/131307733141",  # Apple M1 Max Chip
+    "Apple M1 Pro": "gid://shopify/Metaobject/131307765909",  # Apple M1 Pro Chip
+    "Apple M1": "gid://shopify/Metaobject/131307798677",  # Apple M1 Chip
+    "i5 Quad-Core 2.4GHz": "gid://shopify/Metaobject/131307831445",  # Intel Core i5 Quad-Core 2.4GHz
+    "i5 Quad-Core 2.0GHz": "gid://shopify/Metaobject/131307864213",  # Intel Core i5 Quad-Core 2.0GHz
 }
 
 GRAPHICS_METAOBJECTS = {
@@ -165,14 +216,8 @@ LAPTOP_MINUS_METAOBJECTS = {
 def get_metaobject_gid(field_name: str, value: str) -> Optional[str]:
     """Get metaobject GID for a given field and value"""
     
-    # Try using the enhanced mapping first
-    try:
-        from config.laptop_metafield_mapping_full import get_metaobject_gid_full
-        result = get_metaobject_gid_full(field_name, value)
-        if result:
-            return result
-    except ImportError:
-        pass
+    # Enhanced mapping is now handled in the enhanced version
+    # This function provides the basic mapping functionality
     
     # Handle laptop-specific metaobjects
     if field_name == "rank" and value in LAPTOP_RANK_METAOBJECTS:

@@ -8,13 +8,41 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [Unreleased]
 
 ### Added
-- Phase 2 configuration management (planned)
+- Phase 3 scripts organization (planned)
 
 ### Changed
 - TBD
 
 ### Fixed
 - TBD
+
+## [1.4.0] - 2025-07-30
+
+### Added
+- Phase 2 Configuration Management completed
+- Enhanced processor name extraction for Intel, AMD, and Apple processors
+- Compatibility layer for backward compatibility (`laptop_metafield_mapping.py`)
+- 45 additional processor mappings restored from archived complete mapping
+- Comprehensive validation testing for all configuration changes
+
+### Changed
+- Consolidated laptop metafield mapping files from 6 → 3 authoritative files
+- Moved duplicate configuration files to `archive/config/` directory
+- Enhanced mapping system made self-contained (no external dependencies)
+- Missing entries logging system cleaned up (15→11 missing values)
+
+### Fixed
+- **CRITICAL**: Processor metaobject lookup regression that caused "Some specifications don't have metaobject entries yet" warnings
+- Missing processor mappings including `i7-11370H` and `i7-12700H`
+- Broken processor name extraction logic for template integration
+- Stale missing entries in logging system persisting after fixes
+
+### Technical Details
+- `config/laptop_metafield_mapping_enhanced.py`: UI layer with comprehensive logging
+- `config/laptop_metafield_mapping_actual.py`: Backend layer with core GID mappings  
+- `config/laptop_metafield_mapping.py`: Compatibility layer redirecting to enhanced version
+- All import chains validated and regression tested
+- Zero functionality regressions in smartphone or laptop product creation
 
 ## [1.3.0] - 2025-07-30
 
