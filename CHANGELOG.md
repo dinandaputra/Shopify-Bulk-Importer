@@ -8,13 +8,75 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [Unreleased]
 
 ### Added
-- Phase 3 scripts organization (planned)
+- Phase 5 AI Agent System Implementation (planned)
 
 ### Changed
 - TBD
 
 ### Fixed
 - TBD
+
+## [2.0.0] - 2025-07-31
+
+### Added
+- **Phase 4 Architecture Improvements completed** - Major architectural overhaul
+- **Clean Architecture implementation** with clear separation of concerns
+- **Repository Pattern** with abstract interfaces and Shopify implementations
+- **Domain Layer** with rich entities (SmartphoneEntity, LaptopEntity) and business logic
+- **Value Objects** for Price and Metafield with immutability and validation
+- **Dependency Injection Container** with constructor injection and service lifecycle management
+- **Centralized Error Handling System** with custom exception hierarchy
+- **Enhanced Product Service** maintaining backward compatibility while using new architecture
+- **Comprehensive integration tests** for all architectural components
+- **Architecture documentation** (ARCHITECTURE.md) with detailed system design
+- **Architectural Decision Record** (ADR-001) documenting clean architecture adoption
+
+### Changed
+- Restructured codebase following clean architecture principles
+- Separated business logic from infrastructure concerns
+- Improved testability with dependency injection and repository pattern
+- Enhanced error handling with consistent error processing across all layers
+- Updated project structure with domain/, repositories/, and infrastructure/ directories
+
+### Fixed
+- Import issues in domain services and infrastructure components
+- Async/await compatibility between repository interfaces and implementations
+- Type hints and proper error handling throughout the system
+
+### Tested
+- All 7 functionality tests passing (imports, domain layer, DI, API, services, error handling)
+- Successfully created test products with full metafield support
+- Verified backward compatibility with existing Streamlit UI
+- Confirmed zero regressions in existing functionality
+
+## [1.5.0] - 2025-07-30
+
+### Added
+- Phase 3 Scripts & Utilities Organization completed
+- Complete scripts directory structure with logical organization
+- 8 comprehensive README files for all script categories
+- Script organization by function: metaobjects/, utilities/, one_time/
+- Usage examples and best practices documentation for each category
+- Safety guidelines and naming conventions for script development
+- Future-ready structure with clear patterns for new scripts
+
+### Changed
+- Moved 4 existing scripts to appropriate organized directories
+- Updated import paths for moved scripts (verify_black_color_fix.py)
+- Enhanced scripts/README.md with comprehensive usage documentation
+- Reorganized debugging scripts into utilities/debugging/ subdirectory
+
+### Fixed  
+- Fixed relative import paths for moved scripts
+- Ensured all script imports work correctly from new locations
+- Verified all moved scripts maintain full functionality
+
+### Tested
+- Comprehensive testing of all moved scripts
+- Verified smartphone product creation (ID: 8852465123477)
+- Verified laptop product creation (ID: 8852466040981)
+- Confirmed all metafields working correctly
+- Validated Streamlit app functionality unchanged
 
 ## [1.4.0] - 2025-07-30
 

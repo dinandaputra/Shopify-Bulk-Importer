@@ -26,26 +26,42 @@ export SHOPIFY_API_SECRET="your_api_secret_here"
 export SHOPIFY_SHOP_DOMAIN="your-shop.myshopify.com"
 ```
 
-## Architecture Overview
+## Architecture Overview (Updated - Phase 4 Clean Architecture)
 
-### Core Application Structure
+### Clean Architecture Structure
+Following Clean Architecture principles with clear separation of concerns:
+
+#### Domain Layer (`domain/`)
+- **entities/**: Rich domain entities with business logic
+  - **product.py**: Abstract product base class
+  - **smartphone.py**: Smartphone entity with business rules
+  - **laptop.py**: Laptop entity with business rules
+- **services/**: Domain services for complex business logic
+  - **product_domain_service.py**: Product-related business operations
+  - **metafield_domain_service.py**: Metafield mapping and validation
+- **value_objects/**: Immutable domain concepts
+  - **price.py**: Price with currency handling
+  - **metafield.py**: Metafield data validation
+
+#### Infrastructure Layer (`infrastructure/`)
+- **container.py**: Dependency injection container
+- **exceptions.py**: Custom exception hierarchy
+- **error_handler.py**: Centralized error processing
+- **mappers/**: Data conversion utilities
+
+#### Repository Layer (`repositories/`)
+- **interfaces/**: Abstract repository contracts
+- **shopify_product_repository.py**: Shopify product data access
+- **shopify_metaobject_repository.py**: Shopify metaobject operations
+
+#### Application Layer
+- **services/enhanced_product_service.py**: Clean architecture service with backward compatibility
+- **Original services/**: Legacy services (maintained for compatibility)
+
+#### Presentation Layer
 - **streamlit_app.py**: Main entry point with navigation and session management
-- **pages/**: Streamlit pages for different product categories:
-  - **smartphone_entry.py**: Smartphone product entry with iPhone template system
-  - **laptop_entry.py**: Laptop product entry with template system (NEW)
-- **models/**: Pydantic models for data validation:
-  - **smartphone.py**: Smartphone data model with metafield definitions
-  - **laptop.py**: Laptop data model with specifications and metafields (NEW)
-- **services/**: Business logic and external API integrations
-- **config/**: Configuration management including:
-  - **shopify_config.py**: API configuration and validation
-  - **master_data.py**: Centralized product data and templates
-  - **laptop_specs.py**: Laptop specifications database (NEW)
-  - **laptop_metafields.py**: Laptop metafield definitions (NEW)
-  - **laptop_inclusions.py**: Laptop inclusion options (NEW)
-  - **laptop_metafield_mapping_enhanced.py**: Enhanced metafield mapping with logging (NEW)
-- **utils/**: Utility functions like handle generation
-- **database/**: Session state and counter management
+- **pages/**: Streamlit pages for different product categories
+- **models/**: Pydantic models (maintained for backward compatibility)
 
 ### Key Services
 - **shopify_api.py**: Core Shopify API client with authentication and error handling
@@ -271,9 +287,42 @@ When working with Shopify APIs, you MUST consult documentation in this order:
 - Documentation class names corrected (SmartphoneProduct, LaptopProduct)
 - Clean project structure following architectural best practices
 
-### 🎯 Next Project: Phase 2 Configuration Management (READY TO START)
+### 🎉 Phase 2 Configuration Management (COMPLETED - 2025-07-30)
+**Status**: Fully Implemented and Tested  
 **Goal**: Consolidate duplicate configuration files and create single source of truth  
-**Focus**: Laptop metafield mappings (4 versions), color management, graphics card configs  
+
+#### ✅ **Completed Features:**
+- **Configuration Consolidation**: Reduced laptop metafield files from 6 → 3 authoritative files
+- **Archive Organization**: 3 duplicate files moved to `archive/config/`
+- **Import Chain Integrity**: All imports validated and working correctly
+- **Processor Regression Fixed**: Resolved missing processor metaobject lookup issue
+- **Missing Entries Cleanup**: Cleaned stale entries from logging system
+- **Functionality Preservation**: Zero regressions in smartphone or laptop functionality
+
+#### 🔧 **Technical Implementation:**
+- Enhanced processor extraction supporting Intel, AMD, and Apple formats
+- Self-contained enhanced version with no external dependencies
+- 45 additional processors added from archived complete version
+- Backward compatibility maintained for all existing imports  
+
+### 🎉 Phase 3 Scripts & Utilities Organization (COMPLETED - 2025-07-30)
+**Status**: Fully Implemented and Tested  
+**Goal**: Create logical script organization and separate utilities from one-time scripts  
+
+#### ✅ **Completed Features:**
+- **Complete Directory Structure**: Created organized scripts/ hierarchy with metaobjects/, utilities/, and one_time/ subdirectories
+- **Script Organization**: Moved 4 existing scripts to appropriate categories (create/, query/, debugging/)
+- **Comprehensive Documentation**: Created 8 README files covering all script categories with usage examples and best practices
+- **Import Path Updates**: Fixed relative import paths for moved scripts, all imports working correctly
+- **Testing Verified**: All moved scripts tested and working (verify_black_color_fix.py, laptop metaobject data imports)
+- **Future-Ready Structure**: Established patterns for new scripts with clear naming conventions
+
+#### 🔧 **Technical Implementation:**
+- Scripts organized by function: metaobjects/, utilities/, one_time/
+- Each directory has comprehensive README with usage patterns
+- Import paths updated for new locations
+- All existing functionality preserved and tested
+- Clear naming conventions and safety guidelines established
 
 ### 🎉 Laptop Product Entry System (COMPLETED)
 **Status**: Fully Implemented and Operational  
@@ -330,6 +379,48 @@ When working with Shopify APIs, you MUST consult documentation in this order:
 - **DO NOT MODIFY** existing variant metafield system (`services/shopify_api.py:assign_metafields_to_variants()`)
 - **Maintain compatibility** with current SIM carrier variant workflow
 - **Preserve** all existing API integrations and error handling
+
+### 🎉 Phase 4 Architecture Improvements (COMPLETED - 2025-07-31)
+**Status**: Fully Implemented and Tested  
+**Goal**: Implement clean architecture patterns and improve testability  
+
+#### ✅ **Completed Features:**
+- **Repository Pattern**: Abstract data access with Shopify implementations
+- **Domain Layer**: Rich entities with business logic (SmartphoneEntity, LaptopEntity)
+- **Dependency Injection**: Lightweight container with constructor injection
+- **Error Handling System**: Centralized exception hierarchy and processing
+- **Value Objects**: Immutable Price and Metafield objects
+- **Enhanced Services**: Backward-compatible services using clean architecture
+- **Comprehensive Testing**: Integration tests validating all components
+- **Documentation**: Complete architecture guide and ADR
+
+#### 🔧 **Technical Implementation:**
+- Clean Architecture with clear layer separation
+- Repository Pattern abstracting Shopify API access
+- Domain entities with encapsulated business rules
+- Value objects for immutable domain concepts
+- DI container for service lifecycle management
+- Custom exception hierarchy for better error handling
+- Enhanced services maintaining backward compatibility
+
+#### 📊 **Architecture Benefits:**
+- **Improved Testability**: Domain logic testable in isolation
+- **Enhanced Maintainability**: Clear separation of concerns
+- **Better Extensibility**: Easy addition of new product types
+- **Backward Compatibility**: Zero breaking changes
+- **Error Consistency**: Standardized error handling across layers
+
+### 🎯 Next Project: Phase 5 AI Agent System Implementation (READY TO START)
+**Goal**: Create structured AI agent workflow system  
+**Focus**: Agent framework, context preservation, workflow automation  
+**Duration**: 4-5 days  
+**Priority**: MEDIUM  
+
+#### 📋 **Planned Features:**
+- **AI Agent Framework**: Structured agent responsibilities and workflows
+- **Context Preservation**: Session handoff and state management
+- **Workflow Templates**: Standardized agent operation patterns
+- **Agent Coordination**: Multi-agent collaborative workflows
 
 ## Important Files
 

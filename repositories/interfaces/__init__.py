@@ -1,0 +1,1 @@
+"""Repository interfaces for the Shopify Bulk Importer."""

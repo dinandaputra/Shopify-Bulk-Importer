@@ -14,7 +14,8 @@ scripts/
 ├── utilities/            # General utility scripts
 │   ├── data_migration/   # Data migration scripts
 │   ├── bulk_operations/  # Bulk operation scripts
-│   └── reporting/        # Reporting and analytics
+│   ├── reporting/        # Reporting and analytics
+│   └── debugging/        # Debug and verification scripts
 └── one_time/            # Scripts run once and archived
 ```
 
@@ -29,7 +30,7 @@ scripts/
 
 ## Utility Scripts
 
-### General Utilities
+### Debugging
 - `verify_black_color_fix.py`: Validates color metafield mappings
 
 ## Usage Guidelines
