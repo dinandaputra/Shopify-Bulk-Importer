@@ -276,6 +276,13 @@ def laptop_entry_page():
                 key="laptop_color_input"
             )
             
+            keyboard_backlight = st.text_input(
+                "Keyboard Backlight",
+                value=template_info.get('keyboard_backlight', 'Yes'),
+                help="Keyboard backlight type (Yes/No/RGB/White/Blue/Green/Red)",
+                key="laptop_keyboard_backlight_input"
+            )
+            
             # Optional fields
             st.markdown("**Optional Fields**")
             
@@ -350,7 +357,7 @@ def laptop_entry_page():
                     'color': color,
                     'operating_system': template_info.get('os', 'Windows 11'),
                     'keyboard_layout': template_info.get('keyboard_layout', 'US'),
-                    'keyboard_backlight': template_info.get('keyboard_backlight', 'Yes'),
+                    'keyboard_backlight': keyboard_backlight,
                     'inclusions': inclusions,
                     'minus': minus_issues,
                     'metafield_mappings': template_info.get('metafield_mappings', {})
@@ -435,7 +442,7 @@ def laptop_entry_page():
                     "laptop_title_input", "laptop_price_input", "laptop_rank_input",
                     "laptop_cpu_input", "laptop_ram_input", "laptop_gpu_input", 
                     "laptop_integrated_gpu_input", "laptop_display_input", "laptop_storage_input",
-                    "laptop_color_input", "laptop_inclusions_input", "laptop_minus_input", 
+                    "laptop_color_input", "laptop_keyboard_backlight_input", "laptop_inclusions_input", "laptop_minus_input", 
                     "laptop_collections_input"
                 ]
                 for key in laptop_form_keys:

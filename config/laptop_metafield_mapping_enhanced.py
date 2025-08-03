@@ -312,6 +312,7 @@ from config.laptop_metafield_mapping_actual import (
     STORAGE_METAOBJECTS,
     OS_METAOBJECTS,
     KEYBOARD_LAYOUT_METAOBJECTS,
+    KEYBOARD_BACKLIGHT_METAOBJECTS,
     LAPTOP_RANK_METAOBJECTS,
     LAPTOP_INCLUSION_METAOBJECTS,
     LAPTOP_MINUS_METAOBJECTS,
@@ -440,8 +441,8 @@ def get_keyboard_layout_metafield_gid(value: str) -> Optional[str]:
     return get_metaobject_gid_full('keyboard_layout', value)
 
 def get_keyboard_backlight_metafield_gid(value: str) -> Optional[str]:
-    # Keyboard backlight doesn't have metaobjects, return None
-    return None
+    # Use the actual mapping from laptop_metafield_mapping_actual
+    return get_metaobject_gid_full('keyboard_backlight', value)
 
 def get_color_metafield_gid(value: str) -> Optional[str]:
     # Use imported color mappings from actual mapping file

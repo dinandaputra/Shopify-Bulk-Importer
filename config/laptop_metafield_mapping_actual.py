@@ -187,6 +187,20 @@ KEYBOARD_LAYOUT_METAOBJECTS = {
     "Japanese": "gid://shopify/Metaobject/117265596565",  # Japanese - JIS Keyboard
 }
 
+KEYBOARD_BACKLIGHT_METAOBJECTS = {
+    "Backlit": "gid://shopify/Metaobject/117265465493",
+    "RGB Backlight": "gid://shopify/Metaobject/117265629333", 
+    "Non-backlit": "gid://shopify/Metaobject/117265662101",
+    "White": "gid://shopify/Metaobject/132381016213",
+    "Blue": "gid://shopify/Metaobject/132381048981",
+    "Green": "gid://shopify/Metaobject/132381081749",
+    "Red": "gid://shopify/Metaobject/132381114517",
+    # Map common template values to existing metaobjects
+    "RGB": "gid://shopify/Metaobject/117265629333",  # Map "RGB" to "RGB Backlight"
+    "Yes": "gid://shopify/Metaobject/117265465493",  # Map "Yes" to "Backlit"
+    "No": "gid://shopify/Metaobject/117265662101",   # Map "No" to "Non-backlit"
+}
+
 # Laptop-specific metaobject mappings
 LAPTOP_RANK_METAOBJECTS = {
     "BNIB": "gid://shopify/Metaobject/117266186389",
@@ -238,6 +252,7 @@ def get_metaobject_gid(field_name: str, value: str) -> Optional[str]:
         "storage": STORAGE_METAOBJECTS,
         "os": OS_METAOBJECTS,
         "keyboard_layout": KEYBOARD_LAYOUT_METAOBJECTS,
+        "keyboard_backlight": KEYBOARD_BACKLIGHT_METAOBJECTS,
         "color": COLOR_METAOBJECTS,
     }
     
@@ -296,6 +311,7 @@ def convert_laptop_data_to_metafields(laptop_data: Dict[str, Any]) -> Dict[str, 
         'inclusions': {'namespace': 'custom', 'key': '08_kelengkapan', 'type': 'metaobject_reference'},  # Laptop inclusions
         'rank': {'namespace': 'custom', 'key': '09_rank', 'type': 'metaobject_reference'},  # Laptop rank
         'keyboard_layout': {'namespace': 'custom', 'key': '10_keyboard_layout', 'type': 'metaobject_reference'},
+        'keyboard_backlight': {'namespace': 'custom', 'key': '11_keyboard_backlight', 'type': 'metaobject_reference'},
         'minus': {'namespace': 'custom', 'key': 'minus', 'type': 'metaobject_reference'}  # Shared with smartphones
     }
     
