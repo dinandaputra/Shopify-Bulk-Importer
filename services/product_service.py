@@ -272,6 +272,73 @@ class ProductService:
         
         return results
     
+    def upload_multiple_laptops(self, laptops: List[LaptopProduct], product_images: Dict[str, List] = None) -> Dict[str, Any]:
+        """
+        Upload multiple laptop products with optional image uploads
+        
+        Args:
+            laptops: List of LaptopProduct instances
+            product_images: Dictionary mapping product handles to lists of uploaded files
+            
+        Returns:
+            Dictionary with batch upload results
+        """
+        results = {
+            'total': len(laptops),
+            'successful': 0,
+            'failed': 0,
+            'success_count': 0,
+            'failed_count': 0,
+            'products': [],
+            'results': []
+        }
+        
+        for i, laptop in enumerate(laptops):
+            print(f"Uploading product {i+1}/{len(laptops)}: {laptop.title}")
+            
+            result = self.create_laptop_product(laptop)
+            
+            if result['success']:
+                results['successful'] += 1
+                results['success_count'] += 1
+                print(f"✅ Successfully created: {laptop.title}")
+                
+                # Handle image upload if images exist for this product
+                if product_images and laptop.handle in product_images:
+                    from services.image_service import image_service
+                    product_id = result.get('product_id')
+                    uploaded_files = product_images[laptop.handle]
+                    
+                    if product_id and uploaded_files:
+                        print(f"📸 Uploading {len(uploaded_files)} image(s) for {laptop.title}")
+                        image_success = image_service.handle_post_creation_upload(product_id, uploaded_files)
+                        if image_success:
+                            result['images_uploaded'] = len(uploaded_files)
+                        else:
+                            result['image_upload_partial'] = True
+                    
+            else:
+                results['failed'] += 1
+                results['failed_count'] += 1
+                print(f"❌ Failed to create: {laptop.title} - {result.get('error', 'Unknown error')}")
+            
+            results['products'].append({
+                'laptop': laptop,
+                'result': result
+            })
+            
+            # Also add to results array for compatibility with laptop UI
+            result_dict = result.copy()
+            result_dict['title'] = laptop.title
+            results['results'].append(result_dict)
+            
+            
+            # Small delay to respect rate limits
+            import time
+            time.sleep(0.5)
+        
+        return results
+    
     def create_smartphone_product_with_linked_metafields(self, smartphone: SmartphoneProduct) -> Dict[str, Any]:
         """
         Create a smartphone product using GraphQL with linked metafields for SIM carriers

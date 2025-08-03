@@ -97,6 +97,8 @@ class ImageService:
         Raises:
             ImageUploadError: If upload fails
         """
+        file_name = uploaded_file.name if hasattr(uploaded_file, 'name') else f'Position_{position}'
+        
         try:
             # Validate image
             if not self.validate_image(uploaded_file):
@@ -109,7 +111,7 @@ class ImageService:
             image_data = {
                 "image": {
                     "attachment": encoded_image,
-                    "filename": uploaded_file.name,
+                    "filename": file_name,
                     "position": position
                 }
             }
@@ -118,7 +120,8 @@ class ImageService:
             endpoint = f"products/{product_id}/images.json"
             response = self.shopify_client._make_request("POST", endpoint, data=image_data)
             
-            return response.get('image', {})
+            image_response = response.get('image', {})
+            return image_response
             
         except ShopifyAPIError as e:
             raise ImageUploadError(f"Shopify API error: {str(e)}")
@@ -142,9 +145,12 @@ class ImageService:
         
         for i, uploaded_file in enumerate(uploaded_files):
             try:
+                file_name = uploaded_file.name if hasattr(uploaded_file, 'name') else f'File_{i+1}'
+                file_size = uploaded_file.size if hasattr(uploaded_file, 'size') else 'Unknown'
+                
                 # Update progress if callback provided
                 if progress_callback:
-                    progress_callback(i + 1, len(uploaded_files), uploaded_file.name)
+                    progress_callback(i + 1, len(uploaded_files), file_name)
                 
                 # Upload image
                 image_data = self.upload_image_to_shopify(product_id, uploaded_file, position=i + 1)
@@ -155,9 +161,17 @@ class ImageService:
                     time.sleep(0.5)
                     
             except ImageUploadError as e:
+                file_name = uploaded_file.name if hasattr(uploaded_file, 'name') else f'File_{i+1}'
                 failed_uploads.append({
-                    'filename': uploaded_file.name,
+                    'filename': file_name,
                     'error': str(e)
+                })
+                continue
+            except Exception as e:
+                file_name = uploaded_file.name if hasattr(uploaded_file, 'name') else f'File_{i+1}'
+                failed_uploads.append({
+                    'filename': file_name,
+                    'error': f'Unexpected error: {str(e)}'
                 })
                 continue
         
@@ -346,7 +360,8 @@ class ImageService:
             status_text.empty()
             
             # Return success status
-            return len(uploaded_images) == len(uploaded_files)
+            success = len(uploaded_images) == len(uploaded_files)
+            return success
             
         except Exception as e:
             progress_bar.empty()

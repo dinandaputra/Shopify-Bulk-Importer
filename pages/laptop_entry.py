@@ -190,7 +190,23 @@ def laptop_entry_page():
     # Product Entry Form
     st.subheader("📝 Product Details")
     
+    # Initialize form reset counter for image uploads
+    if "form_reset_counter" not in st.session_state:
+        st.session_state.form_reset_counter = 0
+    
     with st.form("laptop_entry_form"):
+        st.divider()
+        
+        # Image upload section (inside form like smartphone implementation)
+        st.markdown("### 📸 Product Images")
+        uploaded_files = image_service.render_image_upload_interface("form")
+        
+        # Image preview with delete functionality
+        active_images = []
+        if uploaded_files:
+            active_images = image_service.render_image_preview(uploaded_files, "form")
+        
+        st.divider()
         col1, col2 = st.columns(2)
         
         with col1:
@@ -410,6 +426,15 @@ def laptop_entry_page():
                 
                 laptop_product = LaptopProduct(**validation_data)
                 
+                # Store uploaded images for this product (if any) - simplified approach like smartphone
+                
+                # Store uploaded images directly (simplified like smartphone entry)
+                if active_images:
+                    if "product_images" not in st.session_state:
+                        st.session_state.product_images = {}
+                    # Store images with product handle as key
+                    st.session_state.product_images[handle] = active_images
+                
                 # Add to session with enhanced metafield info
                 session_product = laptop_product.model_dump()
                 session_product['missing_metafields'] = missing_entries
@@ -448,6 +473,14 @@ def laptop_entry_page():
                 for key in laptop_form_keys:
                     if key in st.session_state:
                         del st.session_state[key]
+                
+                # Clear all form field keys to reset them completely (including image upload)
+                laptop_form_keys.append("image_upload_form")
+                
+                # Increment reset counter to force file uploader reset
+                if "form_reset_counter" not in st.session_state:
+                    st.session_state.form_reset_counter = 0
+                st.session_state.form_reset_counter += 1
                 
                 st.rerun()
                 
@@ -489,11 +522,46 @@ def laptop_entry_page():
                     st.write(f"**Metafields:** {available_count} available")
                     if missing_count > 0:
                         st.write(f"**Missing:** {missing_count} metafields")
+                    
+                    # Show image count and preview (read-only in main session view)
+                    if hasattr(st.session_state, 'product_images') and product.get('handle') in st.session_state.product_images:
+                        current_images = st.session_state.product_images[product.get('handle')]
+                        image_count = len(current_images)
+                        st.write(f"**Images**: 📸 {image_count} image(s)")
+                        
+                        # Display images in a grid (read-only preview)
+                        if image_count > 0:
+                            st.markdown("**Product Images:**")
+                            img_cols = st.columns(min(image_count, 3))
+                            
+                            for img_idx, img_file in enumerate(current_images):
+                                with img_cols[img_idx % 3]:
+                                    try:
+                                        img_file.seek(0)
+                                        st.image(
+                                            img_file,
+                                            caption=f"Image {img_idx + 1}",
+                                            width=100
+                                        )
+                                    except:
+                                        st.error(f"Cannot display image {img_idx + 1}")
+                    else:
+                        st.write(f"**Images**: 📸 0 image(s)")
                 
                 with col3:
-                    if st.button(f"Remove", key=f"remove_{i}"):
-                        st.session_state.products.pop(i)
-                        st.rerun()
+                    # Action buttons
+                    col_btn1, col_btn2 = st.columns(2)
+                    with col_btn1:
+                        if st.button(f"📝 Edit", key=f"edit_{i}"):
+                            st.session_state[f"editing_product_{i}"] = True
+                            st.rerun()
+                    with col_btn2:
+                        if st.button(f"🗑️ Remove", key=f"remove_{i}"):
+                            removed_product = st.session_state.products.pop(i)
+                            # Remove associated images
+                            if hasattr(st.session_state, 'product_images') and removed_product.get('handle') in st.session_state.product_images:
+                                del st.session_state.product_images[removed_product.get('handle')]
+                            st.rerun()
                 
                 # Show missing metafields details if any
                 if missing_count > 0:
@@ -501,6 +569,137 @@ def laptop_entry_page():
                         for field_name, values in product['missing_metafields'].items():
                             field_display = field_name.replace('_', ' ').title()
                             st.write(f"**{field_display}:** {', '.join(values)}")
+                
+                # Edit mode
+                if st.session_state.get(f"editing_product_{i}", False):
+                    st.markdown("---")
+                    st.subheader(f"✏️ Edit Product {i+1}")
+                    
+                    # Show current images if any
+                    current_images = []
+                    if hasattr(st.session_state, 'product_images') and product.get('handle') in st.session_state.product_images:
+                        current_images = st.session_state.product_images[product.get('handle')]
+                    
+                    if current_images:
+                        st.markdown("**Current Images:**")
+                        
+                        # Track which images to remove (only initialize once per editing session)
+                        images_to_remove_key = f"images_to_remove_edit_{i}"
+                        if images_to_remove_key not in st.session_state:
+                            st.session_state[images_to_remove_key] = set()
+                        
+                        images_to_remove = st.session_state[images_to_remove_key]
+                        
+                        # Display current images with delete options
+                        img_cols = st.columns(min(len(current_images), 4))
+                        for img_idx, img_file in enumerate(current_images):
+                            if img_idx not in images_to_remove:
+                                with img_cols[img_idx % 4]:
+                                    try:
+                                        img_file.seek(0)
+                                        st.image(img_file, caption=f"Image {img_idx + 1}", width=120)
+                                        if st.button(f"🗑️ Remove", key=f"remove_img_edit_{i}_{img_idx}"):
+                                            st.session_state[images_to_remove_key].add(img_idx)
+                                            st.rerun()
+                                    except:
+                                        st.error(f"Cannot display image {img_idx + 1}")
+                        
+                        # Prepare images to keep
+                        images_to_keep = [img for idx, img in enumerate(current_images) if idx not in images_to_remove]
+                    else:
+                        images_to_keep = []
+                    
+                    # Upload new images (simplified approach)
+                    st.markdown("**Upload New Images:**")
+                    new_uploaded_files = image_service.render_image_upload_interface(f"edit_{i}")
+                    
+                    # Preview new images
+                    new_active_images = []
+                    if new_uploaded_files:
+                        new_active_images = image_service.render_image_preview(new_uploaded_files, f"edit_{i}")
+                    
+                    # Combine kept current images and new images
+                    all_images = images_to_keep + new_active_images
+                    
+                    if all_images:
+                        st.success(f"Total images for this product: {len(all_images)}")
+                    
+                    st.divider()
+                    
+                    # Edit form for product data
+                    with st.form(f"edit_form_{i}"):
+                        # Editable fields
+                        new_title = st.text_input("Product Title", value=product.get('title', ''), key=f"edit_title_{i}")
+                        new_price = st.number_input("Price (¥)", value=float(product.get('price', 0)), min_value=0.0, step=100.0, key=f"edit_price_{i}")
+                        new_rank = st.selectbox("Product Rank", options=[1, 2, 3, 4, 5], index=int(product.get('rank', 1)) - 1, key=f"edit_rank_{i}")
+                        
+                        # Editable collections
+                        new_collections = st.multiselect(
+                            "Collections",
+                            ['All Products', 'Laptop', 'Gaming', 'Business', 'ASUS', 'Dell', 'HP', 'Lenovo', 'MSI'],
+                            default=product.get('collections', []),
+                            key=f"edit_collections_{i}"
+                        )
+                        
+                        # Edit form buttons
+                        edit_col_btn1, edit_col_btn2 = st.columns(2)
+                        with edit_col_btn1:
+                            save_clicked = st.form_submit_button("💾 Save Changes", type="primary")
+                        with edit_col_btn2:
+                            cancel_clicked = st.form_submit_button("❌ Cancel", type="secondary")
+                        
+                        if save_clicked:
+                            # Validation
+                            if not new_title.strip():
+                                st.error("Title cannot be empty")
+                            elif new_price <= 0:
+                                st.error("Price must be greater than 0")
+                            else:
+                                try:
+                                    # Update product data
+                                    updated_data = product.copy()
+                                    updated_data["title"] = new_title.strip()
+                                    updated_data["price"] = new_price
+                                    updated_data["rank"] = new_rank
+                                    updated_data["collections"] = new_collections
+                                    
+                                    # Generate new handle if title changed
+                                    if new_title.strip() != product.get('title', ''):
+                                        # generate_handle already imported at top
+                                        new_handle = generate_handle(new_title.strip())
+                                        updated_data["handle"] = new_handle
+                                        
+                                        # Update images dictionary key if handle changed
+                                        if hasattr(st.session_state, 'product_images') and product.get('handle') in st.session_state.product_images:
+                                            st.session_state.product_images[new_handle] = st.session_state.product_images.pop(product.get('handle'))
+                                    
+                                    # Update images
+                                    if all_images:
+                                        st.session_state.product_images[updated_data["handle"]] = all_images
+                                    elif updated_data["handle"] in st.session_state.product_images:
+                                        # Remove images if none left
+                                        del st.session_state.product_images[updated_data["handle"]]
+                                    
+                                    # Update product in session
+                                    st.session_state.products[i] = updated_data
+                                    
+                                    # Clear edit state
+                                    st.session_state[f"editing_product_{i}"] = False
+                                    if images_to_remove_key in st.session_state:
+                                        del st.session_state[images_to_remove_key]
+                                    
+                                    st.success("✅ Product updated successfully!")
+                                    st.rerun()
+                                    
+                                except Exception as e:
+                                    st.error(f"Error updating product: {str(e)}")
+                        
+                        if cancel_clicked:
+                            # Clear edit state
+                            st.session_state[f"editing_product_{i}"] = False
+                            if images_to_remove_key in st.session_state:
+                                del st.session_state[images_to_remove_key]
+                            st.rerun()
         
         # Session actions
         col1, col2, col3 = st.columns(3)
@@ -522,42 +721,48 @@ def laptop_entry_page():
         with col2:
             if st.button("🛍️ Create in Shopify", use_container_width=True):
                 try:
-                    success_count = 0
-                    error_count = 0
+                    # Prepare laptop products list
+                    laptop_products = []
+                    for product in st.session_state.products:
+                        # Filter out extra fields that aren't part of LaptopProduct model
+                        product_data = {k: v for k, v in product.items() 
+                                      if k not in ['missing_metafields', 'available_metafields']}
+                        laptop_products.append(LaptopProduct(**product_data))
                     
-                    progress_bar = st.progress(0)
-                    status_text = st.empty()
+                    # Get product images from session state (if any)
+                    product_images = getattr(st.session_state, 'product_images', {})
                     
-                    for i, product in enumerate(st.session_state.products):
-                        status_text.text(f"Creating product {i+1}/{len(st.session_state.products)}")
-                        
-                        try:
-                            # Filter out extra fields that aren't part of LaptopProduct model
-                            product_data = {k: v for k, v in product.items() 
-                                          if k not in ['missing_metafields', 'available_metafields']}
-                            
-                            # Create laptop product using the service
-                            result = product_service.create_laptop_product(LaptopProduct(**product_data))
-                            
-                            if result.get('success'):
-                                success_count += 1
-                            else:
-                                raise Exception(result.get('error', 'Unknown error'))
-                            
-                        except Exception as e:
-                            st.error(f"Failed to create {product.get('title', 'Unknown')}: {str(e)}")
-                            error_count += 1
-                        
-                        progress_bar.progress((i + 1) / len(st.session_state.products))
+                    
+                    # Use bulk upload method with integrated image handling
+                    with st.spinner("Creating laptops in Shopify..."):
+                        results = product_service.upload_multiple_laptops(laptop_products, product_images)
+                    
+                    # Show results
+                    success_count = results.get('success_count', 0)
+                    failed_count = results.get('failed_count', 0)
                     
                     if success_count > 0:
-                        st.success(f"✅ Created {success_count} products successfully!")
-                    if error_count > 0:
-                        st.warning(f"⚠️ {error_count} products failed to create")
+                        st.success(f"✅ Created {success_count} laptops successfully!")
+                        
+                        # Check for partial image uploads
+                        for result in results.get('results', []):
+                            if result.get('success') and result.get('image_upload_partial'):
+                                st.warning(f"⚠️ Some images failed for {result.get('title', 'Unknown laptop')}")
+                    
+                    if failed_count > 0:
+                        st.error(f"❌ {failed_count} laptops failed to create")
+                        
+                        # Show specific errors
+                        for result in results.get('results', []):
+                            if not result.get('success'):
+                                st.error(f"• {result.get('title', 'Unknown')}: {result.get('error', 'Unknown error')}")
                     
                     # Clear session after successful creation
                     if success_count > 0:
                         st.session_state.products = []
+                        # Clear associated images
+                        if hasattr(st.session_state, 'product_images'):
+                            st.session_state.product_images = {}
                         clear_session_data()  # Clear enhanced logging session data
                         st.rerun()
                         
@@ -567,6 +772,9 @@ def laptop_entry_page():
         with col3:
             if st.button("🗑️ Clear Session", use_container_width=True):
                 st.session_state.products = []
+                # Clear associated images
+                if hasattr(st.session_state, 'product_images'):
+                    st.session_state.product_images = {}
                 st.rerun()
 
 if __name__ == "__main__":
