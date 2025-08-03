@@ -397,7 +397,8 @@ def laptop_entry_page():
                 # Validate with Pydantic model (convert back to original field names for validation)
                 validation_data = laptop_data.copy()
                 validation_data['cpu'] = validation_data.pop('processor', '')
-                validation_data['gpu'] = validation_data.pop('graphics', '')
+                validation_data['gpu'] = validation_data.pop('vga', '')  # Dedicated graphics (VGA field) → gpu
+                validation_data['integrated_graphics'] = validation_data.pop('graphics', '')  # Integrated graphics → integrated_graphics
                 validation_data['os'] = validation_data.pop('operating_system', '')
                 
                 laptop_product = LaptopProduct(**validation_data)

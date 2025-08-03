@@ -992,10 +992,10 @@ class ProductService:
                 'color': laptop.color,     # Add color support
                 'processor': laptop.cpu,  # Note: field name change
                 'ram': laptop.ram,
-                'graphics': laptop.gpu,   # Note: field name change
+                'graphics': laptop.integrated_graphics,  # Integrated graphics - maps to 03 Graphics metafield
                 'display': laptop.display,
                 'storage': laptop.storage,
-                'vga': getattr(laptop, 'vga', None),
+                'vga': laptop.gpu,   # Dedicated graphics cards (VGA) - maps to 06 VGA metafield
                 'os': laptop.os,
                 'rank': laptop.rank,
                 'inclusions': laptop.inclusions,

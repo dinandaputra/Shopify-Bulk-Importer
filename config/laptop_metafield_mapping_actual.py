@@ -285,7 +285,7 @@ def convert_laptop_data_to_metafields(laptop_data: Dict[str, Any]) -> Dict[str, 
     
     # Define metafield configurations - all laptop metafields from Shopify
     metafield_configs = {
-        'color': {'namespace': 'shopify', 'key': 'color-pattern', 'type': 'metaobject_reference'},  # Shared with smartphones
+        'color': {'namespace': 'shopify', 'key': 'color-pattern', 'type': 'list.metaobject_reference'},  # For laptops (smartphones use different handling)
         'processor': {'namespace': 'custom', 'key': '01_processor', 'type': 'metaobject_reference'},
         'ram': {'namespace': 'custom', 'key': '02_ram', 'type': 'single_line_text_field'},  # Text field
         'graphics': {'namespace': 'custom', 'key': '03_graphics', 'type': 'metaobject_reference'},
@@ -317,9 +317,19 @@ def convert_laptop_data_to_metafields(laptop_data: Dict[str, Any]) -> Dict[str, 
         
         # Handle metaobject references
         if 'metaobject' in config['type']:
+            # Special handling for color field - needs to be formatted as JSON array for laptops
+            if field_name == 'color':
+                gid = get_metaobject_gid(field_name, value)
+                if gid:
+                    metafields[config['key']] = {
+                        'namespace': config['namespace'],
+                        'key': config['key'],
+                        'type': config['type'],
+                        'value': json.dumps([gid])  # Format as JSON array for list.metaobject_reference
+                    }
             # For inclusions and minus, handle potential list values but take only first item
             # since they're defined as single metaobject references in Shopify
-            if field_name in ['inclusions', 'minus']:
+            elif field_name in ['inclusions', 'minus']:
                 # Handle list values from UI multiselect by taking first item
                 actual_value = value[0] if isinstance(value, list) and value else value
                 if actual_value:
@@ -333,7 +343,15 @@ def convert_laptop_data_to_metafields(laptop_data: Dict[str, Any]) -> Dict[str, 
                         }
             else:
                 # Single metaobject reference
-                gid = get_metaobject_gid(field_name, value)
+                gid = None
+                
+                # Special handling for VGA field - use enhanced lookup for abbreviations
+                if field_name == 'vga':
+                    from config.laptop_metafield_mapping_enhanced import get_vga_metafield_gid
+                    gid = get_vga_metafield_gid(value)
+                else:
+                    gid = get_metaobject_gid(field_name, value)
+                
                 if gid:
                     metafields[config['key']] = {
                         'namespace': config['namespace'],

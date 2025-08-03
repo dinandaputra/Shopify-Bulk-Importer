@@ -240,6 +240,94 @@ Implement lightweight dependency injection:
 
 ---
 
+## ADR-009: Laptop vs Smartphone Metafield Type Strategy
+
+**Date**: 2025-08-03
+**Status**: ✅ Accepted and Implemented
+**Decision Maker**: Shopify API Developer
+
+### Context
+Critical metafield type mismatches were discovered for laptop products:
+1. Color metafield failing with `'metaobject_reference' must be consistent with the definition's type: 'list.metaobject_reference'`
+2. VGA and Graphics metafields not populating correctly due to data mapping issues
+
+### Problem Analysis
+- **Smartphones**: Use color as a variant option (single metaobject_reference)
+- **Laptops**: Use color only as product description (requires list.metaobject_reference)
+- **GPU Fields**: Confusion between integrated vs dedicated graphics mapping
+
+### Decision
+Implement product-specific metafield type handling:
+- **Smartphone Color**: Maintain single `metaobject_reference` for variant usage (PROTECTED - DO NOT CHANGE)
+- **Laptop Color**: Use `list.metaobject_reference` with JSON array format for product-level metafields
+- **GPU Field Separation**: Distinct handling for VGA (dedicated) vs Graphics (integrated)
+- **Enhanced Lookup**: Support abbreviated GPU names (RTX 4060 → NVIDIA GeForce RTX 4060 8GB)
+
+### Implementation Details
+
+#### Color Metafield Type Fix
+```python
+# Laptop-specific color handling
+if field_name == 'color':
+    gid = get_metaobject_gid(field_name, value)
+    if gid:
+        metafields[config['key']] = {
+            'namespace': config['namespace'],
+            'key': config['key'],
+            'type': 'list.metaobject_reference',  # Array for laptops
+            'value': json.dumps([gid])  # JSON array format
+        }
+```
+
+#### GPU Field Separation
+```python
+# Data mapping correction
+laptop_data = {
+    'graphics': laptop.integrated_graphics,  # 03 Graphics metafield
+    'vga': laptop.gpu,                       # 06 VGA metafield
+}
+```
+
+#### Enhanced VGA Lookup
+```python
+# Handle abbreviated GPU names
+if value and 'RTX' in value and 'NVIDIA' not in value:
+    for full_name, gid in DEDICATED_GRAPHICS_MAPPING.items():
+        if value in full_name:
+            return gid
+```
+
+### Rationale
+- **Product Specificity**: Different product types have different metafield requirements
+- **Shopify Compliance**: Must match exact metafield definition types in Shopify
+- **Data Integrity**: Separate fields for integrated vs dedicated graphics prevent confusion
+- **User Experience**: Enhanced lookup supports abbreviated names commonly used in templates
+
+### Consequences
+**Positive:**
+- All laptop metafields now populate correctly (color, VGA, graphics)
+- Clear separation between smartphone and laptop metafield handling
+- Enhanced GPU lookup supports user-friendly abbreviated names
+- Smartphone functionality completely protected and untouched
+
+**Negative:**
+- Increased complexity in metafield handling logic
+- Product-specific code paths require careful maintenance
+- Different type handling for same metafield name across products
+
+### Files Modified
+- `config/laptop_metafield_mapping_actual.py`: Color type and VGA lookup fixes
+- `config/laptop_metafield_mapping_enhanced.py`: Abbreviated GPU name handling  
+- `services/product_service.py`: GPU field mapping corrections
+
+### Testing Results
+- ✅ Color metafield: `["gid://shopify/Metaobject/131501392021"]` (JSON array)
+- ✅ VGA metafield: `gid://shopify/Metaobject/131302916245` (RTX 4060)
+- ✅ Graphics metafield: `gid://shopify/Metaobject/117180858517` (Intel UHD Graphics)
+- ✅ Smartphone verification: Color logic completely untouched
+
+---
+
 ## Decision Review Process
 
 ### Monthly Review
@@ -266,6 +354,6 @@ Each ADR must include:
 
 ---
 
-**Last Updated**: 2025-08-02
-**Next Review**: 2025-09-02
+**Last Updated**: 2025-08-03
+**Next Review**: 2025-09-03
 **Document Owner**: Code Quality Architect

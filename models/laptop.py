@@ -13,10 +13,11 @@ class LaptopProduct(BaseModel):
     # Laptop-specific specifications
     cpu: Optional[str] = Field(None, description="Processor/CPU specification")
     ram: Optional[str] = Field(None, description="RAM/Memory size")
-    gpu: Optional[str] = Field(None, description="Graphics card/GPU")
+    gpu: Optional[str] = Field(None, description="Dedicated graphics card/GPU (VGA)")
+    integrated_graphics: Optional[str] = Field(None, description="Integrated graphics (from CPU)")
     display: Optional[str] = Field(None, description="Display specification")
     storage: Optional[str] = Field(None, description="Storage capacity and type")
-    vga: Optional[str] = Field(None, description="VGA/external display capability")
+    vga: Optional[str] = Field(None, description="VGA/external display capability (legacy field)")
     os: Optional[str] = Field("Windows 11", description="Operating system")
     keyboard_layout: Optional[str] = Field("US", description="Keyboard layout")
     keyboard_backlight: Optional[str] = Field("Yes", description="Keyboard backlight capability")
@@ -125,7 +126,9 @@ class LaptopProduct(BaseModel):
         if self.ram:
             specs.append(self.ram)
         if self.gpu:
-            specs.append(self.gpu)
+            specs.append(f"VGA: {self.gpu}")
+        if self.integrated_graphics:
+            specs.append(f"iGPU: {self.integrated_graphics}")
         if self.storage:
             specs.append(self.storage)
         
@@ -155,7 +158,7 @@ class LaptopProduct(BaseModel):
     def get_missing_specs(self) -> List[str]:
         """Get list of missing core specifications"""
         missing = []
-        core_specs = ['cpu', 'ram', 'gpu', 'display', 'storage']
+        core_specs = ['cpu', 'ram', 'gpu', 'integrated_graphics', 'display', 'storage']
         
         for spec in core_specs:
             if not getattr(self, spec):

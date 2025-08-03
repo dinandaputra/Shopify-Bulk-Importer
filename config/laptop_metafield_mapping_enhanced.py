@@ -422,6 +422,14 @@ def get_vga_metafield_gid(value: str) -> Optional[str]:
     # First try the clean dedicated_graphics mapping (VGA and graphics share the same metaobjects)
     if value in DEDICATED_GRAPHICS_MAPPING:
         return DEDICATED_GRAPHICS_MAPPING[value]
+    
+    # Handle abbreviated GPU names - expand to full names for lookup
+    if value and 'RTX' in value and 'NVIDIA' not in value:
+        # Try to find matching full name in dedicated graphics mapping
+        for full_name, gid in DEDICATED_GRAPHICS_MAPPING.items():
+            if value in full_name:
+                return gid
+    
     # Fallback to full mapping
     return get_metaobject_gid_full('vga', value)
 

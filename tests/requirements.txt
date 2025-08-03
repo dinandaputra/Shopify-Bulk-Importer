@@ -1,0 +1,26 @@
+# Testing Dependencies
+pytest>=8.0.0
+pytest-cov>=4.0.0
+pytest-mock>=3.10.0
+pytest-asyncio>=0.21.0
+pytest-xdist>=3.0.0  # For parallel test execution
+pytest-html>=3.0.0   # For HTML test reports
+
+# Code Quality Tools
+black>=23.0.0
+mypy>=1.0.0
+flake8>=6.0.0
+isort>=5.0.0
+
+# Performance Testing
+pytest-benchmark>=4.0.0
+memory-profiler>=0.60.0
+
+# Mocking and Fixtures
+responses>=0.23.0     # For HTTP mocking
+factory-boy>=3.2.0   # For test data generation
+freezegun>=1.2.0     # For time mocking
+
+# Coverage and Reporting
+coverage>=7.0.0
+coveralls>=3.3.0
