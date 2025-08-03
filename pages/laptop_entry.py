@@ -107,79 +107,83 @@ def laptop_entry_page():
         st.error("Session limit reached (10 products). Please create products or clear session to continue.")
         return
     
-    # Template Selection Section
+    # Template Selection Section - Unified Fuzzy Search Pattern
     st.subheader("🔍 Select Laptop Template")
+    st.markdown("### 🔍 Product Information")
+    col1, col2 = st.columns([4, 1])
     
-    # Search for laptop templates
-    search_term = st.text_input(
-        "Search laptops by brand, specs, or model:", 
-        placeholder="e.g., 'asus i7 16gb', 'dell rtx 4060', 'hp gaming'",
-        help="Search by any combination of brand, CPU, RAM, GPU, or model"
-    )
-    
-    # Get template suggestions
-    template_options = []
-    if search_term:
+    with col1:
+        # Unified searchable template selector - load all templates for fuzzy search
         try:
-            template_options = get_laptop_template_suggestions(search_term)
-            if not template_options:
-                st.warning(f"No laptops found matching '{search_term}'. Try different keywords.")
-        except Exception as e:
-            st.error(f"Error searching templates: {str(e)}")
-            template_options = []
-    else:
-        try:
-            template_options = get_laptop_template_suggestions()[:50]  # Show first 50 by default
-        except Exception as e:
-            st.error(f"Error loading templates: {str(e)}")
-            template_options = []
-    
-    # Template selector
-    selected_template = None
-    if template_options:
-        st.success(f"Found {len(template_options)} matching laptops")
-        selected_template = st.selectbox(
-            "Choose laptop configuration:",
-            [""] + template_options,
-            help="Select a laptop template to auto-fill specifications"
-        )
-    elif search_term:
-        st.info("Enter a search term above to find laptop templates")
-    else:
-        st.info("Loading default templates...")
-        # Show a few default options even when no search
-        try:
-            default_templates = get_laptop_template_suggestions()[:10]
-            if default_templates:
-                selected_template = st.selectbox(
-                    "Choose laptop configuration (showing first 10):",
-                    [""] + default_templates,
-                    help="Select a laptop template to auto-fill specifications"
-                )
-        except Exception as e:
-            st.error(f"Error loading default templates: {str(e)}")
-    
-    # Extract template information if selected
-    template_info = {}
-    if selected_template:
-        template_info = extract_info_from_template(selected_template)
-        if template_info:
-            st.success(f"✓ Template selected: {template_info.get('title', 'Unknown')}")
+            all_laptop_templates = get_laptop_template_suggestions()
             
-            # Display template details
-            with st.expander("📋 Template Details"):
-                col1, col2 = st.columns(2)
-                with col1:
-                    st.write("**Specifications:**")
-                    for key in ['cpu', 'ram', 'gpu', 'display', 'storage']:
-                        if key in template_info:
-                            st.write(f"• {key.upper()}: {template_info[key]}")
-                
-                with col2:
-                    st.write("**Details:**")
-                    for key in ['brand', 'color', 'vga', 'os']:
-                        if key in template_info:
-                            st.write(f"• {key.title()}: {template_info[key]}")
+            # Template selection callback for immediate updates
+            def on_laptop_template_change():
+                selected = st.session_state.laptop_template_selector
+                if selected and selected != "":
+                    extracted_info = extract_info_from_template(selected)
+                    if extracted_info:
+                        # Update session state immediately like smartphone entry
+                        if 'laptop_form_data' not in st.session_state:
+                            st.session_state.laptop_form_data = {}
+                        st.session_state.laptop_form_data.update(extracted_info)
+                        st.session_state.current_laptop_template = selected
+            
+            selected_template = st.selectbox(
+                "Search and select laptop template:",
+                [""] + all_laptop_templates,
+                format_func=lambda x: x if x else "Type to search laptop templates...",
+                key="laptop_template_selector",
+                help="Type part of laptop brand, model, or specs to filter (e.g., 'ASUS i7', 'Dell RTX 4060', 'HP Gaming')",
+                on_change=on_laptop_template_change
+            )
+            
+            # Show current template info if selected - similar to smartphone pattern
+            if selected_template and selected_template != "":
+                extracted_info = extract_info_from_template(selected_template)
+                if extracted_info:
+                    brand = extracted_info.get('brand', 'Laptop')
+                    brand_emoji = "💻" if brand == "ASUS" else "🖥️" if brand == "Dell" else "⚡" if brand == "HP" else "💻"
+                    
+                    # Show success message with extracted info
+                    st.success(f"✅ **{extracted_info.get('title', selected_template)}**")
+                    
+                    # Show quick preview of extracted specs
+                    col_a, col_b, col_c = st.columns(3)
+                    with col_a:
+                        cpu_info = extracted_info.get('cpu', 'N/A')
+                        if extracted_info.get('ram'):
+                            cpu_info += f" / {extracted_info.get('ram')}"
+                        st.caption(f"{brand_emoji} {cpu_info}")
+                    with col_b:
+                        gpu_info = extracted_info.get('gpu') or extracted_info.get('integrated_graphics', 'N/A')
+                        st.caption(f"🎮 {gpu_info}")
+                    with col_c:
+                        storage_info = extracted_info.get('storage', 'N/A')
+                        st.caption(f"💾 {storage_info}")
+            
+        except Exception as e:
+            st.error(f"Error loading laptop templates: {str(e)}")
+            # Fallback to empty template list
+            selected_template = st.selectbox(
+                "Search and select laptop template:",
+                [""],
+                help="Template loading failed - you can still create products manually"
+            )
+    
+    with col2:
+        st.markdown("##### Quick Tips")
+        st.caption("💡 Type to search")
+        st.caption("💻 All laptop brands")
+        st.caption("⚡ Auto-fills all fields")
+        st.caption("✏️ All fields editable")
+    
+    # Initialize laptop form data if not exists
+    if 'laptop_form_data' not in st.session_state:
+        st.session_state.laptop_form_data = {}
+    
+    # Extract template information from session state
+    template_info = st.session_state.laptop_form_data
     
     st.divider()
     
@@ -196,20 +200,23 @@ def laptop_entry_page():
             title = st.text_input(
                 "Product Title*",
                 value=template_info.get('title', ''),
-                help="Auto-generated from template or enter manually"
+                help="Auto-generated from template or enter manually",
+                key="laptop_title_input"
             )
             
             price = st.number_input(
                 "Price (JPY)*", 
                 min_value=0, 
                 step=1000,
-                help="Price in Japanese Yen"
+                help="Price in Japanese Yen",
+                key="laptop_price_input"
             )
             
             rank = st.selectbox(
                 "Product Rank*",
-                PRODUCT_RANKS,
-                help="Condition ranking from A to BNIB"
+                [""] + PRODUCT_RANKS,
+                help="Condition ranking from A to BNIB",
+                key="laptop_rank_input"
             )
             
             # Template-filled specifications
@@ -218,26 +225,30 @@ def laptop_entry_page():
             cpu = st.text_input(
                 "Processor",
                 value=template_info.get('cpu_full', template_info.get('cpu', '')),
-                help="CPU specification from template"
+                help="CPU specification from template",
+                key="laptop_cpu_input"
             )
             
             ram = st.text_input(
                 "RAM",
                 value=template_info.get('ram_full', template_info.get('ram', '')),
-                help="Memory specification from template"
+                help="Memory specification from template",
+                key="laptop_ram_input"
             )
             
             gpu = st.text_input(
                 "VGA",
                 value=template_info.get('gpu_full', ''),
-                help="Dedicated graphics card (VGA) specification"
+                help="Dedicated graphics card (VGA) specification",
+                key="laptop_gpu_input"
             )
             
             # Integrated Graphics field (also connects to 03 Graphics metafield)
             integrated_gpu = st.text_input(
                 "Integrated Graphics", 
                 value=template_info.get('integrated_graphics', ''),
-                help="Integrated graphics specification (auto-detected from CPU)"
+                help="Integrated graphics specification (auto-detected from CPU)",
+                key="laptop_integrated_gpu_input"
             )
         
         with col2:
@@ -247,19 +258,22 @@ def laptop_entry_page():
             display = st.text_input(
                 "Display",
                 value=template_info.get('display_full', template_info.get('display', '')),
-                help="Display specification from template"
+                help="Display specification from template",
+                key="laptop_display_input"
             )
             
             storage = st.text_input(
                 "Storage",
                 value=template_info.get('storage_full', template_info.get('storage', '')),
-                help="Storage specification from template"
+                help="Storage specification from template",
+                key="laptop_storage_input"
             )
             
             color = st.text_input(
                 "Color",
                 value=template_info.get('color', ''),
-                help="Laptop color/finish"
+                help="Laptop color/finish",
+                key="laptop_color_input"
             )
             
             # Optional fields
@@ -268,13 +282,16 @@ def laptop_entry_page():
             inclusions = st.multiselect(
                 "Product Inclusions",
                 LAPTOP_INCLUSION_LABELS,
-                help="What's included with the laptop"
+                default=template_info.get('inclusions', []),
+                help="What's included with the laptop",
+                key="laptop_inclusions_input"
             )
             
             minus_issues = st.multiselect(
                 "Issues/Defects",
                 MINUS_OPTIONS,
-                help="Any known issues or defects"
+                help="Any known issues or defects",
+                key="laptop_minus_input"
             )
             
             # Collections (auto-assigned but editable)
@@ -283,7 +300,8 @@ def laptop_entry_page():
                 "Collections",
                 ['All Products', 'Laptop', 'Gaming', 'Business', 'ASUS', 'Dell', 'HP', 'Lenovo', 'MSI'],
                 default=default_collections,
-                help="Shopify collections for this product"
+                help="Shopify collections for this product",
+                key="laptop_collections_input"
             )
         
         # Submit button
@@ -295,8 +313,16 @@ def laptop_entry_page():
         
         if submit_button:
             # Validate required fields
-            if not title or not price or not rank:
-                st.error("Please fill in all required fields (Title, Price, Rank)")
+            if not title or title.strip() == "":
+                st.error("❌ Product title is required")
+                st.stop()
+            
+            if price <= 0:
+                st.error("❌ Price must be greater than 0")
+                st.stop()
+                
+            if not rank:
+                st.error("❌ Product rank is required")
                 st.stop()
             
             try:
@@ -390,6 +416,31 @@ def laptop_entry_page():
                     success_msg += f" (⚠️ {missing_count} missing metafields logged)"
                 
                 st.success(success_msg)
+                template_used = st.session_state.laptop_form_data.get("template", selected_template)
+                if template_used:
+                    st.success(f"🎯 Template: `{template_used}`")
+                
+                # Clear form data and reset all form fields like smartphone entry
+                st.session_state.laptop_form_data = {}
+                
+                # Clear template-related session state
+                if "current_laptop_template" in st.session_state:
+                    del st.session_state.current_laptop_template
+                if "laptop_template_selector" in st.session_state:
+                    del st.session_state.laptop_template_selector
+                
+                # Clear all form field keys to reset them completely
+                laptop_form_keys = [
+                    "laptop_title_input", "laptop_price_input", "laptop_rank_input",
+                    "laptop_cpu_input", "laptop_ram_input", "laptop_gpu_input", 
+                    "laptop_integrated_gpu_input", "laptop_display_input", "laptop_storage_input",
+                    "laptop_color_input", "laptop_inclusions_input", "laptop_minus_input", 
+                    "laptop_collections_input"
+                ]
+                for key in laptop_form_keys:
+                    if key in st.session_state:
+                        del st.session_state[key]
+                
                 st.rerun()
                 
             except ValidationError as e:
