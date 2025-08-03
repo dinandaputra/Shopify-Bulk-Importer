@@ -1000,8 +1000,8 @@ class ProductService:
                 'rank': laptop.rank,
                 'inclusions': laptop.inclusions,
                 'minus': getattr(laptop, 'minus', []),
-                'keyboard_layout': laptop.keyboard_layout
-                # Note: keyboard_backlight has no metaobjects in store
+                'keyboard_layout': laptop.keyboard_layout,
+                'keyboard_backlight': laptop.keyboard_backlight  # Fixed: Include keyboard_backlight field
             }
             
             metafield_mappings = convert_laptop_data_to_metafields(laptop_data)
