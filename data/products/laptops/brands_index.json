@@ -1,0 +1,29 @@
+{
+  "brands": [
+    {
+      "name": "ASUS",
+      "model_count": 34,
+      "filename": "asus.json"
+    },
+    {
+      "name": "Dell",
+      "model_count": 1,
+      "filename": "dell.json"
+    },
+    {
+      "name": "HP",
+      "model_count": 1,
+      "filename": "hp.json"
+    },
+    {
+      "name": "Lenovo",
+      "model_count": 1,
+      "filename": "lenovo.json"
+    },
+    {
+      "name": "MSI",
+      "model_count": 1,
+      "filename": "msi.json"
+    }
+  ]
+}

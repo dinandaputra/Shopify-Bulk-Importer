@@ -1,0 +1,1247 @@
+{
+  "brand": "ASUS",
+  "models": {
+    "ASUS TUF F15 FX507ZV4": {
+      "display_name": "TUF Gaming F15",
+      "series": "TUF Gaming",
+      "year": 2023,
+      "category": "Gaming",
+      "configurations": [
+        {
+          "cpu": "Intel Core i7-12700H (16 CPUs), ~2.3GHz",
+          "ram": "16GB DDR4",
+          "vga": "NVIDIA GeForce RTX 4060 8GB",
+          "gpu": "Intel Iris Xe Graphics",
+          "display": "15-inch FHD (144Hz)",
+          "storage": "512GB SSD",
+          "os": "Windows 11",
+          "keyboard_layout": "US - International Keyboard",
+          "keyboard_backlight": "RGB Backlight"
+        },
+        {
+          "cpu": "Intel Core i7-12700H (16 CPUs), ~2.3GHz",
+          "ram": "32GB DDR4",
+          "vga": "NVIDIA GeForce RTX 4060 8GB",
+          "gpu": "Intel Iris Xe Graphics",
+          "display": "15-inch FHD (144Hz)",
+          "storage": "1TB SSD",
+          "os": "Windows 11",
+          "keyboard_layout": "US - International Keyboard",
+          "keyboard_backlight": "RGB Backlight"
+        }
+      ],
+      "colors": [
+        "Graphite Black",
+        "Eclipse Gray"
+      ]
+    },
+    "ASUS TUF F15 FX507ZC4": {
+      "display_name": "TUF Gaming F15",
+      "series": "TUF Gaming",
+      "year": 2023,
+      "category": "Gaming",
+      "configurations": [
+        {
+          "cpu": "Intel Core i5-12500H (12 CPUs), ~3.1GHz",
+          "ram": "8GB DDR4",
+          "vga": "NVIDIA GeForce RTX 4050 6GB",
+          "gpu": "Intel Iris Xe Graphics",
+          "display": "15-inch FHD (144Hz)",
+          "storage": "512GB SSD",
+          "os": "Windows 11",
+          "keyboard_layout": "US - International Keyboard",
+          "keyboard_backlight": "RGB Backlight"
+        },
+        {
+          "cpu": "Intel Core i5-12500H (12 CPUs), ~3.1GHz",
+          "ram": "16GB DDR4",
+          "vga": "NVIDIA GeForce RTX 4050 6GB",
+          "gpu": "Intel Iris Xe Graphics",
+          "display": "15-inch FHD (144Hz)",
+          "storage": "512GB SSD",
+          "os": "Windows 11",
+          "keyboard_layout": "US - International Keyboard",
+          "keyboard_backlight": "RGB Backlight"
+        }
+      ],
+      "colors": [
+        "Graphite Black",
+        "Eclipse Gray"
+      ]
+    },
+    "ASUS TUF Gaming F15 FX506": {
+      "display_name": "TUF Gaming F15",
+      "series": "TUF Gaming",
+      "year": 2020,
+      "category": "Gaming",
+      "configurations": [
+        {
+          "cpu": "Intel Core i5-10300H (8 CPUs), ~2.5GHz",
+          "ram": "8GB DDR4",
+          "vga": "NVIDIA GeForce GTX 1650 4GB",
+          "gpu": "Intel UHD Graphics 630",
+          "display": "15-inch FHD (144Hz)",
+          "storage": "512GB SSD",
+          "os": "Windows 11",
+          "keyboard_layout": "US - International Keyboard",
+          "keyboard_backlight": "RGB Backlight"
+        },
+        {
+          "cpu": "Intel Core i7-10750H (12 CPUs), ~2.6GHz",
+          "ram": "16GB DDR4",
+          "vga": "NVIDIA GeForce GTX 1650 Ti 4GB",
+          "gpu": "Intel UHD Graphics 630",
+          "display": "15-inch FHD (144Hz)",
+          "storage": "512GB SSD",
+          "os": "Windows 11",
+          "keyboard_layout": "US - International Keyboard",
+          "keyboard_backlight": "RGB Backlight"
+        },
+        {
+          "cpu": "Intel Core i7-11800H (16 CPUs), ~2.3GHz",
+          "ram": "16GB DDR4",
+          "vga": "NVIDIA GeForce RTX 3060 6GB",
+          "gpu": "Intel UHD Graphics",
+          "display": "15-inch FHD (240Hz)",
+          "storage": "1TB SSD",
+          "os": "Windows 11",
+          "keyboard_layout": "US - International Keyboard",
+          "keyboard_backlight": "RGB Backlight"
+        }
+      ],
+      "colors": [
+        "Fortress Gray",
+        "Bonfire Black"
+      ]
+    },
+    "ASUS TUF Dash F15 FX516": {
+      "display_name": "TUF Dash F15",
+      "series": "TUF Gaming",
+      "year": 2021,
+      "category": "Gaming",
+      "configurations": [
+        {
+          "cpu": "Intel Core i7-11370H (8 CPUs), ~3.3GHz",
+          "ram": "8GB DDR4",
+          "vga": "NVIDIA GeForce RTX 3050 4GB",
+          "gpu": "Intel Iris Xe Graphics",
+          "display": "15-inch FHD (144Hz)",
+          "storage": "512GB SSD",
+          "os": "Windows 11",
+          "keyboard_layout": "US - International Keyboard",
+          "keyboard_backlight": "RGB Backlight"
+        },
+        {
+          "cpu": "Intel Core i7-11370H (8 CPUs), ~3.3GHz",
+          "ram": "16GB DDR4",
+          "vga": "NVIDIA GeForce RTX 3060 6GB",
+          "gpu": "Intel Iris Xe Graphics",
+          "display": "15-inch FHD (240Hz)",
+          "storage": "512GB SSD",
+          "os": "Windows 11",
+          "keyboard_layout": "US - International Keyboard",
+          "keyboard_backlight": "RGB Backlight"
+        },
+        {
+          "cpu": "Intel Core i7-11370H (8 CPUs), ~3.3GHz",
+          "ram": "32GB DDR4",
+          "vga": "NVIDIA GeForce RTX 3070 8GB",
+          "gpu": "Intel Iris Xe Graphics",
+          "display": "15-inch FHD (240Hz)",
+          "storage": "1TB SSD",
+          "os": "Windows 11",
+          "keyboard_layout": "US - International Keyboard",
+          "keyboard_backlight": "RGB Backlight"
+        }
+      ],
+      "colors": [
+        "Eclipse Gray",
+        "Moonlight White"
+      ]
+    },
+    "ASUS TUF Gaming F15 FX507ZM": {
+      "display_name": "TUF Gaming F15",
+      "series": "TUF Gaming",
+      "year": 2022,
+      "category": "Gaming",
+      "configurations": [
+        {
+          "cpu": "Intel Core i7-12700H (16 CPUs), ~2.3GHz",
+          "ram": "16GB DDR4",
+          "vga": "NVIDIA GeForce RTX 3060 6GB",
+          "gpu": "Intel Iris Xe Graphics",
+          "display": "15-inch FHD (144Hz)",
+          "storage": "512GB SSD",
+          "os": "Windows 11",
+          "keyboard_layout": "US - International Keyboard",
+          "keyboard_backlight": "RGB Backlight"
+        },
+        {
+          "cpu": "Intel Core i7-12700H (16 CPUs), ~2.3GHz",
+          "ram": "32GB DDR4",
+          "vga": "NVIDIA GeForce RTX 3070 8GB",
+          "gpu": "Intel Iris Xe Graphics",
+          "display": "15-inch FHD (165Hz)",
+          "storage": "1TB SSD",
+          "os": "Windows 11",
+          "keyboard_layout": "US - International Keyboard",
+          "keyboard_backlight": "RGB Backlight"
+        }
+      ],
+      "colors": [
+        "Mecha Gray",
+        "Jaeger Gray"
+      ]
+    },
+    "ASUS TUF Gaming F15 FX507VI": {
+      "display_name": "TUF Gaming F15",
+      "series": "TUF Gaming",
+      "year": 2023,
+      "category": "Gaming",
+      "configurations": [
+        {
+          "cpu": "Intel Core i7-13700H (20 CPUs), ~2.4GHz",
+          "ram": "16GB DDR4",
+          "vga": "NVIDIA GeForce RTX 4060 8GB",
+          "gpu": "Intel Iris Xe Graphics",
+          "display": "15-inch FHD (144Hz)",
+          "storage": "512GB SSD",
+          "os": "Windows 11",
+          "keyboard_layout": "US - International Keyboard",
+          "keyboard_backlight": "RGB Backlight"
+        },
+        {
+          "cpu": "Intel Core i9-13900H (20 CPUs), ~2.6GHz",
+          "ram": "32GB DDR4",
+          "vga": "NVIDIA GeForce RTX 4070 12GB",
+          "gpu": "Intel Iris Xe Graphics",
+          "display": "15-inch FHD (165Hz)",
+          "storage": "1TB SSD",
+          "os": "Windows 11",
+          "keyboard_layout": "US - International Keyboard",
+          "keyboard_backlight": "RGB Backlight"
+        }
+      ],
+      "colors": [
+        "Mecha Gray",
+        "Jaeger Gray"
+      ]
+    },
+    "ASUS TUF Gaming A15 FA506": {
+      "display_name": "TUF Gaming A15",
+      "series": "TUF Gaming",
+      "year": 2020,
+      "category": "Gaming",
+      "configurations": [
+        {
+          "cpu": "AMD Ryzen 5 4600H (12 CPUs), ~3.0GHz",
+          "ram": "8GB DDR4",
+          "vga": "NVIDIA GeForce GTX 1650 4GB",
+          "gpu": "AMD Radeon Graphics",
+          "display": "15-inch FHD (144Hz)",
+          "storage": "512GB SSD",
+          "os": "Windows 11",
+          "keyboard_layout": "US - International Keyboard",
+          "keyboard_backlight": "RGB Backlight"
+        },
+        {
+          "cpu": "AMD Ryzen 7 4800H (16 CPUs), ~2.9GHz",
+          "ram": "16GB DDR4",
+          "vga": "NVIDIA GeForce RTX 3060 6GB",
+          "gpu": "AMD Radeon Graphics",
+          "display": "15-inch FHD (144Hz)",
+          "storage": "512GB SSD",
+          "os": "Windows 11",
+          "keyboard_layout": "US - International Keyboard",
+          "keyboard_backlight": "RGB Backlight"
+        },
+        {
+          "cpu": "AMD Ryzen 7 5800H (16 CPUs), ~3.2GHz",
+          "ram": "16GB DDR4",
+          "vga": "NVIDIA GeForce RTX 3070 8GB",
+          "gpu": "AMD Radeon Graphics",
+          "display": "15-inch FHD (144Hz)",
+          "storage": "1TB SSD",
+          "os": "Windows 11",
+          "keyboard_layout": "US - International Keyboard",
+          "keyboard_backlight": "RGB Backlight"
+        }
+      ],
+      "colors": [
+        "Fortress Gray",
+        "Bonfire Black"
+      ]
+    },
+    "ASUS TUF Gaming A15 FA507": {
+      "display_name": "TUF Gaming A15",
+      "series": "TUF Gaming",
+      "year": 2021,
+      "category": "Gaming",
+      "configurations": [
+        {
+          "cpu": "AMD Ryzen 5 5600H (12 CPUs), ~3.3GHz",
+          "ram": "8GB DDR4",
+          "vga": "NVIDIA GeForce RTX 3050 4GB",
+          "gpu": "AMD Radeon Graphics",
+          "display": "15-inch FHD (144Hz)",
+          "storage": "512GB SSD",
+          "os": "Windows 11",
+          "keyboard_layout": "US - International Keyboard",
+          "keyboard_backlight": "RGB Backlight"
+        },
+        {
+          "cpu": "AMD Ryzen 7 5800H (16 CPUs), ~3.2GHz",
+          "ram": "16GB DDR4",
+          "vga": "NVIDIA GeForce RTX 3060 6GB",
+          "gpu": "AMD Radeon Graphics",
+          "display": "15-inch FHD (144Hz)",
+          "storage": "512GB SSD",
+          "os": "Windows 11",
+          "keyboard_layout": "US - International Keyboard",
+          "keyboard_backlight": "RGB Backlight"
+        },
+        {
+          "cpu": "AMD Ryzen 7 5800H (16 CPUs), ~3.2GHz",
+          "ram": "32GB DDR4",
+          "vga": "NVIDIA GeForce RTX 3070 8GB",
+          "gpu": "AMD Radeon Graphics",
+          "display": "15-inch FHD (144Hz)",
+          "storage": "1TB SSD",
+          "os": "Windows 11",
+          "keyboard_layout": "US - International Keyboard",
+          "keyboard_backlight": "RGB Backlight"
+        }
+      ],
+      "colors": [
+        "Eclipse Gray",
+        "Graphite Black"
+      ]
+    },
+    "ASUS TUF Gaming A17 FA706": {
+      "display_name": "TUF Gaming A17",
+      "series": "TUF Gaming",
+      "year": 2020,
+      "category": "Gaming",
+      "configurations": [
+        {
+          "cpu": "AMD Ryzen 5 4600H (12 CPUs), ~3.0GHz",
+          "ram": "8GB DDR4",
+          "vga": "NVIDIA GeForce GTX 1650 4GB",
+          "gpu": "AMD Radeon Graphics",
+          "display": "17.3-inch FHD (144Hz)",
+          "storage": "512GB SSD",
+          "os": "Windows 11",
+          "keyboard_layout": "US - International Keyboard",
+          "keyboard_backlight": "RGB Backlight"
+        },
+        {
+          "cpu": "AMD Ryzen 7 4800H (16 CPUs), ~2.9GHz",
+          "ram": "16GB DDR4",
+          "vga": "NVIDIA GeForce RTX 3060 6GB",
+          "gpu": "AMD Radeon Graphics",
+          "display": "17.3-inch FHD (144Hz)",
+          "storage": "512GB SSD",
+          "os": "Windows 11",
+          "keyboard_layout": "US - International Keyboard",
+          "keyboard_backlight": "RGB Backlight"
+        },
+        {
+          "cpu": "AMD Ryzen 7 5800H (16 CPUs), ~3.2GHz",
+          "ram": "16GB DDR4",
+          "vga": "NVIDIA GeForce RTX 3070 8GB",
+          "gpu": "AMD Radeon Graphics",
+          "display": "17.3-inch FHD (144Hz)",
+          "storage": "1TB SSD",
+          "os": "Windows 11",
+          "keyboard_layout": "US - International Keyboard",
+          "keyboard_backlight": "RGB Backlight"
+        }
+      ],
+      "colors": [
+        "Fortress Gray",
+        "Bonfire Black"
+      ]
+    },
+    "ASUS TUF Gaming A17 FA707": {
+      "display_name": "TUF Gaming A17",
+      "series": "TUF Gaming",
+      "year": 2021,
+      "category": "Gaming",
+      "configurations": [
+        {
+          "cpu": "AMD Ryzen 5 5600H (12 CPUs), ~3.3GHz",
+          "ram": "8GB DDR4",
+          "vga": "NVIDIA GeForce RTX 3050 4GB",
+          "gpu": "AMD Radeon Graphics",
+          "display": "17.3-inch FHD (144Hz)",
+          "storage": "512GB SSD",
+          "os": "Windows 11",
+          "keyboard_layout": "US - International Keyboard",
+          "keyboard_backlight": "RGB Backlight"
+        },
+        {
+          "cpu": "AMD Ryzen 7 5800H (16 CPUs), ~3.2GHz",
+          "ram": "16GB DDR4",
+          "vga": "NVIDIA GeForce RTX 3060 6GB",
+          "gpu": "AMD Radeon Graphics",
+          "display": "17.3-inch FHD (144Hz)",
+          "storage": "512GB SSD",
+          "os": "Windows 11",
+          "keyboard_layout": "US - International Keyboard",
+          "keyboard_backlight": "RGB Backlight"
+        },
+        {
+          "cpu": "AMD Ryzen 7 5800H (16 CPUs), ~3.2GHz",
+          "ram": "32GB DDR4",
+          "vga": "NVIDIA GeForce RTX 3070 8GB",
+          "gpu": "AMD Radeon Graphics",
+          "display": "17.3-inch FHD (165Hz)",
+          "storage": "1TB SSD",
+          "os": "Windows 11",
+          "keyboard_layout": "US - International Keyboard",
+          "keyboard_backlight": "RGB Backlight"
+        }
+      ],
+      "colors": [
+        "Eclipse Gray",
+        "Fortress Gray"
+      ]
+    },
+    "ASUS TUF Gaming F17 FX706": {
+      "display_name": "TUF Gaming F17",
+      "series": "TUF Gaming",
+      "year": 2020,
+      "category": "Gaming",
+      "configurations": [
+        {
+          "cpu": "Intel Core i5-10300H (8 CPUs), ~2.5GHz",
+          "ram": "8GB DDR4",
+          "vga": "NVIDIA GeForce GTX 1650 4GB",
+          "gpu": "Intel UHD Graphics 630",
+          "display": "17.3-inch FHD (144Hz)",
+          "storage": "512GB SSD",
+          "os": "Windows 11",
+          "keyboard_layout": "US - International Keyboard",
+          "keyboard_backlight": "RGB Backlight"
+        },
+        {
+          "cpu": "Intel Core i7-10750H (12 CPUs), ~2.6GHz",
+          "ram": "16GB DDR4",
+          "vga": "NVIDIA GeForce RTX 3060 6GB",
+          "gpu": "Intel UHD Graphics 630",
+          "display": "17.3-inch FHD (144Hz)",
+          "storage": "512GB SSD",
+          "os": "Windows 11",
+          "keyboard_layout": "US - International Keyboard",
+          "keyboard_backlight": "RGB Backlight"
+        }
+      ],
+      "colors": [
+        "Fortress Gray",
+        "Bonfire Black"
+      ]
+    },
+    "ASUS TUF Gaming F17 FX707": {
+      "display_name": "TUF Gaming F17",
+      "series": "TUF Gaming",
+      "year": 2022,
+      "category": "Gaming",
+      "configurations": [
+        {
+          "cpu": "Intel Core i7-12700H (16 CPUs), ~2.3GHz",
+          "ram": "16GB DDR4",
+          "vga": "NVIDIA GeForce RTX 3060 6GB",
+          "gpu": "Intel Iris Xe Graphics",
+          "display": "17.3-inch FHD (144Hz)",
+          "storage": "512GB SSD",
+          "os": "Windows 11",
+          "keyboard_layout": "US - International Keyboard",
+          "keyboard_backlight": "RGB Backlight"
+        },
+        {
+          "cpu": "Intel Core i7-12700H (16 CPUs), ~2.3GHz",
+          "ram": "32GB DDR4",
+          "vga": "NVIDIA GeForce RTX 4060 8GB",
+          "gpu": "Intel Iris Xe Graphics",
+          "display": "17.3-inch FHD (165Hz)",
+          "storage": "1TB SSD",
+          "os": "Windows 11",
+          "keyboard_layout": "US - International Keyboard",
+          "keyboard_backlight": "RGB Backlight"
+        }
+      ],
+      "colors": [
+        "Mecha Gray",
+        "Jaeger Gray"
+      ]
+    },
+    "ASUS ROG Strix G15 G513": {
+      "display_name": "ROG Strix G15",
+      "series": "ROG Strix",
+      "year": 2022,
+      "category": "Gaming",
+      "configurations": [
+        {
+          "cpu": "AMD Ryzen 7 5800H (16 CPUs), ~3.2GHz",
+          "ram": "16GB DDR4",
+          "vga": "NVIDIA GeForce RTX 3060 6GB",
+          "gpu": "AMD Radeon Graphics",
+          "display": "15-inch FHD (144Hz)",
+          "storage": "512GB SSD",
+          "os": "Windows 11",
+          "keyboard_layout": "US - International Keyboard",
+          "keyboard_backlight": "RGB Backlight"
+        },
+        {
+          "cpu": "AMD Ryzen 7 5800H (16 CPUs), ~3.2GHz",
+          "ram": "32GB DDR4",
+          "vga": "NVIDIA GeForce RTX 3070 8GB",
+          "gpu": "AMD Radeon Graphics",
+          "display": "15-inch FHD (144Hz)",
+          "storage": "1TB SSD",
+          "os": "Windows 11",
+          "keyboard_layout": "US - International Keyboard",
+          "keyboard_backlight": "RGB Backlight"
+        }
+      ],
+      "colors": [
+        "Eclipse Gray",
+        "Electro Punk"
+      ]
+    },
+    "ASUS ROG Strix G15 G512": {
+      "display_name": "ROG Strix G15",
+      "series": "ROG Strix",
+      "year": 2020,
+      "category": "Gaming",
+      "configurations": [
+        {
+          "cpu": "AMD Ryzen 7 4800H (16 CPUs), ~2.9GHz",
+          "ram": "16GB DDR4",
+          "vga": "NVIDIA GeForce RTX 3060 6GB",
+          "gpu": "AMD Radeon Graphics",
+          "display": "15-inch FHD (144Hz)",
+          "storage": "512GB SSD",
+          "os": "Windows 11",
+          "keyboard_layout": "US - International Keyboard",
+          "keyboard_backlight": "RGB Backlight"
+        },
+        {
+          "cpu": "AMD Ryzen 9 5900HX (16 CPUs), ~3.3GHz",
+          "ram": "32GB DDR4",
+          "vga": "NVIDIA GeForce RTX 3070 8GB",
+          "gpu": "AMD Radeon Graphics",
+          "display": "15-inch FHD (144Hz)",
+          "storage": "1TB SSD",
+          "os": "Windows 11",
+          "keyboard_layout": "US - International Keyboard",
+          "keyboard_backlight": "RGB Backlight"
+        }
+      ],
+      "colors": [
+        "Eclipse Gray",
+        "Original Black"
+      ]
+    },
+    "ASUS ROG Strix G17 G713": {
+      "display_name": "ROG Strix G17",
+      "series": "ROG Strix",
+      "year": 2021,
+      "category": "Gaming",
+      "configurations": [
+        {
+          "cpu": "AMD Ryzen 7 5800H (16 CPUs), ~3.2GHz",
+          "ram": "16GB DDR4",
+          "vga": "NVIDIA GeForce RTX 3060 6GB",
+          "gpu": "AMD Radeon Graphics",
+          "display": "17.3-inch FHD (144Hz)",
+          "storage": "512GB SSD",
+          "os": "Windows 11",
+          "keyboard_layout": "US - International Keyboard",
+          "keyboard_backlight": "RGB Backlight"
+        },
+        {
+          "cpu": "AMD Ryzen 9 5900HX (16 CPUs), ~3.3GHz",
+          "ram": "32GB DDR4",
+          "vga": "NVIDIA GeForce RTX 3080 10GB",
+          "gpu": "AMD Radeon Graphics",
+          "display": "17.3-inch FHD (165Hz)",
+          "storage": "1TB SSD",
+          "os": "Windows 11",
+          "keyboard_layout": "US - International Keyboard",
+          "keyboard_backlight": "RGB Backlight"
+        }
+      ],
+      "colors": [
+        "Eclipse Gray",
+        "Electro Punk"
+      ]
+    },
+    "ASUS ROG Strix SCAR 15 G533": {
+      "display_name": "ROG Strix SCAR 15",
+      "series": "ROG Strix",
+      "year": 2021,
+      "category": "Gaming",
+      "configurations": [
+        {
+          "cpu": "AMD Ryzen 9 5900HX (16 CPUs), ~3.3GHz",
+          "ram": "16GB DDR4",
+          "vga": "NVIDIA GeForce RTX 3070 8GB",
+          "gpu": "AMD Radeon Graphics",
+          "display": "15-inch FHD (165Hz)",
+          "storage": "1TB SSD",
+          "os": "Windows 11",
+          "keyboard_layout": "US - International Keyboard",
+          "keyboard_backlight": "RGB Backlight"
+        },
+        {
+          "cpu": "AMD Ryzen 9 5900HX (16 CPUs), ~3.3GHz",
+          "ram": "32GB DDR4",
+          "vga": "NVIDIA GeForce RTX 3080 10GB",
+          "gpu": "AMD Radeon Graphics",
+          "display": "15-inch FHD (165Hz)",
+          "storage": "1TB SSD",
+          "os": "Windows 11",
+          "keyboard_layout": "US - International Keyboard",
+          "keyboard_backlight": "RGB Backlight"
+        }
+      ],
+      "colors": [
+        "Eclipse Gray",
+        "Electro Punk"
+      ]
+    },
+    "ASUS ROG Strix G15 G531": {
+      "display_name": "ROG Strix G15",
+      "series": "ROG Strix",
+      "year": 2019,
+      "category": "Gaming",
+      "configurations": [
+        {
+          "cpu": "Intel Core i7-9750H (12 CPUs), ~2.6GHz",
+          "ram": "16GB DDR4",
+          "vga": "NVIDIA GeForce GTX 1660 Ti 6GB",
+          "gpu": "Intel UHD Graphics 630",
+          "display": "15-inch FHD (120Hz)",
+          "storage": "512GB SSD",
+          "os": "Windows 11",
+          "keyboard_layout": "US - International Keyboard",
+          "keyboard_backlight": "RGB Backlight"
+        },
+        {
+          "cpu": "Intel Core i7-9750H (12 CPUs), ~2.6GHz",
+          "ram": "32GB DDR4",
+          "vga": "NVIDIA GeForce RTX 2060 6GB",
+          "gpu": "Intel UHD Graphics 630",
+          "display": "15-inch FHD (144Hz)",
+          "storage": "1TB SSD",
+          "os": "Windows 11",
+          "keyboard_layout": "US - International Keyboard",
+          "keyboard_backlight": "RGB Backlight"
+        }
+      ],
+      "colors": [
+        "Stealth Black",
+        "Glacier Blue"
+      ]
+    },
+    "ASUS ROG Strix G15 G532": {
+      "display_name": "ROG Strix G15",
+      "series": "ROG Strix",
+      "year": 2020,
+      "category": "Gaming",
+      "configurations": [
+        {
+          "cpu": "Intel Core i7-10750H (12 CPUs), ~2.6GHz",
+          "ram": "16GB DDR4",
+          "vga": "NVIDIA GeForce RTX 2060 6GB",
+          "gpu": "Intel UHD Graphics 630",
+          "display": "15-inch FHD (144Hz)",
+          "storage": "512GB SSD",
+          "os": "Windows 11",
+          "keyboard_layout": "US - International Keyboard",
+          "keyboard_backlight": "RGB Backlight"
+        },
+        {
+          "cpu": "Intel Core i7-10750H (12 CPUs), ~2.6GHz",
+          "ram": "32GB DDR4",
+          "vga": "NVIDIA GeForce RTX 2070 8GB",
+          "gpu": "Intel UHD Graphics 630",
+          "display": "15-inch FHD (240Hz)",
+          "storage": "1TB SSD",
+          "os": "Windows 11",
+          "keyboard_layout": "US - International Keyboard",
+          "keyboard_backlight": "RGB Backlight"
+        }
+      ],
+      "colors": [
+        "Eclipse Gray",
+        "Original Black"
+      ]
+    },
+    "ASUS ROG Strix G17 G731": {
+      "display_name": "ROG Strix G17",
+      "series": "ROG Strix",
+      "year": 2019,
+      "category": "Gaming",
+      "configurations": [
+        {
+          "cpu": "Intel Core i7-9750H (12 CPUs), ~2.6GHz",
+          "ram": "16GB DDR4",
+          "vga": "NVIDIA GeForce GTX 1660 Ti 6GB",
+          "gpu": "Intel UHD Graphics 630",
+          "display": "17.3 120Hz",
+          "storage": "512GB SSD",
+          "os": "Windows 11",
+          "keyboard_layout": "US - International Keyboard",
+          "keyboard_backlight": "RGB Backlight"
+        },
+        {
+          "cpu": "Intel Core i7-9750H (12 CPUs), ~2.6GHz",
+          "ram": "32GB DDR4",
+          "vga": "NVIDIA GeForce RTX 2060 6GB",
+          "gpu": "Intel UHD Graphics 630",
+          "display": "17.3-inch FHD (144Hz)",
+          "storage": "1TB SSD",
+          "os": "Windows 11",
+          "keyboard_layout": "US - International Keyboard",
+          "keyboard_backlight": "RGB Backlight"
+        }
+      ],
+      "colors": [
+        "Stealth Black",
+        "Glacier Blue"
+      ]
+    },
+    "ASUS ROG Strix G17 G732": {
+      "display_name": "ROG Strix G17",
+      "series": "ROG Strix",
+      "year": 2020,
+      "category": "Gaming",
+      "configurations": [
+        {
+          "cpu": "Intel Core i7-10750H (12 CPUs), ~2.6GHz",
+          "ram": "16GB DDR4",
+          "vga": "NVIDIA GeForce RTX 2060 6GB",
+          "gpu": "Intel UHD Graphics 630",
+          "display": "17.3-inch FHD (144Hz)",
+          "storage": "512GB SSD",
+          "os": "Windows 11",
+          "keyboard_layout": "US - International Keyboard",
+          "keyboard_backlight": "RGB Backlight"
+        },
+        {
+          "cpu": "Intel Core i7-10750H (12 CPUs), ~2.6GHz",
+          "ram": "32GB DDR4",
+          "vga": "NVIDIA GeForce RTX 2070 8GB",
+          "gpu": "Intel UHD Graphics 630",
+          "display": "17.3-inch FHD (240Hz)",
+          "storage": "1TB SSD",
+          "os": "Windows 11",
+          "keyboard_layout": "US - International Keyboard",
+          "keyboard_backlight": "RGB Backlight"
+        }
+      ],
+      "colors": [
+        "Eclipse Gray",
+        "Original Black"
+      ]
+    },
+    "ASUS ROG Strix SCAR 17 G733": {
+      "display_name": "ROG Strix SCAR 17",
+      "series": "ROG Strix",
+      "year": 2021,
+      "category": "Gaming",
+      "configurations": [
+        {
+          "cpu": "AMD Ryzen 9 5900HX (16 CPUs), ~3.3GHz",
+          "ram": "32GB DDR4",
+          "vga": "NVIDIA GeForce RTX 3070 8GB",
+          "gpu": "AMD Radeon Graphics",
+          "display": "17.3-inch FHD (165Hz)",
+          "storage": "1TB SSD",
+          "os": "Windows 11",
+          "keyboard_layout": "US - International Keyboard",
+          "keyboard_backlight": "RGB Backlight"
+        },
+        {
+          "cpu": "AMD Ryzen 9 5900HX (16 CPUs), ~3.3GHz",
+          "ram": "32GB DDR4",
+          "vga": "NVIDIA GeForce RTX 3080 10GB",
+          "gpu": "AMD Radeon Graphics",
+          "display": "17.3 300Hz",
+          "storage": "2TB SSD",
+          "os": "Windows 11",
+          "keyboard_layout": "US - International Keyboard",
+          "keyboard_backlight": "RGB Backlight"
+        }
+      ],
+      "colors": [
+        "Eclipse Gray",
+        "Electro Punk"
+      ]
+    },
+    "ASUS ROG Strix G16 G614": {
+      "display_name": "ROG Strix G16",
+      "series": "ROG Strix",
+      "year": 2024,
+      "category": "Gaming",
+      "configurations": [
+        {
+          "cpu": "Intel Core i7-14700HX (20 CPUs), ~2.1GHz",
+          "ram": "16GB DDR4",
+          "vga": "NVIDIA GeForce RTX 4060 8GB",
+          "gpu": "Intel UHD Graphics 770",
+          "display": "16-inch OLED (240Hz)",
+          "storage": "512GB SSD",
+          "os": "Windows 11",
+          "keyboard_layout": "US - International Keyboard",
+          "keyboard_backlight": "RGB Backlight"
+        },
+        {
+          "cpu": "Intel Core i9-14900HX (24 CPUs), ~2.2GHz",
+          "ram": "32GB DDR4",
+          "vga": "NVIDIA GeForce RTX 4070 12GB",
+          "gpu": "Intel UHD Graphics 770",
+          "display": "16-inch OLED (240Hz)",
+          "storage": "1TB SSD",
+          "os": "Windows 11",
+          "keyboard_layout": "US - International Keyboard",
+          "keyboard_backlight": "RGB Backlight"
+        },
+        {
+          "cpu": "Intel Core i9-14900HX (24 CPUs), ~2.2GHz",
+          "ram": "32GB DDR4",
+          "vga": "NVIDIA GeForce RTX 4080 16GB",
+          "gpu": "Intel UHD Graphics 770",
+          "display": "16-inch OLED (240Hz)",
+          "storage": "2TB SSD",
+          "os": "Windows 11",
+          "keyboard_layout": "US - International Keyboard",
+          "keyboard_backlight": "RGB Backlight"
+        }
+      ],
+      "colors": [
+        "Eclipse Gray",
+        "Volt Green"
+      ]
+    },
+    "ASUS ROG Zephyrus G14 GA401": {
+      "display_name": "ROG Zephyrus G14",
+      "series": "ROG Zephyrus",
+      "year": 2020,
+      "category": "Gaming",
+      "configurations": [
+        {
+          "cpu": "AMD Ryzen 7 4800H (16 CPUs), ~2.9GHz",
+          "ram": "16GB DDR4",
+          "vga": "NVIDIA GeForce RTX 3060 6GB",
+          "gpu": "AMD Radeon Graphics",
+          "display": "14-inch QHD (120Hz)",
+          "storage": "512GB SSD",
+          "os": "Windows 11",
+          "keyboard_layout": "US - International Keyboard",
+          "keyboard_backlight": "White Backlight"
+        },
+        {
+          "cpu": "AMD Ryzen 9 5900HX (16 CPUs), ~3.3GHz",
+          "ram": "32GB DDR4",
+          "vga": "NVIDIA GeForce RTX 3070 8GB",
+          "gpu": "AMD Radeon Graphics",
+          "display": "14-inch QHD (120Hz)",
+          "storage": "1TB SSD",
+          "os": "Windows 11",
+          "keyboard_layout": "US - International Keyboard",
+          "keyboard_backlight": "White Backlight"
+        }
+      ],
+      "colors": [
+        "Eclipse Gray",
+        "Moonlight White"
+      ]
+    },
+    "ASUS ROG Zephyrus G15 GA503": {
+      "display_name": "ROG Zephyrus G15",
+      "series": "ROG Zephyrus",
+      "year": 2021,
+      "category": "Gaming",
+      "configurations": [
+        {
+          "cpu": "AMD Ryzen 7 5800H (16 CPUs), ~3.2GHz",
+          "ram": "16GB DDR4",
+          "vga": "NVIDIA GeForce RTX 3070 8GB",
+          "gpu": "AMD Radeon Graphics",
+          "display": "15-inch QHD (165Hz)",
+          "storage": "1TB SSD",
+          "os": "Windows 11",
+          "keyboard_layout": "US - International Keyboard",
+          "keyboard_backlight": "White Backlight"
+        },
+        {
+          "cpu": "AMD Ryzen 9 5900HX (16 CPUs), ~3.3GHz",
+          "ram": "32GB DDR4",
+          "vga": "NVIDIA GeForce RTX 3080 10GB",
+          "gpu": "AMD Radeon Graphics",
+          "display": "15-inch QHD (165Hz)",
+          "storage": "1TB SSD",
+          "os": "Windows 11",
+          "keyboard_layout": "US - International Keyboard",
+          "keyboard_backlight": "White Backlight"
+        }
+      ],
+      "colors": [
+        "Eclipse Gray",
+        "Moonlight White"
+      ]
+    },
+    "ASUS ROG Zephyrus M16 GU603": {
+      "display_name": "ROG Zephyrus M16",
+      "series": "ROG Zephyrus",
+      "year": 2021,
+      "category": "Gaming",
+      "configurations": [
+        {
+          "cpu": "Intel Core i7-11800H (16 CPUs), ~2.3GHz",
+          "ram": "16GB DDR4",
+          "vga": "NVIDIA GeForce RTX 3060 6GB",
+          "gpu": "Intel UHD Graphics",
+          "display": "15-inch QHD (165Hz)",
+          "storage": "512GB SSD",
+          "os": "Windows 11",
+          "keyboard_layout": "US - International Keyboard",
+          "keyboard_backlight": "RGB Backlight"
+        },
+        {
+          "cpu": "Intel Core i9-12900H (20 CPUs), ~2.5GHz",
+          "ram": "32GB DDR4",
+          "vga": "NVIDIA GeForce RTX 3070 Ti 8GB",
+          "gpu": "Intel Iris Xe Graphics",
+          "display": "15-inch QHD (165Hz)",
+          "storage": "1TB SSD",
+          "os": "Windows 11",
+          "keyboard_layout": "US - International Keyboard",
+          "keyboard_backlight": "RGB Backlight"
+        }
+      ],
+      "colors": [
+        "Eclipse Gray",
+        "Off Black"
+      ]
+    },
+    "ASUS ROG Zephyrus S17 GX703": {
+      "display_name": "ROG Zephyrus S17",
+      "series": "ROG Zephyrus",
+      "year": 2021,
+      "category": "Gaming",
+      "configurations": [
+        {
+          "cpu": "Intel Core i7-11800H (16 CPUs), ~2.3GHz",
+          "ram": "32GB DDR4",
+          "vga": "NVIDIA GeForce RTX 3080 10GB",
+          "gpu": "Intel UHD Graphics",
+          "display": "17.3-inch FHD (165Hz)",
+          "storage": "1TB SSD",
+          "os": "Windows 11",
+          "keyboard_layout": "US - International Keyboard",
+          "keyboard_backlight": "RGB Backlight"
+        },
+        {
+          "cpu": "Intel Core i9-12900H (20 CPUs), ~2.5GHz",
+          "ram": "32GB DDR4",
+          "vga": "NVIDIA GeForce RTX 3080 Ti 12GB",
+          "gpu": "Intel Iris Xe Graphics",
+          "display": "17.3-inch FHD (165Hz)",
+          "storage": "2TB SSD",
+          "os": "Windows 11",
+          "keyboard_layout": "US - International Keyboard",
+          "keyboard_backlight": "RGB Backlight"
+        }
+      ],
+      "colors": [
+        "Eclipse Gray"
+      ]
+    },
+    "ASUS ROG Zephyrus S GX502": {
+      "display_name": "ROG Zephyrus S",
+      "series": "ROG Zephyrus",
+      "year": 2019,
+      "category": "Gaming",
+      "configurations": [
+        {
+          "cpu": "Intel Core i7-9750H (12 CPUs), ~2.6GHz",
+          "ram": "16GB DDR4",
+          "vga": "NVIDIA GeForce RTX 2070 8GB",
+          "gpu": "Intel UHD Graphics 630",
+          "display": "15-inch FHD (240Hz)",
+          "storage": "512GB SSD",
+          "os": "Windows 11",
+          "keyboard_layout": "US - International Keyboard",
+          "keyboard_backlight": "RGB Backlight"
+        },
+        {
+          "cpu": "Intel Core i7-9750H (12 CPUs), ~2.6GHz",
+          "ram": "32GB DDR4",
+          "vga": "NVIDIA GeForce RTX 2080 8GB",
+          "gpu": "Intel UHD Graphics 630",
+          "display": "15-inch FHD (240Hz)",
+          "storage": "1TB SSD",
+          "os": "Windows 11",
+          "keyboard_layout": "US - International Keyboard",
+          "keyboard_backlight": "RGB Backlight"
+        }
+      ],
+      "colors": [
+        "Asus Blue",
+        "Gun Metal"
+      ]
+    },
+    "ASUS ROG Zephyrus S17 GX701": {
+      "display_name": "ROG Zephyrus S17",
+      "series": "ROG Zephyrus",
+      "year": 2019,
+      "category": "Gaming",
+      "configurations": [
+        {
+          "cpu": "Intel Core i7-9750H (12 CPUs), ~2.6GHz",
+          "ram": "32GB DDR4",
+          "vga": "NVIDIA GeForce RTX 2070 8GB",
+          "gpu": "Intel UHD Graphics 630",
+          "display": "17.3 300Hz",
+          "storage": "1TB SSD",
+          "os": "Windows 11",
+          "keyboard_layout": "US - International Keyboard",
+          "keyboard_backlight": "RGB Backlight"
+        },
+        {
+          "cpu": "Intel Core i7-9750H (12 CPUs), ~2.6GHz",
+          "ram": "32GB DDR4",
+          "vga": "NVIDIA GeForce RTX 2080 8GB",
+          "gpu": "Intel UHD Graphics 630",
+          "display": "17.3 300Hz",
+          "storage": "1TB SSD",
+          "os": "Windows 11",
+          "keyboard_layout": "US - International Keyboard",
+          "keyboard_backlight": "RGB Backlight"
+        }
+      ],
+      "colors": [
+        "Asus Blue"
+      ]
+    },
+    "ASUS ROG Zephyrus M GU502": {
+      "display_name": "ROG Zephyrus M",
+      "series": "ROG Zephyrus",
+      "year": 2019,
+      "category": "Gaming",
+      "configurations": [
+        {
+          "cpu": "Intel Core i7-9750H (12 CPUs), ~2.6GHz",
+          "ram": "16GB DDR4",
+          "vga": "NVIDIA GeForce RTX 2060 6GB",
+          "gpu": "Intel UHD Graphics 630",
+          "display": "15-inch FHD (240Hz)",
+          "storage": "512GB SSD",
+          "os": "Windows 11",
+          "keyboard_layout": "US - International Keyboard",
+          "keyboard_backlight": "RGB Backlight"
+        },
+        {
+          "cpu": "Intel Core i7-9750H (12 CPUs), ~2.6GHz",
+          "ram": "32GB DDR4",
+          "vga": "NVIDIA GeForce RTX 2070 8GB",
+          "gpu": "Intel UHD Graphics 630",
+          "display": "15-inch FHD (240Hz)",
+          "storage": "1TB SSD",
+          "os": "Windows 11",
+          "keyboard_layout": "US - International Keyboard",
+          "keyboard_backlight": "RGB Backlight"
+        }
+      ],
+      "colors": [
+        "Stealth Black",
+        "Brushed Metal"
+      ]
+    },
+    "ASUS ROG Zephyrus G GA502": {
+      "display_name": "ROG Zephyrus G",
+      "series": "ROG Zephyrus",
+      "year": 2019,
+      "category": "Gaming",
+      "configurations": [
+        {
+          "cpu": "AMD Ryzen 7 4800H (16 CPUs), ~2.9GHz",
+          "ram": "16GB DDR4",
+          "vga": "NVIDIA GeForce GTX 1660 Ti 6GB",
+          "gpu": "AMD Radeon Graphics",
+          "display": "15-inch FHD (120Hz)",
+          "storage": "512GB SSD",
+          "os": "Windows 11",
+          "keyboard_layout": "US - International Keyboard",
+          "keyboard_backlight": "White Backlight"
+        },
+        {
+          "cpu": "AMD Ryzen 7 4800H (16 CPUs), ~2.9GHz",
+          "ram": "32GB DDR4",
+          "vga": "NVIDIA GeForce RTX 2060 6GB",
+          "gpu": "AMD Radeon Graphics",
+          "display": "15-inch FHD (144Hz)",
+          "storage": "1TB SSD",
+          "os": "Windows 11",
+          "keyboard_layout": "US - International Keyboard",
+          "keyboard_backlight": "White Backlight"
+        }
+      ],
+      "colors": [
+        "Glacier Blue",
+        "Metallic Hairline"
+      ]
+    },
+    "ASUS ROG Zephyrus G14 GA402": {
+      "display_name": "ROG Zephyrus G14",
+      "series": "ROG Zephyrus",
+      "year": 2022,
+      "category": "Gaming",
+      "configurations": [
+        {
+          "cpu": "AMD Ryzen 7 6800H (16 CPUs), ~3.2GHz",
+          "ram": "16GB DDR4",
+          "vga": "NVIDIA GeForce RTX 3060 6GB",
+          "gpu": "AMD Radeon 680M Graphics",
+          "display": "14-inch QHD (120Hz)",
+          "storage": "512GB SSD",
+          "os": "Windows 11",
+          "keyboard_layout": "US - International Keyboard",
+          "keyboard_backlight": "White Backlight"
+        },
+        {
+          "cpu": "AMD Ryzen 9 6900HX (16 CPUs), ~3.3GHz",
+          "ram": "32GB DDR4",
+          "vga": "NVIDIA GeForce RTX 3070 Ti 8GB",
+          "gpu": "AMD Radeon 680M Graphics",
+          "display": "14-inch QHD (120Hz)",
+          "storage": "1TB SSD",
+          "os": "Windows 11",
+          "keyboard_layout": "US - International Keyboard",
+          "keyboard_backlight": "White Backlight"
+        }
+      ],
+      "colors": [
+        "Eclipse Gray",
+        "Moonlight White"
+      ]
+    },
+    "ASUS ROG Zephyrus G16 GU605": {
+      "display_name": "ROG Zephyrus G16",
+      "series": "ROG Zephyrus",
+      "year": 2024,
+      "category": "Gaming",
+      "configurations": [
+        {
+          "cpu": "Intel Core i7-14700HX (20 CPUs), ~2.1GHz",
+          "ram": "16GB DDR4",
+          "vga": "NVIDIA GeForce RTX 4070 12GB",
+          "gpu": "Intel UHD Graphics 770",
+          "display": "16-inch OLED (240Hz)",
+          "storage": "1TB SSD",
+          "os": "Windows 11",
+          "keyboard_layout": "US - International Keyboard",
+          "keyboard_backlight": "RGB Backlight"
+        },
+        {
+          "cpu": "Intel Core i9-14900HX (24 CPUs), ~2.2GHz",
+          "ram": "32GB DDR4",
+          "vga": "NVIDIA GeForce RTX 4080 16GB",
+          "gpu": "Intel UHD Graphics 770",
+          "display": "16-inch OLED (240Hz)",
+          "storage": "1TB SSD",
+          "os": "Windows 11",
+          "keyboard_layout": "US - International Keyboard",
+          "keyboard_backlight": "RGB Backlight"
+        },
+        {
+          "cpu": "Intel Core i9-14900HX (24 CPUs), ~2.2GHz",
+          "ram": "32GB DDR4",
+          "vga": "NVIDIA GeForce RTX 4090 16GB",
+          "gpu": "Intel UHD Graphics 770",
+          "display": "16-inch OLED (240Hz)",
+          "storage": "2TB SSD",
+          "os": "Windows 11",
+          "keyboard_layout": "US - International Keyboard",
+          "keyboard_backlight": "RGB Backlight"
+        }
+      ],
+      "colors": [
+        "Eclipse Gray",
+        "Platinum White"
+      ]
+    },
+    "ASUS Vivobook Pro 15 K3500": {
+      "display_name": "Vivobook Pro 15",
+      "series": "Vivobook Pro",
+      "year": 2021,
+      "category": "Gaming",
+      "configurations": [
+        {
+          "cpu": "AMD Ryzen 7 5800H (16 CPUs), ~3.2GHz",
+          "ram": "16GB DDR4",
+          "vga": "NVIDIA GeForce RTX 3050 4GB",
+          "gpu": "AMD Radeon Graphics",
+          "display": "15-inch FHD (144Hz)",
+          "storage": "512GB SSD",
+          "os": "Windows 11",
+          "keyboard_layout": "US - International Keyboard",
+          "keyboard_backlight": "White Backlight"
+        },
+        {
+          "cpu": "AMD Ryzen 9 5900HX (16 CPUs), ~3.3GHz",
+          "ram": "32GB DDR4",
+          "vga": "NVIDIA GeForce RTX 3060 6GB",
+          "gpu": "AMD Radeon Graphics",
+          "display": "15-inch FHD (144Hz)",
+          "storage": "1TB SSD",
+          "os": "Windows 11",
+          "keyboard_layout": "US - International Keyboard",
+          "keyboard_backlight": "White Backlight"
+        }
+      ],
+      "colors": [
+        "Quiet Blue",
+        "Cool Silver"
+      ]
+    },
+    "ASUS Vivobook Pro 16X N7600": {
+      "display_name": "Vivobook Pro 16X",
+      "series": "Vivobook Pro",
+      "year": 2021,
+      "category": "Gaming",
+      "configurations": [
+        {
+          "cpu": "Intel Core i7-11370H (8 CPUs), ~3.3GHz",
+          "ram": "16GB DDR4",
+          "vga": "RTX 3050 Ti",
+          "gpu": "Intel Iris Xe Graphics",
+          "display": "15-inch 4K UHD (60Hz)",
+          "storage": "512GB SSD",
+          "os": "Windows 11",
+          "keyboard_layout": "US - International Keyboard",
+          "keyboard_backlight": "White Backlight"
+        },
+        {
+          "cpu": "Intel Core i9-11900H (16 CPUs), ~2.5GHz",
+          "ram": "32GB DDR4",
+          "vga": "NVIDIA GeForce RTX 3060 6GB",
+          "gpu": "Intel UHD Graphics",
+          "display": "15-inch 4K UHD (60Hz)",
+          "storage": "1TB SSD",
+          "os": "Windows 11",
+          "keyboard_layout": "US - International Keyboard",
+          "keyboard_backlight": "White Backlight"
+        }
+      ],
+      "colors": [
+        "Starry Black",
+        "Glacier Blue"
+      ]
+    }
+  }
+}

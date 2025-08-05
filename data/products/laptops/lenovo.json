@@ -1,0 +1,39 @@
+{
+  "brand": "Lenovo",
+  "models": {
+    "Lenovo Legion 5 15ACH6H": {
+      "display_name": "Legion 5",
+      "series": "Legion",
+      "year": 2021,
+      "category": "Gaming",
+      "configurations": [
+        {
+          "cpu": "AMD Ryzen 5 5600H (12 CPUs), ~3.3GHz",
+          "ram": "8GB DDR4",
+          "vga": "NVIDIA GeForce RTX 3050 4GB",
+          "gpu": "AMD Radeon Graphics",
+          "display": "15-inch FHD (120Hz)",
+          "storage": "256GB SSD",
+          "os": "Windows 11",
+          "keyboard_layout": "US - International Keyboard",
+          "keyboard_backlight": "White Backlight"
+        },
+        {
+          "cpu": "AMD Ryzen 7 5800H (16 CPUs), ~3.2GHz",
+          "ram": "16GB DDR4",
+          "vga": "NVIDIA GeForce RTX 3060 6GB",
+          "gpu": "AMD Radeon Graphics",
+          "display": "15-inch FHD (144Hz)",
+          "storage": "512GB SSD",
+          "os": "Windows 11",
+          "keyboard_layout": "US - International Keyboard",
+          "keyboard_backlight": "RGB Backlight"
+        }
+      ],
+      "colors": [
+        "Phantom Blue",
+        "Shadow Black"
+      ]
+    }
+  }
+}

@@ -1,0 +1,39 @@
+{
+  "brand": "Dell",
+  "models": {
+    "Dell G15 5520": {
+      "display_name": "G15 Gaming",
+      "series": "G Series",
+      "year": 2022,
+      "category": "Gaming",
+      "configurations": [
+        {
+          "cpu": "Intel Core i5-12500H (12 CPUs), ~3.1GHz",
+          "ram": "8GB DDR4",
+          "vga": "NVIDIA GeForce RTX 3050 4GB",
+          "gpu": "Intel Iris Xe Graphics",
+          "display": "15-inch FHD (120Hz)",
+          "storage": "256GB SSD",
+          "os": "Windows 11",
+          "keyboard_layout": "US - International Keyboard",
+          "keyboard_backlight": "Blue Backlight"
+        },
+        {
+          "cpu": "Intel Core i7-12700H (16 CPUs), ~2.3GHz",
+          "ram": "16GB DDR4",
+          "vga": "NVIDIA GeForce RTX 3060 6GB",
+          "gpu": "Intel Iris Xe Graphics",
+          "display": "15-inch FHD (120Hz)",
+          "storage": "512GB SSD",
+          "os": "Windows 11",
+          "keyboard_layout": "US - International Keyboard",
+          "keyboard_backlight": "Blue Backlight"
+        }
+      ],
+      "colors": [
+        "Dark Shadow Gray",
+        "Specter Green"
+      ]
+    }
+  }
+}

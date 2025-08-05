@@ -1,0 +1,38 @@
+{
+  "brand": "MSI",
+  "models": {
+    "MSI GF63 Thin 11SC": {
+      "display_name": "GF63 Thin",
+      "series": "GF",
+      "year": 2021,
+      "category": "Gaming",
+      "configurations": [
+        {
+          "cpu": "Intel Core i5-11400H (12 CPUs), ~2.7GHz",
+          "ram": "8GB DDR4",
+          "vga": "NVIDIA GeForce GTX 1650 4GB",
+          "gpu": "Intel UHD Graphics",
+          "display": "15-inch FHD (60Hz)",
+          "storage": "256GB SSD",
+          "os": "Windows 11",
+          "keyboard_layout": "US - International Keyboard",
+          "keyboard_backlight": "Red Backlight"
+        },
+        {
+          "cpu": "Intel Core i7-11800H (16 CPUs), ~2.3GHz",
+          "ram": "16GB DDR4",
+          "vga": "NVIDIA GeForce RTX 3050 4GB",
+          "gpu": "Intel UHD Graphics",
+          "display": "15-inch FHD (144Hz)",
+          "storage": "512GB SSD",
+          "os": "Windows 11",
+          "keyboard_layout": "US - International Keyboard",
+          "keyboard_backlight": "Red Backlight"
+        }
+      ],
+      "colors": [
+        "Black"
+      ]
+    }
+  }
+}

@@ -1,0 +1,39 @@
+{
+  "brand": "HP",
+  "models": {
+    "HP Pavilion Gaming 15-dk": {
+      "display_name": "Pavilion Gaming 15",
+      "series": "Pavilion Gaming",
+      "year": 2021,
+      "category": "Gaming",
+      "configurations": [
+        {
+          "cpu": "Intel Core i5-11400H (12 CPUs), ~2.7GHz",
+          "ram": "8GB DDR4",
+          "vga": "NVIDIA GeForce GTX 1650 4GB",
+          "gpu": "Intel UHD Graphics",
+          "display": "15-inch FHD (60Hz)",
+          "storage": "512GB SSD",
+          "os": "Windows 11",
+          "keyboard_layout": "US - International Keyboard",
+          "keyboard_backlight": "Green Backlight"
+        },
+        {
+          "cpu": "Intel Core i7-11800H (16 CPUs), ~2.3GHz",
+          "ram": "16GB DDR4",
+          "vga": "NVIDIA GeForce RTX 3050 4GB",
+          "gpu": "Intel UHD Graphics",
+          "display": "15-inch FHD (144Hz)",
+          "storage": "512GB SSD",
+          "os": "Windows 11",
+          "keyboard_layout": "US - International Keyboard",
+          "keyboard_backlight": "Green Backlight"
+        }
+      ],
+      "colors": [
+        "Shadow Black",
+        "Acid Green"
+      ]
+    }
+  }
+}
