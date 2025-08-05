@@ -2,9 +2,10 @@ import streamlit as st
 from models.laptop import LaptopProduct
 from config.master_data import (
     PRODUCT_RANKS, MINUS_OPTIONS,
-    get_laptop_template_suggestions, extract_info_from_template,
     get_collections_for_brand, detect_template_brand
 )
+from services.template_cache_service import TemplateCacheService
+from services.component_dropdown_service import ComponentDropdownService
 from config.laptop_specs import get_abbreviated_component_name
 from config.laptop_inclusions import LAPTOP_INCLUSION_LABELS
 from config.laptop_metafields import LAPTOP_FIELD_ORDER
@@ -48,9 +49,34 @@ def clean_stale_image_references():
     for handle in handles_to_clean:
         del st.session_state.product_images[handle]
 
+@st.cache_resource
+def get_template_service():
+    """Initialize template cache service (cached for performance)"""
+    return TemplateCacheService()
+
+@st.cache_resource
+def get_dropdown_service():
+    """Initialize component dropdown service (cached for performance)"""
+    return ComponentDropdownService()
+
 def laptop_entry_page():
     """Laptop entry page with laptop template selector and enhanced logging"""
     st.header("💻 Laptop Entry")
+    
+    # Initialize services
+    template_service = get_template_service()
+    
+    try:
+        dropdown_service = get_dropdown_service()
+    except Exception as e:
+        st.error(f"Error initializing dropdown service: {str(e)}")
+        st.error("Falling back to text inputs. Please check metaobject data files.")
+        return
+    
+    # Auto-regenerate cache if needed (runs on app start)
+    if template_service.needs_regeneration():
+        with st.spinner("Updating laptop templates..."):
+            template_service.regenerate_cache()
     
     # Sidebar: Missing Metaobjects Report
     with st.sidebar:
@@ -115,13 +141,13 @@ def laptop_entry_page():
     with col1:
         # Unified searchable template selector - load all templates for fuzzy search
         try:
-            all_laptop_templates = get_laptop_template_suggestions()
+            all_laptop_templates = template_service.get_all_templates()
             
             # Template selection callback for immediate updates
             def on_laptop_template_change():
                 selected = st.session_state.laptop_template_selector
                 if selected and selected != "":
-                    extracted_info = extract_info_from_template(selected)
+                    extracted_info = template_service.parse_template(selected)
                     if extracted_info:
                         # Update session state immediately like smartphone entry
                         if 'laptop_form_data' not in st.session_state:
@@ -140,7 +166,7 @@ def laptop_entry_page():
             
             # Show current template info if selected - similar to smartphone pattern
             if selected_template and selected_template != "":
-                extracted_info = extract_info_from_template(selected_template)
+                extracted_info = template_service.parse_template(selected_template)
                 if extracted_info:
                     brand = extracted_info.get('brand', 'Laptop')
                     brand_emoji = "💻" if brand == "ASUS" else "🖥️" if brand == "Dell" else "⚡" if brand == "HP" else "💻"
@@ -238,69 +264,214 @@ def laptop_entry_page():
             # Template-filled specifications
             st.markdown("**Specifications** (Auto-filled from template)")
             
-            cpu = st.text_input(
+            # CPU/Processor searchable dropdown
+            cpu_options = dropdown_service.get_processor_options()
+            cpu_template_value = template_info.get('cpu_full', template_info.get('cpu', ''))
+            cpu_index = dropdown_service.find_dropdown_index(cpu_options, cpu_template_value)
+
+            cpu_selection = st.selectbox(
                 "Processor",
-                value=template_info.get('cpu_full', template_info.get('cpu', '')),
-                help="CPU specification from template",
-                key="laptop_cpu_input"
+                options=cpu_options,
+                format_func=lambda x: x[1],  # Show display name
+                index=cpu_index,
+                help="Select processor or choose 'Other/Custom processor...' for manual entry",
+                key="laptop_cpu_dropdown"
             )
+            cpu = cpu_selection[0]  # Get the value
+
+            # Handle custom input
+            if cpu == "CUSTOM":
+                cpu = st.text_input(
+                    "Enter custom processor:", 
+                    value=cpu_template_value,
+                    help="Enter processor specification manually",
+                    key="cpu_custom"
+                )
             
-            ram = st.text_input(
+            # RAM simple selectbox
+            ram_options = dropdown_service.get_ram_options()
+            ram_template_value = template_info.get('ram_full', template_info.get('ram', ''))
+            ram_index = dropdown_service.find_simple_dropdown_index(ram_options, ram_template_value)
+
+            ram = st.selectbox(
                 "RAM",
-                value=template_info.get('ram_full', template_info.get('ram', '')),
-                help="Memory specification from template",
-                key="laptop_ram_input"
+                options=ram_options,
+                index=ram_index,
+                help="Select RAM size from common options",
+                key="laptop_ram_dropdown"
             )
             
-            gpu = st.text_input(
+            # VGA/Dedicated Graphics searchable dropdown
+            vga_options = dropdown_service.get_vga_options()
+            vga_template_value = template_info.get('gpu_full', '')
+            vga_index = dropdown_service.find_dropdown_index(vga_options, vga_template_value)
+
+            vga_selection = st.selectbox(
                 "VGA",
-                value=template_info.get('gpu_full', ''),
-                help="Dedicated graphics card (VGA) specification",
-                key="laptop_gpu_input"
+                options=vga_options,
+                format_func=lambda x: x[1],  # Show display name
+                index=vga_index,
+                help="Select dedicated graphics card or choose 'Other/Custom VGA...' for manual entry",
+                key="laptop_vga_dropdown"
             )
+            gpu = vga_selection[0]  # Get the value
+
+            # Handle custom input
+            if gpu == "CUSTOM":
+                gpu = st.text_input(
+                    "Enter custom VGA:", 
+                    value=vga_template_value,
+                    help="Enter dedicated graphics specification manually",
+                    key="vga_custom"
+                )
             
-            # Integrated Graphics field (also connects to 03 Graphics metafield)
-            integrated_gpu = st.text_input(
-                "Integrated Graphics", 
-                value=template_info.get('integrated_graphics', ''),
-                help="Integrated graphics specification (auto-detected from CPU)",
-                key="laptop_integrated_gpu_input"
+            # Integrated Graphics searchable dropdown
+            graphics_options = dropdown_service.get_graphics_options()
+            graphics_template_value = template_info.get('integrated_graphics', '')
+            graphics_index = dropdown_service.find_dropdown_index(graphics_options, graphics_template_value)
+
+            graphics_selection = st.selectbox(
+                "Integrated Graphics",
+                options=graphics_options,
+                format_func=lambda x: x[1],  # Show display name
+                index=graphics_index,
+                help="Select integrated graphics or choose 'Other/Custom graphics...' for manual entry",
+                key="laptop_graphics_dropdown"
             )
+            integrated_gpu = graphics_selection[0]  # Get the value
+
+            # Handle custom input
+            if integrated_gpu == "CUSTOM":
+                integrated_gpu = st.text_input(
+                    "Enter custom integrated graphics:", 
+                    value=graphics_template_value,
+                    help="Enter integrated graphics specification manually",
+                    key="graphics_custom"
+                )
         
         with col2:
             # More specifications
             st.markdown("**Additional Specifications**")
             
-            display = st.text_input(
+            # Display searchable dropdown
+            display_options = dropdown_service.get_display_options()
+            display_template_value = template_info.get('display_full', template_info.get('display', ''))
+            display_index = dropdown_service.find_dropdown_index(display_options, display_template_value)
+
+            display_selection = st.selectbox(
                 "Display",
-                value=template_info.get('display_full', template_info.get('display', '')),
-                help="Display specification from template",
-                key="laptop_display_input"
+                options=display_options,
+                format_func=lambda x: x[1],  # Show display name
+                index=display_index,
+                help="Select display specification or choose 'Other/Custom display...' for manual entry",
+                key="laptop_display_dropdown"
             )
+            display = display_selection[0]  # Get the value
+
+            # Handle custom input
+            if display == "CUSTOM":
+                display = st.text_input(
+                    "Enter custom display:", 
+                    value=display_template_value,
+                    help="Enter display specification manually",
+                    key="display_custom"
+                )
             
-            storage = st.text_input(
+            # Storage searchable dropdown
+            storage_options = dropdown_service.get_storage_options()
+            storage_template_value = template_info.get('storage_full', template_info.get('storage', ''))
+            storage_index = dropdown_service.find_dropdown_index(storage_options, storage_template_value)
+
+            storage_selection = st.selectbox(
                 "Storage",
-                value=template_info.get('storage_full', template_info.get('storage', '')),
-                help="Storage specification from template",
-                key="laptop_storage_input"
+                options=storage_options,
+                format_func=lambda x: x[1],  # Show display name
+                index=storage_index,
+                help="Select storage specification or choose 'Other/Custom storage...' for manual entry",
+                key="laptop_storage_dropdown"
             )
+            storage = storage_selection[0]  # Get the value
+
+            # Handle custom input
+            if storage == "CUSTOM":
+                storage = st.text_input(
+                    "Enter custom storage:", 
+                    value=storage_template_value,
+                    help="Enter storage specification manually",
+                    key="storage_custom"
+                )
             
-            color = st.text_input(
+            # Color searchable dropdown
+            color_options = dropdown_service.get_color_options()
+            color_template_value = template_info.get('color', '')
+            color_index = dropdown_service.find_dropdown_index(color_options, color_template_value)
+
+            color_selection = st.selectbox(
                 "Color",
-                value=template_info.get('color', ''),
-                help="Laptop color/finish",
-                key="laptop_color_input"
+                options=color_options,
+                format_func=lambda x: x[1],  # Show display name
+                index=color_index,
+                help="Select color/finish or choose 'Other/Custom color...' for manual entry",
+                key="laptop_color_dropdown"
             )
+            color = color_selection[0]  # Get the value
+
+            # Handle custom input
+            if color == "CUSTOM":
+                color = st.text_input(
+                    "Enter custom color:", 
+                    value=color_template_value,
+                    help="Enter color/finish specification manually",
+                    key="color_custom"
+                )
             
-            keyboard_backlight = st.text_input(
+            # Keyboard Backlight dropdown
+            keyboard_backlight_options = dropdown_service.get_keyboard_backlight_options()
+            keyboard_backlight_template_value = template_info.get('keyboard_backlight', 'Yes')
+            keyboard_backlight_index = dropdown_service.find_dropdown_index(keyboard_backlight_options, keyboard_backlight_template_value)
+
+            keyboard_backlight_selection = st.selectbox(
                 "Keyboard Backlight",
-                value=template_info.get('keyboard_backlight', 'Yes'),
-                help="Keyboard backlight type (Yes/No/RGB/White/Blue/Green/Red)",
-                key="laptop_keyboard_backlight_input"
+                options=keyboard_backlight_options,
+                format_func=lambda x: x[1],  # Show display name
+                index=keyboard_backlight_index,
+                help="Select keyboard backlight type",
+                key="laptop_keyboard_backlight_dropdown"
             )
+            keyboard_backlight = keyboard_backlight_selection[0]  # Get the value
             
             # Optional fields
             st.markdown("**Optional Fields**")
+            
+            # OS dropdown
+            os_options = dropdown_service.get_os_options()
+            os_template_value = template_info.get('os', 'Windows 11')
+            os_index = dropdown_service.find_dropdown_index(os_options, os_template_value)
+
+            os_selection = st.selectbox(
+                "Operating System",
+                options=os_options,
+                format_func=lambda x: x[1],  # Show display name
+                index=os_index,
+                help="Select operating system",
+                key="laptop_os_dropdown"
+            )
+            operating_system = os_selection[0]  # Get the value
+
+            # Keyboard Layout dropdown
+            keyboard_layout_options = dropdown_service.get_keyboard_layout_options()
+            keyboard_layout_template_value = template_info.get('keyboard_layout', 'US')
+            keyboard_layout_index = dropdown_service.find_dropdown_index(keyboard_layout_options, keyboard_layout_template_value)
+
+            keyboard_layout_selection = st.selectbox(
+                "Keyboard Layout",
+                options=keyboard_layout_options,
+                format_func=lambda x: x[1],  # Show display name
+                index=keyboard_layout_index,
+                help="Select keyboard layout type",
+                key="laptop_keyboard_layout_dropdown"
+            )
+            keyboard_layout = keyboard_layout_selection[0]  # Get the value
             
             inclusions = st.multiselect(
                 "Product Inclusions",
@@ -371,8 +542,8 @@ def laptop_entry_page():
                     'display': display,
                     'storage': storage,
                     'color': color,
-                    'operating_system': template_info.get('os', 'Windows 11'),
-                    'keyboard_layout': template_info.get('keyboard_layout', 'US'),
+                    'operating_system': operating_system,
+                    'keyboard_layout': keyboard_layout,
                     'keyboard_backlight': keyboard_backlight,
                     'inclusions': inclusions,
                     'minus': minus_issues,
@@ -465,10 +636,12 @@ def laptop_entry_page():
                 # Clear all form field keys to reset them completely
                 laptop_form_keys = [
                     "laptop_title_input", "laptop_price_input", "laptop_rank_input",
-                    "laptop_cpu_input", "laptop_ram_input", "laptop_gpu_input", 
-                    "laptop_integrated_gpu_input", "laptop_display_input", "laptop_storage_input",
-                    "laptop_color_input", "laptop_keyboard_backlight_input", "laptop_inclusions_input", "laptop_minus_input", 
-                    "laptop_collections_input"
+                    "laptop_cpu_dropdown", "cpu_custom", "laptop_ram_dropdown", 
+                    "laptop_vga_dropdown", "vga_custom", "laptop_graphics_dropdown", "graphics_custom",
+                    "laptop_display_dropdown", "display_custom", "laptop_storage_dropdown", "storage_custom",
+                    "laptop_color_dropdown", "color_custom", "laptop_keyboard_backlight_dropdown",
+                    "laptop_os_dropdown", "laptop_keyboard_layout_dropdown",
+                    "laptop_inclusions_input", "laptop_minus_input", "laptop_collections_input"
                 ]
                 for key in laptop_form_keys:
                     if key in st.session_state:

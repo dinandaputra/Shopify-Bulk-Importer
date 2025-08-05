@@ -13,8 +13,9 @@ from config.galaxy_specs import (
     generate_product_title as generate_galaxy_title, get_default_ram, 
     validate_galaxy_combination
 )
+# Laptop service imports - using new TemplateCacheService
+from services.template_cache_service import TemplateCacheService
 from config.laptop_specs import (
-    generate_all_laptop_templates, search_laptop_templates, parse_laptop_template,
     generate_product_title as generate_laptop_title, validate_laptop_combination,
     get_laptop_colors, get_laptop_configurations, expand_laptop_template_specs
 )
@@ -127,7 +128,19 @@ def get_unified_template_suggestions(search_term: str = "") -> List[str]:
     # Get all product type templates
     iphone_templates = generate_all_iphone_templates()
     galaxy_templates = generate_all_galaxy_templates()
-    laptop_templates = generate_all_laptop_templates()
+    
+    # Get laptop templates using new service
+    try:
+        service = TemplateCacheService()
+        laptop_templates = service.get_all_templates()
+    except Exception as e:
+        print(f"Error loading laptop templates: {e}")
+        # Fallback to old system
+        try:
+            from config.laptop_specs import generate_all_laptop_templates
+            laptop_templates = generate_all_laptop_templates()
+        except Exception:
+            laptop_templates = []
     
     # Combine all templates
     all_templates = iphone_templates + galaxy_templates + laptop_templates
@@ -162,11 +175,31 @@ def get_galaxy_template_suggestions(search_term: str = "") -> List[str]:
         return generate_all_galaxy_templates()
 
 def get_laptop_template_suggestions(search_term: str = "") -> List[str]:
-    """Get Laptop template suggestions using comprehensive Laptop specs database"""
-    if search_term:
-        return search_laptop_templates(search_term)[:50]  # Limit for performance
-    else:
-        return generate_all_laptop_templates()
+    """Get Laptop template suggestions using TemplateCacheService"""
+    try:
+        service = TemplateCacheService()
+        all_templates = service.get_all_templates()
+        
+        if search_term:
+            # Apply search filtering
+            search_lower = search_term.lower()
+            filtered_templates = [template for template in all_templates 
+                                if search_lower in template.lower()]
+            return filtered_templates[:50]  # Limit for performance
+        else:
+            return all_templates
+    except Exception as e:
+        print(f"Error loading laptop templates from TemplateCacheService: {e}")
+        # Fallback to old system if service fails
+        try:
+            from config.laptop_specs import generate_all_laptop_templates, search_laptop_templates
+            if search_term:
+                return search_laptop_templates(search_term)[:50]
+            else:
+                return generate_all_laptop_templates()
+        except Exception as fallback_error:
+            print(f"Fallback to laptop_specs also failed: {fallback_error}")
+            return []
 
 def get_title_suggestions(search_term: str) -> List[str]:
     """Get title suggestions based on search term (legacy function for non-iPhone)"""
@@ -282,7 +315,7 @@ def extract_info_from_galaxy_template(template: str) -> Dict[str, str]:
     return result
 
 def extract_info_from_laptop_template(template: str) -> Dict[str, str]:
-    """Extract comprehensive info from Laptop template using specs database
+    """Extract comprehensive info from Laptop template using TemplateCacheService
     
     Args:
         template: Laptop template like "ASUS TUF F15 FX507ZV4 [i7-12700H/16GB/RTX 4060/144Hz/512GB] [Graphite Black]"
@@ -290,9 +323,27 @@ def extract_info_from_laptop_template(template: str) -> Dict[str, str]:
     Returns:
         Dict with model, cpu, ram, gpu, display, storage, color, title, brand, collections info
     """
-    parsed = parse_laptop_template(template)
-    if not parsed:
-        return {}
+    try:
+        # Try new TemplateCacheService first
+        service = TemplateCacheService()
+        parsed = service.parse_template(template)
+        
+        if not parsed:
+            # Fallback to old parsing method
+            from config.laptop_specs import parse_laptop_template
+            parsed = parse_laptop_template(template)
+            if not parsed:
+                return {}
+    except Exception as e:
+        print(f"Error parsing laptop template with TemplateCacheService: {e}")
+        # Fallback to old system
+        try:
+            from config.laptop_specs import parse_laptop_template
+            parsed = parse_laptop_template(template)
+            if not parsed:
+                return {}
+        except Exception:
+            return {}
     
     model = parsed.get('model', '')
     cpu = parsed.get('cpu', '')
@@ -304,13 +355,25 @@ def extract_info_from_laptop_template(template: str) -> Dict[str, str]:
     brand = parsed.get('brand', '')
     
     # Generate product title
-    product_title = generate_laptop_title(model, cpu, ram)
+    try:
+        product_title = generate_laptop_title(model, cpu, ram)
+    except Exception as e:
+        print(f"Error generating laptop title: {e}")
+        product_title = f"{brand} {model}" if brand and model else template.split('[')[0].strip()
     
     # Convert specs to metafield GIDs
-    metafield_mappings = convert_laptop_specs_to_metafields(parsed)
+    try:
+        metafield_mappings = convert_laptop_specs_to_metafields(parsed)
+    except Exception as e:
+        print(f"Error converting laptop specs to metafields: {e}")
+        metafield_mappings = {}
     
     # Expand specifications to include full names for display
-    expanded_info = expand_laptop_template_specs(parsed)
+    try:
+        expanded_info = expand_laptop_template_specs(parsed)
+    except Exception as e:
+        print(f"Error expanding laptop template specs: {e}")
+        expanded_info = {}
     
     result = {
         'title': product_title,
