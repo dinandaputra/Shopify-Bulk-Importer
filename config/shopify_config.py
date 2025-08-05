@@ -7,6 +7,14 @@ class ShopifyConfig:
     """
     
     def __init__(self):
+        # Auto-load environment variables from .env file
+        try:
+            from dotenv import load_dotenv
+            load_dotenv()
+        except ImportError:
+            # dotenv not available, continue with system environment variables
+            pass
+        
         # API credentials (should be environment variables)
         self.API_KEY = os.getenv("SHOPIFY_API_KEY", "")
         self.API_SECRET = os.getenv("SHOPIFY_API_SECRET", "")
