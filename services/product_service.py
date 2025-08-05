@@ -1050,28 +1050,28 @@ class ProductService:
         Uses real metaobject GIDs fetched from Shopify store
         """
         try:
-            from config.laptop_metafield_mapping_actual import convert_laptop_data_to_metafields
+            from repositories.metaobject_repository import MetaobjectRepository
             
-            print(f"DEBUG: Creating laptop metafields using actual metaobject GID mapping system")
+            print(f"DEBUG: Creating laptop metafields using new repository system")
             
-            # Convert laptop data to metafield mappings using actual GIDs
+            # Initialize metaobject repository
+            metaobject_repo = MetaobjectRepository()
+            
+            # Convert laptop data to metafield mappings using repository
             laptop_data = {
-                'color': laptop.color,     # Add color support
-                'processor': laptop.cpu,  # Note: field name change
+                'color': laptop.color,
+                'cpu': laptop.cpu,
                 'ram': laptop.ram,
-                'graphics': laptop.integrated_graphics,  # Integrated graphics - maps to 03 Graphics metafield
+                'gpu': laptop.integrated_graphics,  # Integrated graphics
                 'display': laptop.display,
                 'storage': laptop.storage,
-                'vga': laptop.gpu,   # Dedicated graphics cards (VGA) - maps to 06 VGA metafield
+                'vga': laptop.gpu,   # Dedicated graphics cards
                 'os': laptop.os,
-                'rank': laptop.rank,
-                'inclusions': laptop.inclusions,
-                'minus': getattr(laptop, 'minus', []),
                 'keyboard_layout': laptop.keyboard_layout,
-                'keyboard_backlight': laptop.keyboard_backlight  # Fixed: Include keyboard_backlight field
+                'keyboard_backlight': laptop.keyboard_backlight
             }
             
-            metafield_mappings = convert_laptop_data_to_metafields(laptop_data)
+            metafield_mappings = self._convert_laptop_data_to_metafields_with_repo(laptop_data, metaobject_repo)
             print(f"DEBUG: Generated {len(metafield_mappings)} metafield mappings")
             
             results = []
@@ -1102,7 +1102,7 @@ class ProductService:
                 'successful': successful,
                 'failed': failed,
                 'skipped': skipped,
-                'message': f'Created {successful} metafields using interim mapping system.'
+                'message': f'Created {successful} metafields using new repository system.'
             }
             
         except Exception as e:
@@ -1112,6 +1112,59 @@ class ProductService:
                 'errors': [str(e)],
                 'created_metafields': []
             }
+    
+    def _convert_laptop_data_to_metafields_with_repo(self, laptop_data: Dict[str, str], metaobject_repo) -> Dict[str, Dict]:
+        """
+        Convert laptop data to metafields using the repository system
+        
+        Args:
+            laptop_data: Dictionary of laptop field data
+            metaobject_repo: MetaobjectRepository instance
+            
+        Returns:
+            Dictionary of metafield data structures ready for API
+        """
+        metafield_mappings = {}
+        
+        # Map each component to its metafield data
+        component_mappings = [
+            ('cpu', 'processor', 'custom', '01_processor', 'metaobject_reference'),
+            ('ram', None, 'custom', '02_ram', 'single_line_text_field'),
+            ('gpu', 'graphics', 'custom', '03_graphics', 'metaobject_reference'),
+            ('display', 'display', 'custom', '04_display', 'metaobject_reference'),
+            ('storage', 'storage', 'custom', '05_storage', 'metaobject_reference'),
+            ('vga', 'vga', 'custom', '06_vga', 'metaobject_reference'),
+            ('os', 'os', 'custom', '07_os', 'metaobject_reference'),
+            ('keyboard_layout', 'keyboard_layout', 'custom', '10_keyboard_layout', 'metaobject_reference'),
+            ('keyboard_backlight', 'keyboard_backlight', 'custom', '11_keyboard_backlight', 'metaobject_reference'),
+            ('color', 'color', 'custom', 'color', 'metaobject_reference')
+        ]
+        
+        for field_key, repo_key, namespace, metafield_key, field_type in component_mappings:
+            value = laptop_data.get(field_key)
+            if not value:
+                continue
+                
+            if field_type == 'metaobject_reference' and repo_key:
+                # Get GID from repository
+                gid = metaobject_repo.get_gid(repo_key, value)
+                if gid:
+                    metafield_mappings[field_key] = {
+                        'namespace': namespace,
+                        'key': metafield_key,
+                        'value': gid,
+                        'type': field_type
+                    }
+            elif field_type == 'single_line_text_field':
+                # Direct text value
+                metafield_mappings[field_key] = {
+                    'namespace': namespace,
+                    'key': metafield_key,
+                    'value': value,
+                    'type': field_type
+                }
+        
+        return metafield_mappings
     
     def _build_laptop_metafield_data(self, field_name: str, field_value) -> Optional[Dict[str, Any]]:
         """

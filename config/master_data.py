@@ -15,10 +15,29 @@ from config.galaxy_specs import (
 )
 # Laptop service imports - using new TemplateCacheService
 from services.template_cache_service import TemplateCacheService
-from config.laptop_specs import (
-    generate_product_title as generate_laptop_title, validate_laptop_combination,
-    get_laptop_colors, get_laptop_configurations, expand_laptop_template_specs
-)
+# Laptop functionality now handled by services/template_cache_service.py
+# Keeping only essential functions that may still be needed
+try:
+    from config.laptop_specs import (
+        generate_product_title as generate_laptop_title, validate_laptop_combination,
+        get_laptop_colors, get_laptop_configurations, expand_laptop_template_specs
+    )
+except ImportError:
+    # Fallback functions if laptop_specs is not available
+    def generate_laptop_title(model: str, cpu: str, ram: str) -> str:
+        return f"{model} - {cpu} - {ram}"
+    
+    def validate_laptop_combination(specs: dict) -> bool:
+        return True
+    
+    def get_laptop_colors() -> list:
+        return []
+    
+    def get_laptop_configurations() -> dict:
+        return {}
+    
+    def expand_laptop_template_specs(specs: dict) -> dict:
+        return specs
 # Laptop metafield mapping functions
 def convert_laptop_specs_to_metafields(specs: Dict[str, str]) -> Dict[str, str]:
     """Convert laptop specs to metafield mappings - simplified version"""
@@ -135,12 +154,8 @@ def get_unified_template_suggestions(search_term: str = "") -> List[str]:
         laptop_templates = service.get_all_templates()
     except Exception as e:
         print(f"Error loading laptop templates: {e}")
-        # Fallback to old system
-        try:
-            from config.laptop_specs import generate_all_laptop_templates
-            laptop_templates = generate_all_laptop_templates()
-        except Exception:
-            laptop_templates = []
+        # No fallback needed - TemplateCacheService is the primary system
+        laptop_templates = []
     
     # Combine all templates
     all_templates = iphone_templates + galaxy_templates + laptop_templates
@@ -190,16 +205,8 @@ def get_laptop_template_suggestions(search_term: str = "") -> List[str]:
             return all_templates
     except Exception as e:
         print(f"Error loading laptop templates from TemplateCacheService: {e}")
-        # Fallback to old system if service fails
-        try:
-            from config.laptop_specs import generate_all_laptop_templates, search_laptop_templates
-            if search_term:
-                return search_laptop_templates(search_term)[:50]
-            else:
-                return generate_all_laptop_templates()
-        except Exception as fallback_error:
-            print(f"Fallback to laptop_specs also failed: {fallback_error}")
-            return []
+        # TemplateCacheService is the primary system - return empty if it fails
+        return []
 
 def get_title_suggestions(search_term: str) -> List[str]:
     """Get title suggestions based on search term (legacy function for non-iPhone)"""
@@ -329,21 +336,12 @@ def extract_info_from_laptop_template(template: str) -> Dict[str, str]:
         parsed = service.parse_template(template)
         
         if not parsed:
-            # Fallback to old parsing method
-            from config.laptop_specs import parse_laptop_template
-            parsed = parse_laptop_template(template)
-            if not parsed:
-                return {}
+            # No fallback needed - return empty if TemplateCacheService fails
+            return {}
     except Exception as e:
         print(f"Error parsing laptop template with TemplateCacheService: {e}")
-        # Fallback to old system
-        try:
-            from config.laptop_specs import parse_laptop_template
-            parsed = parse_laptop_template(template)
-            if not parsed:
-                return {}
-        except Exception:
-            return {}
+        # TemplateCacheService is the primary system - return empty if it fails
+        return {}
     
     model = parsed.get('model', '')
     cpu = parsed.get('cpu', '')
