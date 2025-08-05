@@ -1169,3 +1169,327 @@ If issues arise:
 ✅ 33+ files updated without breaking changes
 
 This comprehensive plan ensures a smooth migration to the new scalable architecture while maintaining all existing functionality and improving the development experience significantly.
+
+## Phase 6: GID Resolution Optimization (Future Session - 4 hours)
+
+**Status**: Phase 4 completed successfully with 78% GID resolution rate (7 out of 9 component types fully resolved). Phase 6 addresses the remaining gaps to achieve 95%+ coverage.
+
+**Current GID Resolution Analysis**:
+- ✅ **processors.json**: 69+ entries, excellent coverage
+- ✅ **graphics.json**: 17 entries, good coverage  
+- ✅ **colors.json**: 27 entries, excellent coverage
+- ✅ **displays.json**: 19 entries, adequate coverage (some format inconsistencies)
+- ✅ **storage.json**: 6 entries, basic coverage (missing combinations)
+- ✅ **os.json**: 7 entries, adequate coverage
+- ✅ **keyboard_layouts.json**: 2 entries, sufficient coverage
+- ❌ **vga.json**: Only 8 entries, major gap identified (critical priority)
+- ❌ **RAM**: Currently hardcoded strings, not using metaobject system
+
+### Task 6.1: Expand VGA Mappings (Critical Priority - 1.5 hours)
+**Agent**: shopify-api-developer
+**Goal**: Address the major VGA coverage gap from 8 to 50+ entries
+
+**Current VGA entries** (only 8):
+- NVIDIA GeForce GTX 1650 4GB
+- NVIDIA GeForce RTX 3050 4GB  
+- NVIDIA GeForce RTX 3060 6GB
+- NVIDIA GeForce RTX 4050 6GB
+- NVIDIA GeForce RTX 4060 8GB
+- NVIDIA GeForce RTX 4070 8GB
+- AMD Radeon RX 6500M 4GB
+- AMD Radeon RX 6600M 8GB
+
+**Missing VGA components identified**:
+- RTX 4080/4090 series (high-end gaming)
+- GTX 1660 Ti/1660 Super (mid-range legacy)  
+- RTX 3070/3080 series (previous gen high-end)
+- AMD RX 6700M/6800M series (AMD alternatives)
+- RTX 4060 Ti variations
+- Mobile workstation graphics (Quadro/FirePro)
+
+**Actions**:
+1. **Create missing VGA metaobjects in Shopify**:
+   ```json
+   // Target additions for data/metaobjects/vga.json
+   {
+     "NVIDIA GeForce RTX 4080 12GB": "gid://shopify/Metaobject/[NEW_GID]",
+     "NVIDIA GeForce RTX 4090 16GB": "gid://shopify/Metaobject/[NEW_GID]",
+     "NVIDIA GeForce GTX 1660 Ti 6GB": "gid://shopify/Metaobject/[NEW_GID]",
+     "NVIDIA GeForce RTX 3070 8GB": "gid://shopify/Metaobject/[NEW_GID]",
+     "NVIDIA GeForce RTX 3080 10GB": "gid://shopify/Metaobject/[NEW_GID]",
+     "AMD Radeon RX 6700M 10GB": "gid://shopify/Metaobject/[NEW_GID]",
+     "AMD Radeon RX 6800M 12GB": "gid://shopify/Metaobject/[NEW_GID]",
+     "NVIDIA GeForce RTX 4060 Ti 8GB": "gid://shopify/Metaobject/[NEW_GID]",
+     "NVIDIA GeForce RTX 4060 Ti 16GB": "gid://shopify/Metaobject/[NEW_GID]"
+   }
+   ```
+
+2. **Priority order for VGA additions**:
+   - RTX 4080/4090 (current flagship)
+   - RTX 3070/3080 (common in existing inventory)
+   - GTX 1660 Ti (popular mid-range legacy)
+   - AMD RX 6700M/6800M (AMD competition)
+
+**Validation**:
+```python
+# Test expanded VGA coverage
+repo = MetaobjectRepository()
+vga_mapping = repo.get_vga_mapping()
+assert len(vga_mapping) >= 25  # Target 25+ VGA entries
+assert "NVIDIA GeForce RTX 4080 12GB" in vga_mapping
+```
+
+### Task 6.2: Implement RAM as Metaobject System (High Priority - 1 hour)
+**Agent**: shopify-api-developer  
+**Goal**: Convert RAM from hardcoded strings to metaobject references
+
+**Current Issue**: RAM uses simple strings ("8GB", "16GB") instead of metaobject GIDs like other components.
+
+**Actions**:
+1. **Create RAM metaobjects in Shopify**:
+   ```json
+   // Create data/metaobjects/ram.json
+   {
+     "8GB": "gid://shopify/Metaobject/[NEW_GID]",
+     "16GB": "gid://shopify/Metaobject/[NEW_GID]", 
+     "32GB": "gid://shopify/Metaobject/[NEW_GID]",
+     "64GB": "gid://shopify/Metaobject/[NEW_GID]",
+     "8GB DDR4": "gid://shopify/Metaobject/[NEW_GID]",
+     "16GB DDR4": "gid://shopify/Metaobject/[NEW_GID]",
+     "32GB DDR4": "gid://shopify/Metaobject/[NEW_GID]",
+     "8GB DDR5": "gid://shopify/Metaobject/[NEW_GID]",
+     "16GB DDR5": "gid://shopify/Metaobject/[NEW_GID]",
+     "32GB DDR5": "gid://shopify/Metaobject/[NEW_GID]"
+   }
+   ```
+
+2. **Update MetaobjectRepository**:
+   ```python
+   # Add to repositories/metaobject_repository.py
+   def get_ram_mapping(self) -> Dict[str, str]:
+       return self._load_mapping("ram.json")
+   ```
+
+3. **Update ComponentDropdownService**:
+   ```python
+   # Replace hardcoded RAM options with metaobject-backed dropdown
+   def get_ram_options(self) -> List[Tuple[str, str]]:
+       mapping = self.metaobject_repo.get_ram_mapping()
+       options = [("", "Select RAM...")]
+       
+       for full_name in sorted(mapping.keys()):
+           options.append((full_name, full_name))
+       
+       options.append(("CUSTOM", "Other/Custom RAM..."))
+       return options
+   ```
+
+**Validation**:
+```python
+# Test RAM metaobject integration
+repo = MetaobjectRepository()
+ram_mapping = repo.get_ram_mapping()
+assert len(ram_mapping) >= 10  # DDR4/DDR5 variations
+assert "16GB DDR5" in ram_mapping
+```
+
+### Task 6.3: Expand Storage Combinations (Medium Priority - 45 minutes)
+**Agent**: shopify-api-developer
+**Goal**: Add missing storage configurations for comprehensive coverage
+
+**Current storage.json** (only 6 entries):
+- 256GB SSD, 512GB SSD, 1TB SSD, 2TB SSD, 1TB HDD, 512GB SSD + 1TB HDD
+
+**Missing combinations identified**:
+- 128GB SSD (budget laptops)
+- 4TB SSD (high-end workstations)  
+- 256GB SSD + 1TB HDD (hybrid configs)
+- 512GB SSD + 2TB HDD (common hybrid)
+- NVMe vs SATA specifications
+- Multiple drive configurations
+
+**Actions**:
+1. **Add missing storage metaobjects**:
+   ```json
+   // Additions to data/metaobjects/storage.json
+   {
+     "128GB SSD": "gid://shopify/Metaobject/[NEW_GID]",
+     "4TB SSD": "gid://shopify/Metaobject/[NEW_GID]",
+     "256GB SSD + 1TB HDD": "gid://shopify/Metaobject/[NEW_GID]",
+     "512GB SSD + 2TB HDD": "gid://shopify/Metaobject/[NEW_GID]",
+     "1TB NVMe SSD": "gid://shopify/Metaobject/[NEW_GID]",
+     "2TB NVMe SSD": "gid://shopify/Metaobject/[NEW_GID]"
+   }
+   ```
+
+**Target**: Expand from 6 to 15+ storage combinations
+
+### Task 6.4: Standardize CPU Format Variations (Medium Priority - 30 minutes)
+**Agent**: shopify-api-developer
+**Goal**: Resolve CPU naming inconsistencies in processors.json
+
+**Current issues identified**:
+- Some entries: "Intel Core i7-12700H (20 CPUs), ~2.3GHz"
+- Others: "Intel Core i5-1240P"
+- Missing standardized format for Apple Silicon
+- AMD format variations
+
+**Actions**:
+1. **Standardize CPU naming convention**:
+   ```json
+   // Standardized format examples
+   {
+     "Intel Core i7-12700H (20 CPUs), ~2.3GHz": "existing_gid",
+     "Intel Core i5-1240P (16 CPUs), ~1.7GHz": "new_gid",
+     "Apple M2 Chip (8-core CPU)": "new_gid", 
+     "AMD Ryzen 7 6800H (16 CPUs), ~3.2GHz": "new_gid"
+   }
+   ```
+
+2. **Create mapping for common format variations** to handle legacy data
+
+### Task 6.5: Fix Display Format Inconsistencies (Low Priority - 30 minutes)
+**Agent**: ux-design-specialist
+**Goal**: Standardize display naming in displays.json
+
+**Current issues**:
+- Mix of formats: "15.6\" FHD 144Hz" vs "13.3-inch Retina"
+- Inconsistent refresh rate notation
+- Missing common resolutions
+
+**Actions**:
+1. **Standardize display format**: [Size] [Resolution] [Refresh Rate]
+2. **Add missing common displays**:
+   - "14\" FHD 60Hz"
+   - "17.3\" FHD 144Hz" 
+   - "15.6\" 4K 60Hz"
+
+### Task 6.6: Create Missing Metaobject Analysis Tool (Support Task - 30 minutes)
+**Agent**: code-quality-architect
+**Goal**: Automated tool to identify missing GID mappings
+
+**Create**: `admin/metaobject_gap_analyzer.py`
+```python
+import json
+from repositories.metaobject_repository import MetaobjectRepository
+from repositories.product_data_repository import ProductDataRepository
+
+class MetaobjectGapAnalyzer:
+    def __init__(self):
+        self.metaobject_repo = MetaobjectRepository()
+        self.product_repo = ProductDataRepository()
+    
+    def analyze_coverage_gaps(self) -> dict:
+        """Analyze GID resolution gaps across all components"""
+        gaps = {}
+        all_models = self.product_repo.get_all_models()
+        
+        # Track unique component values used in product data
+        used_components = {
+            'cpu': set(), 'vga': set(), 'display': set(), 
+            'storage': set(), 'ram': set(), 'gpu': set()
+        }
+        
+        # Collect all used component values
+        for model_data in all_models.values():
+            for config in model_data.get('configurations', []):
+                for component_type in used_components.keys():
+                    if component_type in config:
+                        used_components[component_type].add(config[component_type])
+        
+        # Check coverage for each component type
+        for component_type, used_values in used_components.items():
+            mapping_method = getattr(self.metaobject_repo, f'get_{component_type}_mapping', None)
+            if mapping_method:
+                available_mappings = mapping_method()
+                missing = used_values - set(available_mappings.keys())
+                gaps[component_type] = {
+                    'total_used': len(used_values),
+                    'mapped': len(used_values) - len(missing),
+                    'missing': list(missing),
+                    'coverage_percent': ((len(used_values) - len(missing)) / len(used_values)) * 100
+                }
+        
+        return gaps
+    
+    def generate_missing_metaobjects_script(self, gaps: dict) -> str:
+        """Generate GraphQL script to create missing metaobjects"""
+        script = "# Missing Metaobject Creation Script\n\n"
+        
+        for component_type, gap_data in gaps.items():
+            if gap_data['missing']:
+                script += f"## {component_type.upper()} Missing Entries:\n"
+                for missing_item in gap_data['missing']:
+                    script += f"# TODO: Create metaobject for '{missing_item}'\n"
+                script += "\n"
+        
+        return script
+
+def main():
+    analyzer = MetaobjectGapAnalyzer()
+    gaps = analyzer.analyze_coverage_gaps()
+    
+    print("=== METAOBJECT COVERAGE ANALYSIS ===")
+    total_coverage = 0
+    
+    for component_type, gap_data in gaps.items():
+        coverage = gap_data['coverage_percent']  
+        total_coverage += coverage
+        print(f"{component_type.upper()}: {coverage:.1f}% ({gap_data['mapped']}/{gap_data['total_used']})")
+        
+        if gap_data['missing']:
+            print(f"  Missing: {', '.join(gap_data['missing'][:3])}{'...' if len(gap_data['missing']) > 3 else ''}")
+    
+    overall_coverage = total_coverage / len(gaps)
+    print(f"\nOVERALL GID RESOLUTION: {overall_coverage:.1f}%")
+    
+    # Generate missing items script
+    script = analyzer.generate_missing_metaobjects_script(gaps)
+    with open('admin/missing_metaobjects_todo.txt', 'w') as f:
+        f.write(script)
+    
+    print(f"Missing items script saved to: admin/missing_metaobjects_todo.txt")
+
+if __name__ == "__main__":
+    main()
+```
+
+### Task 6.7: Update Repository Architecture for RAM (Technical Task - 15 minutes)
+**Agent**: code-quality-architect
+**Goal**: Ensure RAM metaobject integration is properly included in repository architecture
+
+**Actions**:
+1. Update `get_gid()` method in MetaobjectRepository to include RAM
+2. Update component dropdown service method mappings
+3. Update product service metafield conversion to handle RAM as metaobject reference
+
+**Validation**:
+```python
+# Test complete architecture integration
+repo = MetaobjectRepository()
+ram_gid = repo.get_gid("ram", "16GB DDR5")
+assert ram_gid is not None
+assert ram_gid.startswith("gid://shopify/Metaobject/")
+```
+
+### Phase 6 Success Criteria
+
+**Target GID Resolution**: 95%+ (up from current 78%)
+
+**Expected improvements**:
+- ✅ VGA coverage: 8 → 25+ entries (300% increase)
+- ✅ RAM system: String → Metaobject references (new capability)
+- ✅ Storage coverage: 6 → 15+ entries (150% increase)  
+- ✅ CPU standardization: Consistent naming convention
+- ✅ Display standardization: Unified format
+- ✅ Gap analysis tool: Automated coverage monitoring
+- ✅ Overall GID resolution: 78% → 95%+
+
+**Implementation Priority**:
+1. **Critical**: VGA expansion (biggest impact on GID resolution)
+2. **High**: RAM metaobject system (architectural completion)
+3. **Medium**: Storage expansion + CPU standardization
+4. **Low**: Display standardization + analysis tool
+
+**Estimated Time**: 4 hours total
+**Expected Outcome**: Near-complete GID resolution with systematic gap monitoring
