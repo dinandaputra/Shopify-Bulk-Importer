@@ -1,5 +1,7 @@
-from typing import Dict, List, Optional, Any
+from typing import Dict, List, Optional, Any, Tuple
 import json
+from datetime import datetime
+from collections import defaultdict
 from models.smartphone import SmartphoneProduct
 from models.laptop import LaptopProduct
 from services.shopify_api import shopify_api, ShopifyAPIError
@@ -7,6 +9,7 @@ from services.metaobject_service import metaobject_service
 from services.collection_service import collection_service
 from services.laptop_metafield_service import laptop_metafield_service
 from config.iphone_specs import IPHONE_COLOR_GIDS
+from config.laptop_metafields import LAPTOP_METAFIELDS, ADDITIONAL_METAFIELDS
 
 class ProductService:
     """
@@ -1345,6 +1348,134 @@ class ProductService:
                 'failed': len(sales_channels),
                 'error': str(e)
             }
+    
+    def convert_laptop_data_to_metafields_enhanced(self, laptop_data: Dict[str, Any]) -> Tuple[Dict[str, Dict[str, Any]], Dict[str, List[str]]]:
+        """
+        Enhanced conversion with detailed logging of missing entries using MetaobjectRepository
+        
+        This replaces the legacy function from config/laptop_metafield_mapping_enhanced.py
+        and uses the new repository pattern for metaobject GID lookup.
+        
+        Args:
+            laptop_data: Dictionary containing laptop specification data
+            
+        Returns:
+            Tuple[metafields_dict, missing_entries_dict]: 
+                - metafields_dict: Successfully mapped metafields
+                - missing_entries_dict: Missing entries organized by field
+        """
+        
+        metafields = {}
+        missing_entries = defaultdict(list)
+        
+        # Get metafield configurations
+        all_metafields = {**LAPTOP_METAFIELDS, **ADDITIONAL_METAFIELDS}
+        
+        # Product context for logging
+        product_context = {
+            'product_title': laptop_data.get('title', 'Unknown'),
+            'brand': laptop_data.get('brand', 'Unknown'),
+            'model': laptop_data.get('model', 'Unknown'),
+            'timestamp': datetime.now().isoformat()
+        }
+        
+        # Try to import and use the MetaobjectRepository
+        try:
+            from repositories.metaobject_repository import MetaobjectRepository
+            metaobject_repo = MetaobjectRepository()
+        except ImportError:
+            # Repository not available - return error
+            return {}, {"error": "MetaobjectRepository not available"}
+        
+        # Process each laptop data field
+        for field_name, value in laptop_data.items():
+            if not value:  # Skip empty values
+                continue
+                
+            # Get metafield configuration
+            metafield_config = None
+            for config_key, config in all_metafields.items():
+                if config_key == field_name or config.key.endswith(field_name):
+                    metafield_config = config
+                    break
+            
+            if not metafield_config:
+                continue  # Skip fields without metafield definitions
+            
+            # Handle different metafield types
+            if field_name == 'ram':
+                # RAM is a text field, not a metaobject reference
+                metafields[metafield_config.key] = {
+                    'namespace': metafield_config.namespace,
+                    'key': metafield_config.key,
+                    'type': metafield_config.type.value,
+                    'value': str(value)
+                }
+                
+            elif 'metaobject' in metafield_config.type.value:
+                # Handle metaobject reference fields using MetaobjectRepository
+                
+                # Map field names to repository component types
+                field_to_component_map = {
+                    'processor': 'processors',
+                    'cpu': 'processors', 
+                    'graphics': 'graphics',
+                    'gpu': 'graphics',
+                    'integrated_graphics': 'graphics',
+                    'display': 'displays',
+                    'storage': 'storage',
+                    'vga': 'vga',
+                    'os': 'os',
+                    'operating_system': 'os',
+                    'keyboard_layout': 'keyboard_layouts',
+                    'keyboard_backlight': 'keyboard_backlights',
+                    'color': 'colors',
+                    'inclusions': 'inclusions',
+                    'minus': 'minus'
+                }
+                
+                component_type = field_to_component_map.get(field_name)
+                if component_type:
+                    
+                    if field_name in ['inclusions', 'minus', 'kelengkapan']:
+                        # Handle list fields (take first value if list)
+                        actual_value = value[0] if isinstance(value, list) and value else value
+                        if actual_value:
+                            gid = metaobject_repo.get_gid(component_type, actual_value)
+                            
+                            if gid:
+                                metafields[metafield_config.key] = {
+                                    'namespace': metafield_config.namespace,
+                                    'key': metafield_config.key,
+                                    'type': metafield_config.type.value,
+                                    'value': gid
+                                }
+                            else:
+                                missing_entries[field_name].append(actual_value)
+                    else:
+                        # Handle single metaobject reference fields
+                        gid = metaobject_repo.get_gid(component_type, value)
+                        
+                        if gid:
+                            # Special handling for color field - needs JSON array format for laptops
+                            if field_name == 'color':
+                                metafields[metafield_config.key] = {
+                                    'namespace': metafield_config.namespace,
+                                    'key': metafield_config.key,
+                                    'type': 'list.metaobject_reference',  # Override to list type for laptops
+                                    'value': json.dumps([gid])
+                                }
+                            else:
+                                metafields[metafield_config.key] = {
+                                    'namespace': metafield_config.namespace,
+                                    'key': metafield_config.key,
+                                    'type': metafield_config.type.value,
+                                    'value': gid
+                                }
+                        else:
+                            missing_entries[field_name].append(value)
+        
+        return metafields, dict(missing_entries)
 
 # Global service instance
 product_service = ProductService()

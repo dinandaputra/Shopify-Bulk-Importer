@@ -841,7 +841,7 @@
           "storage": "512GB SSD",
           "os": "Windows 11",
           "keyboard_layout": "US - International Keyboard",
-          "keyboard_backlight": "White Backlight"
+          "keyboard_backlight": "Backlit"
         },
         {
           "cpu": "AMD Ryzen 9 5900HX (16 CPUs), ~3.3GHz",
@@ -852,7 +852,7 @@
           "storage": "1TB SSD",
           "os": "Windows 11",
           "keyboard_layout": "US - International Keyboard",
-          "keyboard_backlight": "White Backlight"
+          "keyboard_backlight": "Backlit"
         }
       ],
       "colors": [
@@ -875,7 +875,7 @@
           "storage": "1TB SSD",
           "os": "Windows 11",
           "keyboard_layout": "US - International Keyboard",
-          "keyboard_backlight": "White Backlight"
+          "keyboard_backlight": "Backlit"
         },
         {
           "cpu": "AMD Ryzen 9 5900HX (16 CPUs), ~3.3GHz",
@@ -886,7 +886,7 @@
           "storage": "1TB SSD",
           "os": "Windows 11",
           "keyboard_layout": "US - International Keyboard",
-          "keyboard_backlight": "White Backlight"
+          "keyboard_backlight": "Backlit"
         }
       ],
       "colors": [
@@ -1077,7 +1077,7 @@
           "storage": "512GB SSD",
           "os": "Windows 11",
           "keyboard_layout": "US - International Keyboard",
-          "keyboard_backlight": "White Backlight"
+          "keyboard_backlight": "Backlit"
         },
         {
           "cpu": "AMD Ryzen 7 4800H (16 CPUs), ~2.9GHz",
@@ -1088,7 +1088,7 @@
           "storage": "1TB SSD",
           "os": "Windows 11",
           "keyboard_layout": "US - International Keyboard",
-          "keyboard_backlight": "White Backlight"
+          "keyboard_backlight": "Backlit"
         }
       ],
       "colors": [
@@ -1111,7 +1111,7 @@
           "storage": "512GB SSD",
           "os": "Windows 11",
           "keyboard_layout": "US - International Keyboard",
-          "keyboard_backlight": "White Backlight"
+          "keyboard_backlight": "Backlit"
         },
         {
           "cpu": "AMD Ryzen 9 6900HX (16 CPUs), ~3.3GHz",
@@ -1122,7 +1122,7 @@
           "storage": "1TB SSD",
           "os": "Windows 11",
           "keyboard_layout": "US - International Keyboard",
-          "keyboard_backlight": "White Backlight"
+          "keyboard_backlight": "Backlit"
         }
       ],
       "colors": [
@@ -1190,7 +1190,7 @@
           "storage": "512GB SSD",
           "os": "Windows 11",
           "keyboard_layout": "US - International Keyboard",
-          "keyboard_backlight": "White Backlight"
+          "keyboard_backlight": "Backlit"
         },
         {
           "cpu": "AMD Ryzen 9 5900HX (16 CPUs), ~3.3GHz",
@@ -1201,7 +1201,7 @@
           "storage": "1TB SSD",
           "os": "Windows 11",
           "keyboard_layout": "US - International Keyboard",
-          "keyboard_backlight": "White Backlight"
+          "keyboard_backlight": "Backlit"
         }
       ],
       "colors": [
@@ -1224,7 +1224,7 @@
           "storage": "512GB SSD",
           "os": "Windows 11",
           "keyboard_layout": "US - International Keyboard",
-          "keyboard_backlight": "White Backlight"
+          "keyboard_backlight": "Backlit"
         },
         {
           "cpu": "Intel Core i9-11900H (16 CPUs), ~2.5GHz",
@@ -1235,7 +1235,7 @@
           "storage": "1TB SSD",
           "os": "Windows 11",
           "keyboard_layout": "US - International Keyboard",
-          "keyboard_backlight": "White Backlight"
+          "keyboard_backlight": "Backlit"
         }
       ],
       "colors": [

@@ -13,31 +13,43 @@ from config.galaxy_specs import (
     generate_product_title as generate_galaxy_title, get_default_ram, 
     validate_galaxy_combination
 )
-# Laptop service imports - using new TemplateCacheService
+# Laptop service imports - using new architecture
 from services.template_cache_service import TemplateCacheService
-# Laptop functionality now handled by services/template_cache_service.py
-# Keeping only essential functions that may still be needed
-try:
-    from config.laptop_specs import (
-        generate_product_title as generate_laptop_title, validate_laptop_combination,
-        get_laptop_colors, get_laptop_configurations, expand_laptop_template_specs
-    )
-except ImportError:
-    # Fallback functions if laptop_specs is not available
-    def generate_laptop_title(model: str, cpu: str, ram: str) -> str:
-        return f"{model} - {cpu} - {ram}"
-    
-    def validate_laptop_combination(specs: dict) -> bool:
-        return True
-    
-    def get_laptop_colors() -> list:
-        return []
-    
-    def get_laptop_configurations() -> dict:
-        return {}
-    
-    def expand_laptop_template_specs(specs: dict) -> dict:
-        return specs
+from services.template_display_service import TemplateDisplayService
+from repositories.metaobject_repository import MetaobjectRepository
+from repositories.product_data_repository import ProductDataRepository
+
+# Initialize laptop services
+def get_laptop_template_service():
+    return TemplateCacheService()
+
+def get_laptop_display_service():
+    return TemplateDisplayService()
+
+def generate_laptop_title(model: str, cpu: str, ram: str) -> str:
+    """Generate laptop product title"""
+    return f"{model} - {cpu} - {ram}"
+
+def validate_laptop_combination(specs: dict) -> bool:
+    """Validate laptop specification combination"""
+    required_keys = ['cpu', 'ram', 'vga', 'display', 'storage', 'color']
+    return all(key in specs and specs[key] for key in required_keys)
+
+def get_laptop_colors() -> list:
+    """Get available laptop colors from metaobject repository"""
+    repo = MetaobjectRepository()
+    color_mapping = repo.get_color_mapping()
+    return list(color_mapping.keys())
+
+def get_laptop_configurations() -> dict:
+    """Get laptop configurations from product data"""
+    product_repo = ProductDataRepository()
+    return product_repo.get_all_models()
+
+def expand_laptop_template_specs(specs: dict) -> dict:
+    """Expand laptop template specifications"""
+    # This function maintains compatibility but uses new architecture
+    return specs
 # Laptop metafield mapping functions
 def convert_laptop_specs_to_metafields(specs: Dict[str, str]) -> Dict[str, str]:
     """Convert laptop specs to metafield mappings - simplified version"""

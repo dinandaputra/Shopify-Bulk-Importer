@@ -1,0 +1,310 @@
+{
+  "metadata": {
+    "timestamp": "2025-08-06T19:55:21.095827",
+    "script_version": "1.0.0",
+    "validation_categories": 8
+  },
+  "summary": {
+    "total_components": 67,
+    "mapped_components": 0,
+    "unmapped_components": 67,
+    "duplicate_mappings": 0,
+    "invalid_gids": 0,
+    "validation_score": 0
+  },
+  "component_analysis": {
+    "processors": {
+      "total_components": 21,
+      "mapped_components": 0,
+      "unmapped_components": 21,
+      "mapping_percentage": 0.0,
+      "unmapped_list": [
+        "Intel Core i7-13700H (20 CPUs), ~2.4GHz",
+        "Intel Core i7-12700H (16 CPUs), ~2.3GHz",
+        "AMD Ryzen 5 4600H (12 CPUs), ~3.0GHz",
+        "AMD Ryzen 7 6800H (16 CPUs), ~3.2GHz",
+        "AMD Ryzen 7 4800H (16 CPUs), ~2.9GHz",
+        "Intel Core i9-11900H (16 CPUs), ~2.5GHz",
+        "Intel Core i7-10750H (12 CPUs), ~2.6GHz",
+        "Intel Core i9-13900H (20 CPUs), ~2.6GHz",
+        "AMD Ryzen 7 5800H (16 CPUs), ~3.2GHz",
+        "Intel Core i5-11400H (12 CPUs), ~2.7GHz",
+        "Intel Core i5-10300H (8 CPUs), ~2.5GHz",
+        "Intel Core i7-11800H (16 CPUs), ~2.3GHz",
+        "Intel Core i7-14700HX (20 CPUs), ~2.1GHz",
+        "Intel Core i7-11370H (8 CPUs), ~3.3GHz",
+        "AMD Ryzen 9 5900HX (16 CPUs), ~3.3GHz",
+        "Intel Core i5-12500H (12 CPUs), ~3.1GHz",
+        "AMD Ryzen 9 6900HX (16 CPUs), ~3.3GHz",
+        "Intel Core i9-14900HX (24 CPUs), ~2.2GHz",
+        "Intel Core i9-12900H (20 CPUs), ~2.5GHz",
+        "Intel Core i7-9750H (12 CPUs), ~2.6GHz",
+        "AMD Ryzen 5 5600H (12 CPUs), ~3.3GHz"
+      ],
+      "metaobject_count": 0
+    },
+    "vga": {
+      "total_components": 18,
+      "mapped_components": 0,
+      "unmapped_components": 18,
+      "mapping_percentage": 0.0,
+      "unmapped_list": [
+        "NVIDIA GeForce RTX 4080 16GB",
+        "NVIDIA GeForce RTX 3080 10GB",
+        "NVIDIA GeForce RTX 3070 Ti 8GB",
+        "RTX 3050 Ti",
+        "NVIDIA GeForce RTX 3060 6GB",
+        "NVIDIA GeForce RTX 2070 8GB",
+        "NVIDIA GeForce RTX 3080 Ti 12GB",
+        "NVIDIA GeForce RTX 2080 8GB",
+        "NVIDIA GeForce RTX 4070 12GB",
+        "NVIDIA GeForce RTX 2060 6GB",
+        "NVIDIA GeForce RTX 4090 16GB",
+        "NVIDIA GeForce RTX 4050 6GB",
+        "NVIDIA GeForce GTX 1660 Ti 6GB",
+        "NVIDIA GeForce RTX 4060 8GB",
+        "NVIDIA GeForce GTX 1650 4GB",
+        "NVIDIA GeForce RTX 3050 4GB",
+        "NVIDIA GeForce GTX 1650 Ti 4GB",
+        "NVIDIA GeForce RTX 3070 8GB"
+      ],
+      "metaobject_count": 0
+    },
+    "graphics": {
+      "total_components": 6,
+      "mapped_components": 0,
+      "unmapped_components": 6,
+      "mapping_percentage": 0.0,
+      "unmapped_list": [
+        "Intel UHD Graphics 630",
+        "AMD Radeon 680M Graphics",
+        "Intel Iris Xe Graphics",
+        "AMD Radeon Graphics",
+        "Intel UHD Graphics",
+        "Intel UHD Graphics 770"
+      ],
+      "metaobject_count": 0
+    },
+    "displays": {
+      "total_components": 14,
+      "mapped_components": 0,
+      "unmapped_components": 14,
+      "mapping_percentage": 0.0,
+      "unmapped_list": [
+        "16-inch OLED (240Hz)",
+        "17.3-inch FHD (165Hz)",
+        "14-inch QHD (120Hz)",
+        "15-inch FHD (144Hz)",
+        "15-inch FHD (165Hz)",
+        "15-inch FHD (240Hz)",
+        "15-inch FHD (60Hz)",
+        "17.3-inch FHD (240Hz)",
+        "17.3 120Hz",
+        "17.3 300Hz",
+        "15-inch QHD (165Hz)",
+        "17.3-inch FHD (144Hz)",
+        "15-inch FHD (120Hz)",
+        "15-inch 4K UHD (60Hz)"
+      ],
+      "metaobject_count": 0
+    },
+    "storage": {
+      "total_components": 4,
+      "mapped_components": 0,
+      "unmapped_components": 4,
+      "mapping_percentage": 0.0,
+      "unmapped_list": [
+        "256GB SSD",
+        "1TB SSD",
+        "2TB SSD",
+        "512GB SSD"
+      ],
+      "metaobject_count": 0
+    },
+    "os": {
+      "total_components": 1,
+      "mapped_components": 0,
+      "unmapped_components": 1,
+      "mapping_percentage": 0.0,
+      "unmapped_list": [
+        "Windows 11"
+      ],
+      "metaobject_count": 0
+    },
+    "keyboard_layouts": {
+      "total_components": 1,
+      "mapped_components": 0,
+      "unmapped_components": 1,
+      "mapping_percentage": 0.0,
+      "unmapped_list": [
+        "US - International Keyboard"
+      ],
+      "metaobject_count": 0
+    },
+    "keyboard_backlights": {
+      "total_components": 2,
+      "mapped_components": 0,
+      "unmapped_components": 2,
+      "mapping_percentage": 0.0,
+      "unmapped_list": [
+        "RGB Backlight",
+        "Backlit"
+      ],
+      "metaobject_count": 0
+    }
+  },
+  "gid_validation": {
+    "valid_gids": [],
+    "invalid_gids": [],
+    "duplicate_gids": []
+  },
+  "mapping_issues": [
+    {
+      "type": "unmapped_components",
+      "component_type": "processors",
+      "count": 21,
+      "components": [
+        "Intel Core i7-13700H (20 CPUs), ~2.4GHz",
+        "Intel Core i7-12700H (16 CPUs), ~2.3GHz",
+        "AMD Ryzen 5 4600H (12 CPUs), ~3.0GHz",
+        "AMD Ryzen 7 6800H (16 CPUs), ~3.2GHz",
+        "AMD Ryzen 7 4800H (16 CPUs), ~2.9GHz",
+        "Intel Core i9-11900H (16 CPUs), ~2.5GHz",
+        "Intel Core i7-10750H (12 CPUs), ~2.6GHz",
+        "Intel Core i9-13900H (20 CPUs), ~2.6GHz",
+        "AMD Ryzen 7 5800H (16 CPUs), ~3.2GHz",
+        "Intel Core i5-11400H (12 CPUs), ~2.7GHz",
+        "Intel Core i5-10300H (8 CPUs), ~2.5GHz",
+        "Intel Core i7-11800H (16 CPUs), ~2.3GHz",
+        "Intel Core i7-14700HX (20 CPUs), ~2.1GHz",
+        "Intel Core i7-11370H (8 CPUs), ~3.3GHz",
+        "AMD Ryzen 9 5900HX (16 CPUs), ~3.3GHz",
+        "Intel Core i5-12500H (12 CPUs), ~3.1GHz",
+        "AMD Ryzen 9 6900HX (16 CPUs), ~3.3GHz",
+        "Intel Core i9-14900HX (24 CPUs), ~2.2GHz",
+        "Intel Core i9-12900H (20 CPUs), ~2.5GHz",
+        "Intel Core i7-9750H (12 CPUs), ~2.6GHz",
+        "AMD Ryzen 5 5600H (12 CPUs), ~3.3GHz"
+      ],
+      "severity": "medium"
+    },
+    {
+      "type": "unmapped_components",
+      "component_type": "vga",
+      "count": 18,
+      "components": [
+        "NVIDIA GeForce RTX 4080 16GB",
+        "NVIDIA GeForce RTX 3080 10GB",
+        "NVIDIA GeForce RTX 3070 Ti 8GB",
+        "RTX 3050 Ti",
+        "NVIDIA GeForce RTX 3060 6GB",
+        "NVIDIA GeForce RTX 2070 8GB",
+        "NVIDIA GeForce RTX 3080 Ti 12GB",
+        "NVIDIA GeForce RTX 2080 8GB",
+        "NVIDIA GeForce RTX 4070 12GB",
+        "NVIDIA GeForce RTX 2060 6GB",
+        "NVIDIA GeForce RTX 4090 16GB",
+        "NVIDIA GeForce RTX 4050 6GB",
+        "NVIDIA GeForce GTX 1660 Ti 6GB",
+        "NVIDIA GeForce RTX 4060 8GB",
+        "NVIDIA GeForce GTX 1650 4GB",
+        "NVIDIA GeForce RTX 3050 4GB",
+        "NVIDIA GeForce GTX 1650 Ti 4GB",
+        "NVIDIA GeForce RTX 3070 8GB"
+      ],
+      "severity": "medium"
+    },
+    {
+      "type": "unmapped_components",
+      "component_type": "graphics",
+      "count": 6,
+      "components": [
+        "Intel UHD Graphics 630",
+        "AMD Radeon 680M Graphics",
+        "Intel Iris Xe Graphics",
+        "AMD Radeon Graphics",
+        "Intel UHD Graphics",
+        "Intel UHD Graphics 770"
+      ],
+      "severity": "medium"
+    },
+    {
+      "type": "unmapped_components",
+      "component_type": "displays",
+      "count": 14,
+      "components": [
+        "16-inch OLED (240Hz)",
+        "17.3-inch FHD (165Hz)",
+        "14-inch QHD (120Hz)",
+        "15-inch FHD (144Hz)",
+        "15-inch FHD (165Hz)",
+        "15-inch FHD (240Hz)",
+        "15-inch FHD (60Hz)",
+        "17.3-inch FHD (240Hz)",
+        "17.3 120Hz",
+        "17.3 300Hz",
+        "15-inch QHD (165Hz)",
+        "17.3-inch FHD (144Hz)",
+        "15-inch FHD (120Hz)",
+        "15-inch 4K UHD (60Hz)"
+      ],
+      "severity": "medium"
+    },
+    {
+      "type": "unmapped_components",
+      "component_type": "storage",
+      "count": 4,
+      "components": [
+        "256GB SSD",
+        "1TB SSD",
+        "2TB SSD",
+        "512GB SSD"
+      ],
+      "severity": "low"
+    },
+    {
+      "type": "unmapped_components",
+      "component_type": "os",
+      "count": 1,
+      "components": [
+        "Windows 11"
+      ],
+      "severity": "low"
+    },
+    {
+      "type": "unmapped_components",
+      "component_type": "keyboard_layouts",
+      "count": 1,
+      "components": [
+        "US - International Keyboard"
+      ],
+      "severity": "low"
+    },
+    {
+      "type": "unmapped_components",
+      "component_type": "keyboard_backlights",
+      "count": 2,
+      "components": [
+        "RGB Backlight",
+        "Backlit"
+      ],
+      "severity": "low"
+    }
+  ],
+  "recommendations": [
+    {
+      "priority": "high",
+      "category": "mapping_completeness",
+      "title": "Resolve 67 unmapped components",
+      "description": "Run GID resolution scripts to find missing metaobjects in Shopify",
+      "action": "Execute scripts/metaobjects/resolve_missing_gids.py"
+    },
+    {
+      "priority": "medium",
+      "category": "system_health",
+      "title": "Improve validation score from 0%",
+      "description": "Low validation scores indicate system reliability issues",
+      "action": "Address high-priority mapping and GID issues first"
+    }
+  ]
+}

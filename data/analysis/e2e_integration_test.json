@@ -1,0 +1,126 @@
+{
+  "metadata": {
+    "timestamp": "2025-08-06T19:55:21.498631",
+    "script_version": "1.0.0",
+    "total_tests": 7,
+    "processing_time_seconds": 0
+  },
+  "summary": {
+    "tests_passed": 0,
+    "tests_failed": 7,
+    "success_rate": 0.0,
+    "critical_failures": 7,
+    "workflow_coverage": 0.0
+  },
+  "test_details": [
+    {
+      "test_name": "Template Selection Workflow",
+      "test_category": "crashed",
+      "success": false,
+      "steps_completed": 0,
+      "total_steps": 0,
+      "errors": [
+        "Test crashed: WorkflowTestResult.__init__() missing 1 required positional argument: 'steps_completed'"
+      ],
+      "warnings": [],
+      "processing_time": 0.0,
+      "data_flow": {}
+    },
+    {
+      "test_name": "Dropdown Population Workflow",
+      "test_category": "crashed",
+      "success": false,
+      "steps_completed": 0,
+      "total_steps": 0,
+      "errors": [
+        "Test crashed: WorkflowTestResult.__init__() missing 1 required positional argument: 'steps_completed'"
+      ],
+      "warnings": [],
+      "processing_time": 0.0,
+      "data_flow": {}
+    },
+    {
+      "test_name": "Metafield Mapping Workflow",
+      "test_category": "crashed",
+      "success": false,
+      "steps_completed": 0,
+      "total_steps": 0,
+      "errors": [
+        "Test crashed: WorkflowTestResult.__init__() missing 1 required positional argument: 'steps_completed'"
+      ],
+      "warnings": [],
+      "processing_time": 0.0,
+      "data_flow": {}
+    },
+    {
+      "test_name": "Product Creation Workflow",
+      "test_category": "crashed",
+      "success": false,
+      "steps_completed": 0,
+      "total_steps": 0,
+      "errors": [
+        "Test crashed: WorkflowTestResult.__init__() missing 1 required positional argument: 'steps_completed'"
+      ],
+      "warnings": [],
+      "processing_time": 0.0,
+      "data_flow": {}
+    },
+    {
+      "test_name": "Error Handling Workflow",
+      "test_category": "crashed",
+      "success": false,
+      "steps_completed": 0,
+      "total_steps": 0,
+      "errors": [
+        "Test crashed: WorkflowTestResult.__init__() missing 1 required positional argument: 'steps_completed'"
+      ],
+      "warnings": [],
+      "processing_time": 0.0,
+      "data_flow": {}
+    },
+    {
+      "test_name": "Data Integrity Workflow",
+      "test_category": "crashed",
+      "success": false,
+      "steps_completed": 0,
+      "total_steps": 0,
+      "errors": [
+        "Test crashed: WorkflowTestResult.__init__() missing 1 required positional argument: 'steps_completed'"
+      ],
+      "warnings": [],
+      "processing_time": 0.0,
+      "data_flow": {}
+    },
+    {
+      "test_name": "Performance Workflow",
+      "test_category": "crashed",
+      "success": false,
+      "steps_completed": 0,
+      "total_steps": 0,
+      "errors": [
+        "Test crashed: WorkflowTestResult.__init__() missing 1 required positional argument: 'steps_completed'"
+      ],
+      "warnings": [],
+      "processing_time": 0.0,
+      "data_flow": {}
+    }
+  ],
+  "critical_issues": [],
+  "workflow_analysis": {},
+  "recommendations": [
+    {
+      "priority": "critical",
+      "category": "system_stability",
+      "title": "Address 7 critical workflow failures",
+      "description": "Critical workflow failures indicate fundamental system issues",
+      "action": "Review failed integration and data workflow tests immediately"
+    },
+    {
+      "priority": "high",
+      "category": "workflow_reliability",
+      "title": "Improve workflow success rate from 0.0%",
+      "description": "Low success rate indicates multiple workflow issues",
+      "action": "Address failed tests systematically, starting with critical workflows"
+    }
+  ]
+}

@@ -6,15 +6,14 @@ from config.master_data import (
 )
 from services.template_cache_service import TemplateCacheService
 from services.component_dropdown_service import ComponentDropdownService
-from config.laptop_specs import get_abbreviated_component_name
-from config.laptop_inclusions import LAPTOP_INCLUSION_LABELS
-from config.laptop_metafields import LAPTOP_FIELD_ORDER
-from config.laptop_metafield_mapping_enhanced import (
-    convert_laptop_data_to_metafields_enhanced,
+from services.template_display_service import TemplateDisplayService
+from services.validation_service import (
     missing_logger,
     get_missing_entries_report,
     clear_session_data
 )
+from config.laptop_inclusions import LAPTOP_INCLUSION_LABELS
+from config.laptop_metafields import LAPTOP_FIELD_ORDER
 from utils.handle_generator import preview_handle, generate_handle
 from services.export_service import export_to_csv
 from services.product_service import product_service
@@ -551,7 +550,7 @@ def laptop_entry_page():
                 }
                 
                 # Check for missing metaobjects using enhanced logging
-                metafields, missing_entries = convert_laptop_data_to_metafields_enhanced(laptop_data)
+                metafields, missing_entries = product_service.convert_laptop_data_to_metafields_enhanced(laptop_data)
                 
                 # Show warnings for missing metaobject entries
                 if missing_entries:

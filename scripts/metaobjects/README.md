@@ -1,6 +1,6 @@
 # Metaobject Scripts
 
-This directory contains scripts for managing Shopify metaobjects.
+This directory contains scripts for managing Shopify metaobjects, including the **Phase 2** automated GID resolution and mapping update system.
 
 ## Directory Structure
 
@@ -8,6 +8,35 @@ This directory contains scripts for managing Shopify metaobjects.
 - **query/** - Scripts to query and search existing metaobjects
 - **update/** - Scripts to update metaobject values
 - **analyze/** - Scripts to analyze metaobject usage and find gaps
+
+## Phase 2: GID Resolution & Mapping Updates (NEW)
+
+### Core Phase 2 Scripts
+
+- **`resolve_missing_gids.py`** - Main GID resolution script for unmapped components
+- **`batch_update_mappings.py`** - Automated JSON mapping file updater with backup system
+- **`generate_missing_report.py`** - Missing Shopify entries report generator
+- **`run_phase2_complete.py`** - Master workflow orchestrator for complete Phase 2
+
+### Quick Start Phase 2
+
+```bash
+# Run complete Phase 2 workflow
+python scripts/metaobjects/run_phase2_complete.py
+```
+
+This automated workflow:
+1. Resolves GIDs for unmapped laptop components
+2. Updates mapping files with found GIDs
+3. Generates missing components report
+4. Creates comprehensive backup and validation system
+
+### Phase 2 Features
+- **GraphQL Integration**: Efficient metaobject queries
+- **Smart Component Matching**: Multiple search variations
+- **Automatic Backup System**: Timestamped backups before updates
+- **Rate Limiting**: Shopify API rate limit handling
+- **Comprehensive Reporting**: Missing components with priority classification
 
 ## Common Use Cases
 

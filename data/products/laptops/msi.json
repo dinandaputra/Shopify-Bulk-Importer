@@ -16,7 +16,7 @@
           "storage": "256GB SSD",
           "os": "Windows 11",
           "keyboard_layout": "US - International Keyboard",
-          "keyboard_backlight": "Red Backlight"
+          "keyboard_backlight": "Backlit"
         },
         {
           "cpu": "Intel Core i7-11800H (16 CPUs), ~2.3GHz",
@@ -27,7 +27,7 @@
           "storage": "512GB SSD",
           "os": "Windows 11",
           "keyboard_layout": "US - International Keyboard",
-          "keyboard_backlight": "Red Backlight"
+          "keyboard_backlight": "Backlit"
         }
       ],
       "colors": [

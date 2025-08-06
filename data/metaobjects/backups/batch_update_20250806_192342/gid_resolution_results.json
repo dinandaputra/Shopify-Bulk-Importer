@@ -1,0 +1,185 @@
+{
+  "metadata": {
+    "timestamp": "2025-08-06T19:23:23.877883",
+    "script_version": "1.0.0",
+    "total_components_processed": 39,
+    "components_found": 7,
+    "components_not_found": 1,
+    "success_rate_percent": 17.95,
+    "processing_time_seconds": 17.93,
+    "api_calls_made": 5
+  },
+  "summary_by_type": {
+    "processors": {
+      "total": 7,
+      "found": 7,
+      "not_found": 0,
+      "success_rate": 100.0
+    },
+    "vga": {
+      "total": 16,
+      "found": 0,
+      "not_found": 0,
+      "success_rate": 0.0
+    },
+    "graphics": {
+      "total": 3,
+      "found": 0,
+      "not_found": 0,
+      "success_rate": 0.0
+    },
+    "displays": {
+      "total": 12,
+      "found": 0,
+      "not_found": 0,
+      "success_rate": 0.0
+    },
+    "storage": {
+      "total": 1,
+      "found": 0,
+      "not_found": 1,
+      "success_rate": 0.0
+    }
+  },
+  "resolved_components": {
+    "processors": {
+      "Intel Core i9-14900HX (24 CPUs), ~2.2GHz": {
+        "gid": "gid://shopify/Metaobject/131491692693",
+        "shopify_display_name": "Intel Core i9-14900HX (24 CPUs), ~2.2GHz"
+      },
+      "Intel Core i5-12500H (12 CPUs), ~3.1GHz": {
+        "gid": "gid://shopify/Metaobject/131298328725",
+        "shopify_display_name": "Intel Core i5-12500H (16 CPUs), ~2.5GHz"
+      },
+      "Intel Core i7-14700HX (20 CPUs), ~2.1GHz": {
+        "gid": "gid://shopify/Metaobject/131491594389",
+        "shopify_display_name": "Intel Core i7-14700HX (20 CPUs), ~2.1GHz"
+      },
+      "Intel Core i9-13900H (20 CPUs), ~2.6GHz": {
+        "gid": "gid://shopify/Metaobject/131491659925",
+        "shopify_display_name": "Intel Core i9-13900H (20 CPUs), ~2.6GHz"
+      },
+      "Intel Core i9-11900H (16 CPUs), ~2.5GHz": {
+        "gid": "gid://shopify/Metaobject/125935124629",
+        "shopify_display_name": "Intel Core i9-11900H (16 CPUs), ~2.6GHz"
+      },
+      "Intel Core i7-12700H (16 CPUs), ~2.3GHz": {
+        "gid": "gid://shopify/Metaobject/131298099349",
+        "shopify_display_name": "Intel Core i7-12700H (20 CPUs), ~2.3GHz"
+      },
+      "Intel Core i7-10750H (12 CPUs), ~2.6GHz": {
+        "gid": "gid://shopify/Metaobject/131491496085",
+        "shopify_display_name": "Intel Core i7-10750H (12 CPUs), ~2.6GHz"
+      }
+    }
+  },
+  "not_found_components": {
+    "storage": [
+      "2TB SSD"
+    ]
+  },
+  "search_details": [
+    {
+      "component_name": "Intel Core i9-14900HX (24 CPUs), ~2.2GHz",
+      "component_type": "processors",
+      "found": true,
+      "gid": "gid://shopify/Metaobject/131491692693",
+      "shopify_display_name": "Intel Core i9-14900HX (24 CPUs), ~2.2GHz",
+      "search_attempts": [
+        "Intel Core i9-14900HX (24 CPUs), ~2.2GHz",
+        "Intel Core i9-14900HX 2.2GHz",
+        "Intel Core i9-14900HX",
+        "Intel Core i9-14900HX @ 2.2GHz"
+      ]
+    },
+    {
+      "component_name": "Intel Core i5-12500H (12 CPUs), ~3.1GHz",
+      "component_type": "processors",
+      "found": true,
+      "gid": "gid://shopify/Metaobject/131298328725",
+      "shopify_display_name": "Intel Core i5-12500H (16 CPUs), ~2.5GHz",
+      "search_attempts": [
+        "Intel Core i5-12500H",
+        "Intel Core i5-12500H (12 CPUs), ~3.1GHz",
+        "Intel Core i5-12500H @ 3.1GHz",
+        "Intel Core i5-12500H 3.1GHz"
+      ]
+    },
+    {
+      "component_name": "Intel Core i7-14700HX (20 CPUs), ~2.1GHz",
+      "component_type": "processors",
+      "found": true,
+      "gid": "gid://shopify/Metaobject/131491594389",
+      "shopify_display_name": "Intel Core i7-14700HX (20 CPUs), ~2.1GHz",
+      "search_attempts": [
+        "Intel Core i7-14700HX 2.1GHz",
+        "Intel Core i7-14700HX @ 2.1GHz",
+        "Intel Core i7-14700HX",
+        "Intel Core i7-14700HX (20 CPUs), ~2.1GHz"
+      ]
+    },
+    {
+      "component_name": "Intel Core i9-13900H (20 CPUs), ~2.6GHz",
+      "component_type": "processors",
+      "found": true,
+      "gid": "gid://shopify/Metaobject/131491659925",
+      "shopify_display_name": "Intel Core i9-13900H (20 CPUs), ~2.6GHz",
+      "search_attempts": [
+        "Intel Core i9-13900H (20 CPUs), ~2.6GHz",
+        "Intel Core i9-13900H @ 2.6GHz",
+        "Intel Core i9-13900H",
+        "Intel Core i9-13900H 2.6GHz"
+      ]
+    },
+    {
+      "component_name": "Intel Core i9-11900H (16 CPUs), ~2.5GHz",
+      "component_type": "processors",
+      "found": true,
+      "gid": "gid://shopify/Metaobject/125935124629",
+      "shopify_display_name": "Intel Core i9-11900H (16 CPUs), ~2.6GHz",
+      "search_attempts": [
+        "Intel Core i9-11900H (16 CPUs), ~2.5GHz",
+        "Intel Core i9-11900H @ 2.5GHz",
+        "Intel Core i9-11900H 2.5GHz",
+        "Intel Core i9-11900H"
+      ]
+    },
+    {
+      "component_name": "Intel Core i7-12700H (16 CPUs), ~2.3GHz",
+      "component_type": "processors",
+      "found": true,
+      "gid": "gid://shopify/Metaobject/131298099349",
+      "shopify_display_name": "Intel Core i7-12700H (20 CPUs), ~2.3GHz",
+      "search_attempts": [
+        "Intel Core i7-12700H 2.3GHz",
+        "Intel Core i7-12700H",
+        "Intel Core i7-12700H (16 CPUs), ~2.3GHz",
+        "Intel Core i7-12700H @ 2.3GHz"
+      ]
+    },
+    {
+      "component_name": "Intel Core i7-10750H (12 CPUs), ~2.6GHz",
+      "component_type": "processors",
+      "found": true,
+      "gid": "gid://shopify/Metaobject/131491496085",
+      "shopify_display_name": "Intel Core i7-10750H (12 CPUs), ~2.6GHz",
+      "search_attempts": [
+        "Intel Core i7-10750H @ 2.6GHz",
+        "Intel Core i7-10750H (12 CPUs), ~2.6GHz",
+        "Intel Core i7-10750H 2.6GHz",
+        "Intel Core i7-10750H"
+      ]
+    },
+    {
+      "component_name": "2TB SSD",
+      "component_type": "storage",
+      "found": false,
+      "gid": null,
+      "shopify_display_name": null,
+      "search_attempts": [
+        "2TB Solid State Drive",
+        "2TB SSD"
+      ]
+    }
+  ]
+}
