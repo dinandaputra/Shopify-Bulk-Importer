@@ -1,0 +1,376 @@
+{
+  "metadata": {
+    "timestamp": "2025-08-06T22:32:39.189759",
+    "script_version": "1.0.0",
+    "total_components_processed": 32,
+    "components_found": 0,
+    "components_not_found": 32,
+    "success_rate_percent": 0.0,
+    "processing_time_seconds": 156.42,
+    "api_calls_made": 168
+  },
+  "summary_by_type": {
+    "vga": {
+      "total": 16,
+      "found": 0,
+      "not_found": 16,
+      "success_rate": 0.0
+    },
+    "graphics": {
+      "total": 3,
+      "found": 0,
+      "not_found": 3,
+      "success_rate": 0.0
+    },
+    "displays": {
+      "total": 12,
+      "found": 0,
+      "not_found": 12,
+      "success_rate": 0.0
+    },
+    "storage": {
+      "total": 1,
+      "found": 0,
+      "not_found": 1,
+      "success_rate": 0.0
+    }
+  },
+  "resolved_components": {
+    "vga": {},
+    "graphics": {},
+    "displays": {},
+    "storage": {}
+  },
+  "not_found_components": {
+    "vga": [
+      "RTX 3050 Ti",
+      "NVIDIA GeForce RTX 4070 12GB",
+      "NVIDIA GeForce RTX 2070 8GB",
+      "NVIDIA GeForce RTX 2080 8GB",
+      "NVIDIA GeForce RTX 4090 16GB",
+      "NVIDIA GeForce RTX 3080 10GB",
+      "NVIDIA GeForce RTX 2060 6GB",
+      "NVIDIA GeForce GTX 1650 Ti 4GB",
+      "NVIDIA GeForce RTX 4080 16GB",
+      "NVIDIA GeForce RTX 3050 4GB",
+      "NVIDIA GeForce RTX 3070 8GB",
+      "NVIDIA GeForce GTX 1660 Ti 6GB",
+      "NVIDIA GeForce RTX 3070 Ti 8GB",
+      "NVIDIA GeForce RTX 3080 Ti 12GB",
+      "NVIDIA GeForce GTX 1650 4GB",
+      "NVIDIA GeForce RTX 4060 8GB"
+    ],
+    "graphics": [
+      "AMD Radeon Graphics",
+      "AMD Radeon 680M Graphics",
+      "Intel UHD Graphics 770"
+    ],
+    "displays": [
+      "15-inch 4K UHD (60Hz)",
+      "17.3 300Hz",
+      "16-inch OLED (240Hz)",
+      "15-inch FHD (120Hz)",
+      "17.3-inch FHD (240Hz)",
+      "17.3 120Hz",
+      "15-inch QHD (165Hz)",
+      "14-inch QHD (120Hz)",
+      "15-inch FHD (165Hz)",
+      "17.3-inch FHD (144Hz)",
+      "15-inch FHD (144Hz)",
+      "17.3-inch FHD (165Hz)"
+    ],
+    "storage": [
+      "2TB SSD"
+    ]
+  },
+  "search_details": [
+    {
+      "component_name": "RTX 3050 Ti",
+      "component_type": "vga",
+      "found": false,
+      "gid": null,
+      "shopify_display_name": null,
+      "search_attempts": [],
+      "search_method": null
+    },
+    {
+      "component_name": "NVIDIA GeForce RTX 4070 12GB",
+      "component_type": "vga",
+      "found": false,
+      "gid": null,
+      "shopify_display_name": null,
+      "search_attempts": [],
+      "search_method": null
+    },
+    {
+      "component_name": "NVIDIA GeForce RTX 2070 8GB",
+      "component_type": "vga",
+      "found": false,
+      "gid": null,
+      "shopify_display_name": null,
+      "search_attempts": [],
+      "search_method": null
+    },
+    {
+      "component_name": "NVIDIA GeForce RTX 2080 8GB",
+      "component_type": "vga",
+      "found": false,
+      "gid": null,
+      "shopify_display_name": null,
+      "search_attempts": [],
+      "search_method": null
+    },
+    {
+      "component_name": "NVIDIA GeForce RTX 4090 16GB",
+      "component_type": "vga",
+      "found": false,
+      "gid": null,
+      "shopify_display_name": null,
+      "search_attempts": [],
+      "search_method": null
+    },
+    {
+      "component_name": "NVIDIA GeForce RTX 3080 10GB",
+      "component_type": "vga",
+      "found": false,
+      "gid": null,
+      "shopify_display_name": null,
+      "search_attempts": [],
+      "search_method": null
+    },
+    {
+      "component_name": "NVIDIA GeForce RTX 2060 6GB",
+      "component_type": "vga",
+      "found": false,
+      "gid": null,
+      "shopify_display_name": null,
+      "search_attempts": [],
+      "search_method": null
+    },
+    {
+      "component_name": "NVIDIA GeForce GTX 1650 Ti 4GB",
+      "component_type": "vga",
+      "found": false,
+      "gid": null,
+      "shopify_display_name": null,
+      "search_attempts": [],
+      "search_method": null
+    },
+    {
+      "component_name": "NVIDIA GeForce RTX 4080 16GB",
+      "component_type": "vga",
+      "found": false,
+      "gid": null,
+      "shopify_display_name": null,
+      "search_attempts": [],
+      "search_method": null
+    },
+    {
+      "component_name": "NVIDIA GeForce RTX 3050 4GB",
+      "component_type": "vga",
+      "found": false,
+      "gid": null,
+      "shopify_display_name": null,
+      "search_attempts": [],
+      "search_method": null
+    },
+    {
+      "component_name": "NVIDIA GeForce RTX 3070 8GB",
+      "component_type": "vga",
+      "found": false,
+      "gid": null,
+      "shopify_display_name": null,
+      "search_attempts": [],
+      "search_method": null
+    },
+    {
+      "component_name": "NVIDIA GeForce GTX 1660 Ti 6GB",
+      "component_type": "vga",
+      "found": false,
+      "gid": null,
+      "shopify_display_name": null,
+      "search_attempts": [],
+      "search_method": null
+    },
+    {
+      "component_name": "NVIDIA GeForce RTX 3070 Ti 8GB",
+      "component_type": "vga",
+      "found": false,
+      "gid": null,
+      "shopify_display_name": null,
+      "search_attempts": [],
+      "search_method": null
+    },
+    {
+      "component_name": "NVIDIA GeForce RTX 3080 Ti 12GB",
+      "component_type": "vga",
+      "found": false,
+      "gid": null,
+      "shopify_display_name": null,
+      "search_attempts": [],
+      "search_method": null
+    },
+    {
+      "component_name": "NVIDIA GeForce GTX 1650 4GB",
+      "component_type": "vga",
+      "found": false,
+      "gid": null,
+      "shopify_display_name": null,
+      "search_attempts": [],
+      "search_method": null
+    },
+    {
+      "component_name": "NVIDIA GeForce RTX 4060 8GB",
+      "component_type": "vga",
+      "found": false,
+      "gid": null,
+      "shopify_display_name": null,
+      "search_attempts": [],
+      "search_method": null
+    },
+    {
+      "component_name": "AMD Radeon Graphics",
+      "component_type": "graphics",
+      "found": false,
+      "gid": null,
+      "shopify_display_name": null,
+      "search_attempts": [],
+      "search_method": null
+    },
+    {
+      "component_name": "AMD Radeon 680M Graphics",
+      "component_type": "graphics",
+      "found": false,
+      "gid": null,
+      "shopify_display_name": null,
+      "search_attempts": [],
+      "search_method": null
+    },
+    {
+      "component_name": "Intel UHD Graphics 770",
+      "component_type": "graphics",
+      "found": false,
+      "gid": null,
+      "shopify_display_name": null,
+      "search_attempts": [],
+      "search_method": null
+    },
+    {
+      "component_name": "15-inch 4K UHD (60Hz)",
+      "component_type": "displays",
+      "found": false,
+      "gid": null,
+      "shopify_display_name": null,
+      "search_attempts": [],
+      "search_method": null
+    },
+    {
+      "component_name": "17.3 300Hz",
+      "component_type": "displays",
+      "found": false,
+      "gid": null,
+      "shopify_display_name": null,
+      "search_attempts": [],
+      "search_method": null
+    },
+    {
+      "component_name": "16-inch OLED (240Hz)",
+      "component_type": "displays",
+      "found": false,
+      "gid": null,
+      "shopify_display_name": null,
+      "search_attempts": [],
+      "search_method": null
+    },
+    {
+      "component_name": "15-inch FHD (120Hz)",
+      "component_type": "displays",
+      "found": false,
+      "gid": null,
+      "shopify_display_name": null,
+      "search_attempts": [],
+      "search_method": null
+    },
+    {
+      "component_name": "17.3-inch FHD (240Hz)",
+      "component_type": "displays",
+      "found": false,
+      "gid": null,
+      "shopify_display_name": null,
+      "search_attempts": [],
+      "search_method": null
+    },
+    {
+      "component_name": "17.3 120Hz",
+      "component_type": "displays",
+      "found": false,
+      "gid": null,
+      "shopify_display_name": null,
+      "search_attempts": [],
+      "search_method": null
+    },
+    {
+      "component_name": "15-inch QHD (165Hz)",
+      "component_type": "displays",
+      "found": false,
+      "gid": null,
+      "shopify_display_name": null,
+      "search_attempts": [],
+      "search_method": null
+    },
+    {
+      "component_name": "14-inch QHD (120Hz)",
+      "component_type": "displays",
+      "found": false,
+      "gid": null,
+      "shopify_display_name": null,
+      "search_attempts": [],
+      "search_method": null
+    },
+    {
+      "component_name": "15-inch FHD (165Hz)",
+      "component_type": "displays",
+      "found": false,
+      "gid": null,
+      "shopify_display_name": null,
+      "search_attempts": [],
+      "search_method": null
+    },
+    {
+      "component_name": "17.3-inch FHD (144Hz)",
+      "component_type": "displays",
+      "found": false,
+      "gid": null,
+      "shopify_display_name": null,
+      "search_attempts": [],
+      "search_method": null
+    },
+    {
+      "component_name": "15-inch FHD (144Hz)",
+      "component_type": "displays",
+      "found": false,
+      "gid": null,
+      "shopify_display_name": null,
+      "search_attempts": [],
+      "search_method": null
+    },
+    {
+      "component_name": "17.3-inch FHD (165Hz)",
+      "component_type": "displays",
+      "found": false,
+      "gid": null,
+      "shopify_display_name": null,
+      "search_attempts": [],
+      "search_method": null
+    },
+    {
+      "component_name": "2TB SSD",
+      "component_type": "storage",
+      "found": false,
+      "gid": null,
+      "shopify_display_name": null,
+      "search_attempts": [],
+      "search_method": null
+    }
+  ]
+}

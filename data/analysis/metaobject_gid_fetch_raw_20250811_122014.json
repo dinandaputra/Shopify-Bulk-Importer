@@ -1,0 +1,540 @@
+{
+  "product_inclusion_laptop": [
+    {
+      "gid": "gid://shopify/Metaobject/117265989781",
+      "type": "product_inclusion_laptop",
+      "display_name": "Full set",
+      "handle": "full-set",
+      "fields": [
+        {
+          "key": "label",
+          "value": "Full set"
+        },
+        {
+          "key": "description_en",
+          "value": "Complete package with laptop, original box, and adapter."
+        },
+        {
+          "key": "description_id",
+          "value": "Lengkap dengan laptop, box asli, dan adaptor."
+        },
+        {
+          "key": "description_ja",
+          "value": "オリジナルボックス、ノートPC、充電器の完全セット。"
+        },
+        {
+          "key": "description_mm",
+          "value": "အပြည့်အစုံပါဝင်သည် (မူလဘူး၊ လက်တော့နှင့် အားသွင်းကိရိယာ ပါဝင်သည်)"
+        }
+      ]
+    },
+    {
+      "gid": "gid://shopify/Metaobject/117266022549",
+      "type": "product_inclusion_laptop",
+      "display_name": "With box",
+      "handle": "with-box",
+      "fields": [
+        {
+          "key": "label",
+          "value": "With box "
+        },
+        {
+          "key": "description_en",
+          "value": "Laptop with original packaging box and non-original adapter."
+        },
+        {
+          "key": "description_id",
+          "value": "Laptop dengan kotak kemasan asli dan adapter bukan original."
+        },
+        {
+          "key": "description_ja",
+          "value": "オリジナルボックス付きノートPC、充電器は含まれません。"
+        },
+        {
+          "key": "description_mm",
+          "value": "လက်တော့နှင့် မူလဘူး ပါဝင်သည် (အားသွင်းကိရိယာ မပါ)"
+        }
+      ]
+    },
+    {
+      "gid": "gid://shopify/Metaobject/117266055317",
+      "type": "product_inclusion_laptop",
+      "display_name": "Unit + Charger original",
+      "handle": "without-box",
+      "fields": [
+        {
+          "key": "label",
+          "value": "Unit + Charger original"
+        },
+        {
+          "key": "description_en",
+          "value": "Laptop and original adapter (without box)"
+        },
+        {
+          "key": "description_id",
+          "value": "Laptop dan adaptor original (tanpa box)"
+        },
+        {
+          "key": "description_ja",
+          "value": "オリジナルボックスなし、ノートPCと充電器のみ。"
+        },
+        {
+          "key": "description_mm",
+          "value": "လက်တော့နှင့် အားသွင်းကိရိယာ ပါဝင်သည် (ဘူးမပါ)"
+        }
+      ]
+    },
+    {
+      "gid": "gid://shopify/Metaobject/117268873365",
+      "type": "product_inclusion_laptop",
+      "display_name": "Unit + Bonus charger",
+      "handle": "unit-only",
+      "fields": [
+        {
+          "key": "label",
+          "value": "Unit + Bonus charger"
+        },
+        {
+          "key": "description_en",
+          "value": "Laptop with bonus compatible third-party adapter (non-original)"
+        },
+        {
+          "key": "description_id",
+          "value": "Laptop dan bonus adaptor (bukan original)"
+        },
+        {
+          "key": "description_ja",
+          "value": "ノートPC本体のみ、付属品なし。"
+        },
+        {
+          "key": "description_mm",
+          "value": "လက်တော့တစ်လုံးသာ ပါဝင်သည် (အခြားပစ္စည်းများ မပါ)"
+        }
+      ]
+    }
+  ],
+  "product_rank_laptop": [
+    {
+      "gid": "gid://shopify/Metaobject/117266186389",
+      "type": "product_rank_laptop",
+      "display_name": "BNIB",
+      "handle": "bnib",
+      "fields": [
+        {
+          "key": "label",
+          "value": "BNIB"
+        },
+        {
+          "key": "description_en",
+          "value": "Brand new, still sealed in original box."
+        },
+        {
+          "key": "description_id",
+          "value": "Produk baru, masih tersegel dalam kemasan asli."
+        },
+        {
+          "key": "description_ja",
+          "value": "新品、オリジナルボックス内で未開封。"
+        },
+        {
+          "key": "description_mm",
+          "value": "လုံးဝအသစ် ဖြစ်သည်။ မူလဘူးအတွင်း၌ တံခါးခတ်အတိုင်း ရှိနေဆဲ ဖြစ်ပါသည်။"
+        }
+      ]
+    },
+    {
+      "gid": "gid://shopify/Metaobject/117266219157",
+      "type": "product_rank_laptop",
+      "display_name": "BNOB",
+      "handle": "bnob",
+      "fields": [
+        {
+          "key": "label",
+          "value": "BNOB"
+        },
+        {
+          "key": "description_en",
+          "value": "Brand new, box opened but never used."
+        },
+        {
+          "key": "description_id",
+          "value": "Produk baru, kemasan sudah dibuka namun belum pernah dipakai."
+        },
+        {
+          "key": "description_ja",
+          "value": "新品、開封済みだが未使用。"
+        },
+        {
+          "key": "description_mm",
+          "value": "လုံးဝအသစ် ဖြစ်သည်။ မူလဘူးဖွင့်ထားသော်လည်း တစ်ခါမှ အသုံးမပြုရသေးပါ။"
+        }
+      ]
+    },
+    {
+      "gid": "gid://shopify/Metaobject/117266251925",
+      "type": "product_rank_laptop",
+      "display_name": "BNWB",
+      "handle": "bnwb",
+      "fields": [
+        {
+          "key": "label",
+          "value": "BNWB"
+        },
+        {
+          "key": "description_en",
+          "value": null
+        },
+        {
+          "key": "description_id",
+          "value": null
+        },
+        {
+          "key": "description_ja",
+          "value": null
+        },
+        {
+          "key": "description_mm",
+          "value": null
+        }
+      ]
+    },
+    {
+      "gid": "gid://shopify/Metaobject/117266284693",
+      "type": "product_rank_laptop",
+      "display_name": "S+",
+      "handle": "s",
+      "fields": [
+        {
+          "key": "label",
+          "value": "S+"
+        },
+        {
+          "key": "description_en",
+          "value": "Nearly like new, no scratches on screen or laptop body."
+        },
+        {
+          "key": "description_id",
+          "value": "Hampir seperti baru, tidak ada goresan pada layar maupun bodi laptop."
+        },
+        {
+          "key": "description_ja",
+          "value": "ほぼ新品同様、画面・本体に傷なし。"
+        },
+        {
+          "key": "description_mm",
+          "value": "အသစ်နှင့်နီးစပ်သော အခြေအနေ။ မျက်နှာပြင်နှင့် လက်တော့ကိုယ်ထည်နှစ်ခုလုံးတွင် အကြောင်းအရာများ လုံးဝ မတွေ့ရပါ။"
+        }
+      ]
+    },
+    {
+      "gid": "gid://shopify/Metaobject/117266317461",
+      "type": "product_rank_laptop",
+      "display_name": "S",
+      "handle": "s-1",
+      "fields": [
+        {
+          "key": "label",
+          "value": "S"
+        },
+        {
+          "key": "description_en",
+          "value": "Minimal scratches on laptop body only, screen remains pristine."
+        },
+        {
+          "key": "description_id",
+          "value": "Goresan sangat minimal hanya pada bodi laptop, layar tetap mulus."
+        },
+        {
+          "key": "description_ja",
+          "value": "本体のみに最小限の傷、画面は完璧な状態。"
+        },
+        {
+          "key": "description_mm",
+          "value": "အလွန်ကောင်းမွန်သော အခြေအနေ။ လက်တော့ကိုယ်ထည်တွင် အနည်းငယ် အကြောင်းအရာများသာ ရှိပြီး မျက်နှာပြင်မှာတော့ ပြီးပြည့်စုံစွာ ကောင်းမွန်ပါသည်။"
+        }
+      ]
+    },
+    {
+      "gid": "gid://shopify/Metaobject/117266350229",
+      "type": "product_rank_laptop",
+      "display_name": "A+",
+      "handle": "a",
+      "fields": [
+        {
+          "key": "label",
+          "value": "A+"
+        },
+        {
+          "key": "description_en",
+          "value": "Minor scratches on laptop body, screen remains clean."
+        },
+        {
+          "key": "description_id",
+          "value": "Terdapat beberapa goresan ringan pada bodi laptop, layar masih bersih."
+        },
+        {
+          "key": "description_ja",
+          "value": "本体に軽微な傷あり、画面はクリーンな状態。"
+        },
+        {
+          "key": "description_mm",
+          "value": "ကောင်းမွန်သော အခြေအနေ။ လက်တော့ကိုယ်ထည်တွင် အနည်းငယ် အကြောင်းအရာများ ရှိနိုင်ပြီး မျက်နှာပြင်မှာတော့ သန့်ရှင်းစွာ ကျန်ရှိပါသည်။"
+        }
+      ]
+    },
+    {
+      "gid": "gid://shopify/Metaobject/117266382997",
+      "type": "product_rank_laptop",
+      "display_name": "A",
+      "handle": "a-1",
+      "fields": [
+        {
+          "key": "label",
+          "value": "A"
+        },
+        {
+          "key": "description_en",
+          "value": "Visible scratches on both screen and laptop body; may have minor dents."
+        },
+        {
+          "key": "description_id",
+          "value": "Terdapat goresan yang terlihat pada layar dan bodi laptop; mungkin ada penyok kecil."
+        },
+        {
+          "key": "description_ja",
+          "value": "画面・本体両方に目立つ傷あり、軽微な凹みの可能性あり。"
+        },
+        {
+          "key": "description_mm",
+          "value": "အသုံးပြုနိုင်သော အခြေအနေ။ မျက်နှာပြင်နှင့် လက်တော့ကိုယ်ထည် နှစ်ခုလုံးတွင် အကြောင်းအရာများ ရှိနိုင်ပြီး သေးငယ်သော ထိခိုက်ရာများ တွေ့နိုင်ပါသည်။"
+        }
+      ]
+    }
+  ],
+  "minus": [
+    {
+      "gid": "gid://shopify/Metaobject/125916905621",
+      "type": "minus",
+      "display_name": "White spot",
+      "handle": "white-spot",
+      "fields": [
+        {
+          "key": "label",
+          "value": "White spot"
+        },
+        {
+          "key": "description_en",
+          "value": "White spot on screen"
+        },
+        {
+          "key": "description_id",
+          "value": "ada white spot di layar"
+        },
+        {
+          "key": "description_jp",
+          "value": "画面に白い斑点があります"
+        },
+        {
+          "key": "description_mm",
+          "value": "မျက်နှာပြင်မှာ white spot ရှိပါတယ်။"
+        }
+      ]
+    },
+    {
+      "gid": "gid://shopify/Metaobject/125917266069",
+      "type": "minus",
+      "display_name": "Shadow",
+      "handle": "shadow",
+      "fields": [
+        {
+          "key": "label",
+          "value": "Shadow"
+        },
+        {
+          "key": "description_en",
+          "value": "Screen burn-in present"
+        },
+        {
+          "key": "description_id",
+          "value": "ada shadow/burn-in di layar"
+        },
+        {
+          "key": "description_jp",
+          "value": "画面に焼き付きがあります"
+        },
+        {
+          "key": "description_mm",
+          "value": "မျက်နှာပြင်မှာ burn-in ရှိပါတယ်။"
+        }
+      ]
+    },
+    {
+      "gid": "gid://shopify/Metaobject/125922050197",
+      "type": "minus",
+      "display_name": "Dead Pixel",
+      "handle": "dead-pixel",
+      "fields": [
+        {
+          "key": "label",
+          "value": "Dead Pixel"
+        },
+        {
+          "key": "description_en",
+          "value": "Dead pixel on screen"
+        },
+        {
+          "key": "description_id",
+          "value": "Ada dead pixel di layar"
+        },
+        {
+          "key": "description_jp",
+          "value": "画面にドット欠けがあります"
+        },
+        {
+          "key": "description_mm",
+          "value": "မျက်နှာပြင်မှာ dead pixel တချို့ရှိပါတယ်။"
+        }
+      ]
+    },
+    {
+      "gid": "gid://shopify/Metaobject/125922508949",
+      "type": "minus",
+      "display_name": "Speaker pecah",
+      "handle": "speaker-pecah",
+      "fields": [
+        {
+          "key": "label",
+          "value": "Speaker pecah"
+        },
+        {
+          "key": "description_en",
+          "value": "Speaker damaged/cracked"
+        },
+        {
+          "key": "description_id",
+          "value": "Speaker pecah/rusak"
+        },
+        {
+          "key": "description_jp",
+          "value": "スピーカーが破損しています"
+        },
+        {
+          "key": "description_mm",
+          "value": "စပီကာ ချိုးနေပါတယ်။"
+        }
+      ]
+    },
+    {
+      "gid": "gid://shopify/Metaobject/125932535957",
+      "type": "minus",
+      "display_name": "Battery service",
+      "handle": "battery-service",
+      "fields": [
+        {
+          "key": "label",
+          "value": "Battery service"
+        },
+        {
+          "key": "description_en",
+          "value": "Need battery service"
+        },
+        {
+          "key": "description_id",
+          "value": "Battery service diperlukan"
+        },
+        {
+          "key": "description_jp",
+          "value": "バッテリーサービスが必要です"
+        },
+        {
+          "key": "description_mm",
+          "value": "ဘက်ထရီ ပြုပြင်ရန် လိုအပ်ပါသည်။"
+        }
+      ]
+    },
+    {
+      "gid": "gid://shopify/Metaobject/131292954773",
+      "type": "minus",
+      "display_name": "Minor scratches",
+      "handle": "minor-scratches",
+      "fields": [
+        {
+          "key": "label",
+          "value": "Minor scratches"
+        },
+        {
+          "key": "description_en",
+          "value": null
+        },
+        {
+          "key": "description_id",
+          "value": null
+        },
+        {
+          "key": "description_jp",
+          "value": null
+        },
+        {
+          "key": "description_mm",
+          "value": null
+        }
+      ]
+    },
+    {
+      "gid": "gid://shopify/Metaobject/131292987541",
+      "type": "minus",
+      "display_name": "Keyboard wear",
+      "handle": "keyboard-wear",
+      "fields": [
+        {
+          "key": "label",
+          "value": "Keyboard wear"
+        },
+        {
+          "key": "description_en",
+          "value": null
+        },
+        {
+          "key": "description_id",
+          "value": null
+        },
+        {
+          "key": "description_jp",
+          "value": null
+        },
+        {
+          "key": "description_mm",
+          "value": null
+        }
+      ]
+    },
+    {
+      "gid": "gid://shopify/Metaobject/131293020309",
+      "type": "minus",
+      "display_name": "Battery degradation",
+      "handle": "battery-degraded",
+      "fields": [
+        {
+          "key": "label",
+          "value": "Battery degradation"
+        },
+        {
+          "key": "description_en",
+          "value": null
+        },
+        {
+          "key": "description_id",
+          "value": null
+        },
+        {
+          "key": "description_jp",
+          "value": null
+        },
+        {
+          "key": "description_mm",
+          "value": null
+        }
+      ]
+    }
+  ]
+}

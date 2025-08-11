@@ -1,0 +1,265 @@
+{
+  "timestamp": "2025-08-06T22:33:32.391152",
+  "total_definitions_found": 34,
+  "existing_types": [
+    "shopify--cosmetic-condition",
+    "display_laptop",
+    "shopify--processor-family",
+    "shopify--storage-types-supported",
+    "shopify--connection-type",
+    "shopify--keyboard-type",
+    "minus",
+    "shopify--sim-card-capability",
+    "processor",
+    "shopify--computer-form",
+    "sim_variant",
+    "ram_smart_gadget",
+    "shopify--operating-system",
+    "os_laptop",
+    "shopify--color-pattern",
+    "ram_laptop",
+    "product_rank_laptop",
+    "product_includes",
+    "shopify--subscription-type",
+    "storage_laptop",
+    "shopify--memory-technology",
+    "shopify--computer-specialized-features",
+    "dedicated_graphics",
+    "shopify--data-network",
+    "keyboard_layout",
+    "shopify--condition",
+    "shopify--graphics-card-type",
+    "product_inclusion_laptop",
+    "sim_carrier",
+    "product_rank",
+    "keyboard_backlight",
+    "shopify--language-version",
+    "storage",
+    "integrated_graphics"
+  ],
+  "target_types": [
+    "laptop_vga",
+    "laptop_graphics",
+    "laptop_displays",
+    "laptop_storage"
+  ],
+  "missing_target_types": [
+    "laptop_vga",
+    "laptop_graphics",
+    "laptop_displays",
+    "laptop_storage"
+  ],
+  "working_types_status": {
+    "processors": false,
+    "colors": false,
+    "keyboard_backlights": false,
+    "keyboard_layouts": false,
+    "os": false
+  },
+  "all_definitions": [
+    {
+      "type": "shopify--cosmetic-condition",
+      "name": "Cosmetic condition",
+      "description": "Defines the wear and condition of electronics, e.g. new, opened-never used",
+      "field_count": 2
+    },
+    {
+      "type": "shopify--sim-card-capability",
+      "name": "SIM card capability",
+      "description": "Indicates the type of SIM card configuration in mobile devices, e.g. dual, embedded",
+      "field_count": 2
+    },
+    {
+      "type": "shopify--operating-system",
+      "name": "Operating system",
+      "description": "Defines the system software a device uses, such as iOS or ChromeOS",
+      "field_count": 2
+    },
+    {
+      "type": "shopify--color-pattern",
+      "name": "Color",
+      "description": "Defines the primary color or pattern, such as blue or striped",
+      "field_count": 5
+    },
+    {
+      "type": "shopify--subscription-type",
+      "name": "Subscription type",
+      "description": "Specifies the type of subscription, typically for mobile devices; e.g. pay as you go, pre-paid",
+      "field_count": 2
+    },
+    {
+      "type": "shopify--data-network",
+      "name": "Data network",
+      "description": "Specifies the data network compatibility of mobile devices, like LTE or 3G",
+      "field_count": 2
+    },
+    {
+      "type": "shopify--memory-technology",
+      "name": "Memory technology",
+      "description": "Specifies the type of memory used in electronic devices, such as DDR or SDRAM",
+      "field_count": 2
+    },
+    {
+      "type": "shopify--storage-types-supported",
+      "name": "Storage types supported",
+      "description": "Defines compatible storage systems for electronics, e.g. Hard disk drive (HDD)",
+      "field_count": 2
+    },
+    {
+      "type": "shopify--processor-family",
+      "name": "Processor family",
+      "description": "Identifies the series or brand of the electronic device's CPU, e.g. Intel Core i7",
+      "field_count": 2
+    },
+    {
+      "type": "shopify--connection-type",
+      "name": "Connection type",
+      "description": "Specifies the type of connection used by electronics, such as wired or Bluetooth",
+      "field_count": 2
+    },
+    {
+      "type": "shopify--computer-form",
+      "name": "Computer form",
+      "description": "Defines the physical design or layout of a computer, such as all-in-one or notebook",
+      "field_count": 2
+    },
+    {
+      "type": "shopify--graphics-card-type",
+      "name": "Graphics card type",
+      "description": "Specifies the type of graphics card in a computer, e.g. professional, dedicated",
+      "field_count": 2
+    },
+    {
+      "type": "shopify--computer-specialized-features",
+      "name": "Computer specialized features",
+      "description": "Highlights specific computer features, like liquid cooling system or RGB lighting",
+      "field_count": 2
+    },
+    {
+      "type": "shopify--condition",
+      "name": "Condition",
+      "description": "Describes the state or quality of a product, e.g. mint (M), poor (P)",
+      "field_count": 2
+    },
+    {
+      "type": "sim_carrier",
+      "name": "SIM Carrier",
+      "description": "",
+      "field_count": 1
+    },
+    {
+      "type": "product_includes",
+      "name": "Product Inclusion",
+      "description": "",
+      "field_count": 5
+    },
+    {
+      "type": "product_rank",
+      "name": "Product Rank",
+      "description": "",
+      "field_count": 5
+    },
+    {
+      "type": "display_laptop",
+      "name": "Display(Laptop)",
+      "description": "",
+      "field_count": 1
+    },
+    {
+      "type": "processor",
+      "name": "Processor(Laptop)",
+      "description": "",
+      "field_count": 1
+    },
+    {
+      "type": "integrated_graphics",
+      "name": "Integrated Graphics",
+      "description": "",
+      "field_count": 1
+    },
+    {
+      "type": "dedicated_graphics",
+      "name": "Dedicated Graphics",
+      "description": "",
+      "field_count": 1
+    },
+    {
+      "type": "shopify--keyboard-type",
+      "name": "Keyboard type",
+      "description": "Specifies the design and functionality of a keyboard, e.g. standard, backlit",
+      "field_count": 2
+    },
+    {
+      "type": "shopify--language-version",
+      "name": "Language version",
+      "description": "Specifies the language version of a media product, such as ENG-US or ARA- Arabic",
+      "field_count": 2
+    },
+    {
+      "type": "keyboard_backlight",
+      "name": "Keyboard Backlight",
+      "description": "",
+      "field_count": 1
+    },
+    {
+      "type": "keyboard_layout",
+      "name": "Keyboard Layout",
+      "description": "",
+      "field_count": 1
+    },
+    {
+      "type": "storage_laptop",
+      "name": "Storage(Laptop)",
+      "description": "",
+      "field_count": 1
+    },
+    {
+      "type": "product_inclusion_laptop",
+      "name": "Product Inclusion (Laptop)",
+      "description": "",
+      "field_count": 5
+    },
+    {
+      "type": "product_rank_laptop",
+      "name": "Product Rank (Laptop)",
+      "description": "",
+      "field_count": 5
+    },
+    {
+      "type": "storage",
+      "name": "Storage",
+      "description": "",
+      "field_count": 1
+    },
+    {
+      "type": "sim_variant",
+      "name": "SIM Variant",
+      "description": "",
+      "field_count": 1
+    },
+    {
+      "type": "os_laptop",
+      "name": "OS Laptop",
+      "description": "",
+      "field_count": 1
+    },
+    {
+      "type": "ram_laptop",
+      "name": "RAM Laptop",
+      "description": "",
+      "field_count": 1
+    },
+    {
+      "type": "minus",
+      "name": "Minus",
+      "description": "",
+      "field_count": 5
+    },
+    {
+      "type": "ram_smart_gadget",
+      "name": "RAM (Smart Gadget)",
+      "description": "",
+      "field_count": 1
+    }
+  ]
+}

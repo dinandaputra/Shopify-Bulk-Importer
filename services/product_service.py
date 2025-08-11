@@ -1071,7 +1071,10 @@ class ProductService:
                 'vga': laptop.gpu,   # Dedicated graphics cards
                 'os': laptop.os,
                 'keyboard_layout': laptop.keyboard_layout,
-                'keyboard_backlight': laptop.keyboard_backlight
+                'keyboard_backlight': laptop.keyboard_backlight,
+                'product_rank': laptop.rank,  # 09 Rank
+                'product_inclusions': laptop.inclusions,  # 08 Kelengkapan
+                'minus': laptop.minus  # Minus/Issues
             }
             
             metafield_mappings = self._convert_laptop_data_to_metafields_with_repo(laptop_data, metaobject_repo)
@@ -1152,12 +1155,21 @@ class ProductService:
                 # Get GID from repository
                 gid = metaobject_repo.get_gid(repo_key, value)
                 if gid:
-                    metafield_mappings[field_key] = {
-                        'namespace': namespace,
-                        'key': metafield_key,
-                        'value': gid,
-                        'type': field_type
-                    }
+                    # Special handling for color field - needs JSON array format for laptops
+                    if field_key == 'color':
+                        metafield_mappings[field_key] = {
+                            'namespace': namespace,
+                            'key': metafield_key,
+                            'value': json.dumps([gid]),
+                            'type': 'list.metaobject_reference'
+                        }
+                    else:
+                        metafield_mappings[field_key] = {
+                            'namespace': namespace,
+                            'key': metafield_key,
+                            'value': gid,
+                            'type': field_type
+                        }
             elif field_type == 'single_line_text_field':
                 # Direct text value
                 metafield_mappings[field_key] = {
@@ -1392,10 +1404,21 @@ class ProductService:
             if not value:  # Skip empty values
                 continue
                 
-            # Get metafield configuration
+            # Get metafield configuration with special mappings for laptop fields
             metafield_config = None
+            
+            # Map field names to metafield config keys
+            field_to_config_map = {
+                'product_rank': 'rank',
+                'product_inclusions': 'kelengkapan',
+                'minus': 'minus'
+            }
+            
+            # First check if there's a direct mapping
+            config_key_to_use = field_to_config_map.get(field_name, field_name)
+            
             for config_key, config in all_metafields.items():
-                if config_key == field_name or config.key.endswith(field_name):
+                if config_key == config_key_to_use or config_key == field_name or config.key.endswith(field_name):
                     metafield_config = config
                     break
             
@@ -1415,43 +1438,71 @@ class ProductService:
             elif 'metaobject' in metafield_config.type.value:
                 # Handle metaobject reference fields using MetaobjectRepository
                 
-                # Map field names to repository component types
+                # Map field names to repository component types (using singular forms as expected by MetaobjectRepository)
                 field_to_component_map = {
-                    'processor': 'processors',
-                    'cpu': 'processors', 
+                    'processor': 'processor',
+                    'cpu': 'processor', 
                     'graphics': 'graphics',
                     'gpu': 'graphics',
                     'integrated_graphics': 'graphics',
-                    'display': 'displays',
+                    'display': 'display',
                     'storage': 'storage',
                     'vga': 'vga',
                     'os': 'os',
                     'operating_system': 'os',
-                    'keyboard_layout': 'keyboard_layouts',
-                    'keyboard_backlight': 'keyboard_backlights',
-                    'color': 'colors',
-                    'inclusions': 'inclusions',
+                    'keyboard_layout': 'keyboard_layout',
+                    'keyboard_backlight': 'keyboard_backlight',
+                    'color': 'color',
+                    'product_rank': 'product_rank_laptop',
+                    'product_inclusions': 'product_inclusion_laptop',
+                    'inclusions': 'product_inclusion_laptop',
                     'minus': 'minus'
                 }
                 
                 component_type = field_to_component_map.get(field_name)
                 if component_type:
                     
-                    if field_name in ['inclusions', 'minus', 'kelengkapan']:
-                        # Handle list fields (take first value if list)
-                        actual_value = value[0] if isinstance(value, list) and value else value
-                        if actual_value:
-                            gid = metaobject_repo.get_gid(component_type, actual_value)
+                    if field_name == 'product_rank':
+                        # Handle single metaobject reference for product_rank
+                        gid = metaobject_repo.get_gid(component_type, value)
+                        if gid:
+                            metafields[metafield_config.key] = {
+                                'namespace': metafield_config.namespace,
+                                'key': metafield_config.key,
+                                'type': 'metaobject_reference',  # Single reference
+                                'value': gid
+                            }
+                        else:
+                            missing_entries[field_name].append(value)
+                    elif field_name in ['product_inclusions', 'inclusions', 'minus']:
+                        # Handle list fields - map each value and create list of GIDs
+                        if isinstance(value, list) and value:
+                            gids = []
+                            for item in value:
+                                gid = metaobject_repo.get_gid(component_type, item)
+                                if gid:
+                                    gids.append(gid)
+                                else:
+                                    missing_entries[field_name].append(item)
                             
+                            if gids:
+                                metafields[metafield_config.key] = {
+                                    'namespace': metafield_config.namespace,
+                                    'key': metafield_config.key,
+                                    'type': 'list.metaobject_reference',  # List type for multi-select
+                                    'value': json.dumps(gids)  # JSON encode the list
+                                }
+                        elif value:  # Single value provided as string
+                            gid = metaobject_repo.get_gid(component_type, value)
                             if gid:
                                 metafields[metafield_config.key] = {
                                     'namespace': metafield_config.namespace,
                                     'key': metafield_config.key,
-                                    'type': metafield_config.type.value,
-                                    'value': gid
+                                    'type': 'list.metaobject_reference',
+                                    'value': json.dumps([gid])  # Still a list but with single item
                                 }
                             else:
-                                missing_entries[field_name].append(actual_value)
+                                missing_entries[field_name].append(value)
                     else:
                         # Handle single metaobject reference fields
                         gid = metaobject_repo.get_gid(component_type, value)

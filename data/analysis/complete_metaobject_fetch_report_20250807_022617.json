@@ -1,0 +1,180 @@
+{
+  "timestamp": "2025-08-07T02:26:17.746590",
+  "purpose": "Complete metaobject fetch for laptop component mapping",
+  "backup_directory": "data/metaobjects/backups/complete_fetch_backup_20250807_022609",
+  "summary": {
+    "total_categories": 9,
+    "categories_processed": 9,
+    "categories_meeting_target": 5,
+    "total_expected_entries": 481,
+    "total_actual_entries": 339,
+    "overall_coverage_percentage": 70.47817047817048,
+    "success_rate": 55.55555555555556
+  },
+  "metaobject_types_used": {
+    "processors": "processor",
+    "vga": "dedicated_graphics",
+    "graphics": "integrated_graphics",
+    "displays": "display_laptop",
+    "storage": "storage_laptop",
+    "colors": "shopify--color-pattern",
+    "os": "os_laptop",
+    "keyboard_layouts": "keyboard_layout",
+    "keyboard_backlights": "keyboard_backlight"
+  },
+  "category_results": {
+    "processors": {
+      "category": "processors",
+      "expected_count": 186,
+      "actual_count": 88,
+      "meets_target": false,
+      "coverage_percentage": 47.31182795698925,
+      "status": "⚠️ BELOW TARGET",
+      "sample_entries": [
+        "Intel Core i7-12650H (16 CPUs), ~2.3GHz",
+        "Intel Core i5-10200H, (8CPU)~2.4GHz",
+        "Intel Core i7 Quad-Core 2.2GHz",
+        "Intel Core i5 7200U CPU @2.5GHz",
+        "Intel Core i5 Dual-Core 2.3 GHz"
+      ],
+      "file_updated": true
+    },
+    "vga": {
+      "category": "vga",
+      "expected_count": 41,
+      "actual_count": 41,
+      "meets_target": true,
+      "coverage_percentage": 100.0,
+      "status": "✅ PASS",
+      "sample_entries": [
+        "NVIDIA GeForce RTX 4050 6GB",
+        "NVIDIA GeForce RTX 3060 6GB",
+        "AMD Radeon Pro 5500M 4 GB",
+        "AMD Radeon Pro 5300M 4 GB",
+        "Radeon Pro 555 2 GB"
+      ],
+      "file_updated": true
+    },
+    "graphics": {
+      "category": "graphics",
+      "expected_count": 75,
+      "actual_count": 38,
+      "meets_target": false,
+      "coverage_percentage": 50.66666666666667,
+      "status": "⚠️ BELOW TARGET",
+      "sample_entries": [
+        "Intel UHD Graphics",
+        "Intel Iris Pro 1536 MB",
+        "Intel HD Graphics 620",
+        "Intel Iris Graphics Plus 640 1536 MB",
+        "Intel UHD Graphics 630 1536 MB"
+      ],
+      "file_updated": true
+    },
+    "displays": {
+      "category": "displays",
+      "expected_count": 62,
+      "actual_count": 57,
+      "meets_target": false,
+      "coverage_percentage": 91.93548387096774,
+      "status": "⚠️ BELOW TARGET",
+      "sample_entries": [
+        "15.6-inch FHD (144Hz)",
+        "15-inch FHD 144Hz",
+        "15-inch Retina",
+        "13.4 Inch FHD (120Hz) Touchscreen",
+        "15-inch FHD (60Hz)"
+      ],
+      "file_updated": true
+    },
+    "storage": {
+      "category": "storage",
+      "expected_count": 16,
+      "actual_count": 14,
+      "meets_target": false,
+      "coverage_percentage": 87.5,
+      "status": "⚠️ BELOW TARGET",
+      "sample_entries": [
+        "512GB SSD",
+        "256GB SSD",
+        "128GB SSD",
+        "1TB SSD",
+        "500GB SSD + 1TB HDD"
+      ],
+      "file_updated": true
+    },
+    "colors": {
+      "category": "colors",
+      "expected_count": 81,
+      "actual_count": 81,
+      "meets_target": true,
+      "coverage_percentage": 100.0,
+      "status": "✅ PASS",
+      "sample_entries": [
+        "Black",
+        "Gray",
+        "Blue",
+        "Gold",
+        "Green"
+      ],
+      "file_updated": true
+    },
+    "os": {
+      "category": "os",
+      "expected_count": 12,
+      "actual_count": 12,
+      "meets_target": true,
+      "coverage_percentage": 100.0,
+      "status": "✅ PASS",
+      "sample_entries": [
+        "macOS Sequoia",
+        "macOS Ventura",
+        "macOS Monterey",
+        "macOS Big Sur",
+        "Windows 11"
+      ],
+      "file_updated": true
+    },
+    "keyboard_layouts": {
+      "category": "keyboard_layouts",
+      "expected_count": 5,
+      "actual_count": 5,
+      "meets_target": true,
+      "coverage_percentage": 100.0,
+      "status": "✅ PASS",
+      "sample_entries": [
+        "US - International Keyboard",
+        "Japanese - JIS Keyboard",
+        "UK - QWERTY Keyboard",
+        "German - QWERTZ Keyboard",
+        "French - AZERTY Keyboard"
+      ],
+      "file_updated": true
+    },
+    "keyboard_backlights": {
+      "category": "keyboard_backlights",
+      "expected_count": 3,
+      "actual_count": 3,
+      "meets_target": true,
+      "coverage_percentage": 100.0,
+      "status": "✅ PASS",
+      "sample_entries": [
+        "Backlit",
+        "RGB Backlight",
+        "Non-backlit"
+      ],
+      "file_updated": true
+    }
+  },
+  "files_updated": {
+    "processors": "data/metaobjects/processors.json",
+    "vga": "data/metaobjects/vga.json",
+    "graphics": "data/metaobjects/graphics.json",
+    "displays": "data/metaobjects/displays.json",
+    "storage": "data/metaobjects/storage.json",
+    "colors": "data/metaobjects/colors.json",
+    "os": "data/metaobjects/os.json",
+    "keyboard_layouts": "data/metaobjects/keyboard_layouts.json",
+    "keyboard_backlights": "data/metaobjects/keyboard_backlights.json"
+  }
+}

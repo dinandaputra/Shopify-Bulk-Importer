@@ -107,6 +107,33 @@ class MetaobjectRepository:
         """
         return self._load_mapping("keyboard_backlights.json")
     
+    def get_product_rank_laptop_mapping(self) -> Dict[str, str]:
+        """
+        Get product rank (laptop) metaobject GID mappings.
+        
+        Returns:
+            Dictionary mapping product rank names to their GIDs
+        """
+        return self._load_mapping("product_rank_laptop.json")
+    
+    def get_product_inclusion_laptop_mapping(self) -> Dict[str, str]:
+        """
+        Get product inclusion (laptop) metaobject GID mappings.
+        
+        Returns:
+            Dictionary mapping product inclusion names to their GIDs
+        """
+        return self._load_mapping("product_inclusion_laptop.json")
+    
+    def get_minus_mapping(self) -> Dict[str, str]:
+        """
+        Get minus/issues metaobject GID mappings.
+        
+        Returns:
+            Dictionary mapping minus/issue names to their GIDs
+        """
+        return self._load_mapping("minus.json")
+    
     def get_gid(self, component_type: str, full_name: str) -> Optional[str]:
         """
         Get GID for component by type and full name (unified lookup).
@@ -128,6 +155,9 @@ class MetaobjectRepository:
             "os": self.get_os_mapping,
             "keyboard_layout": self.get_keyboard_layout_mapping,
             "keyboard_backlight": self.get_keyboard_backlight_mapping,
+            "product_rank_laptop": self.get_product_rank_laptop_mapping,
+            "product_inclusion_laptop": self.get_product_inclusion_laptop_mapping,
+            "minus": self.get_minus_mapping,
         }
         
         if component_type in mapping_methods:
@@ -145,7 +175,8 @@ class MetaobjectRepository:
         """
         return [
             "processor", "vga", "graphics", "display", "storage",
-            "color", "os", "keyboard_layout", "keyboard_backlight"
+            "color", "os", "keyboard_layout", "keyboard_backlight",
+            "product_rank_laptop", "product_inclusion_laptop", "minus"
         ]
     
     def get_component_options(self, component_type: str) -> List[str]:
@@ -168,6 +199,9 @@ class MetaobjectRepository:
             "os": self.get_os_mapping,
             "keyboard_layout": self.get_keyboard_layout_mapping,
             "keyboard_backlight": self.get_keyboard_backlight_mapping,
+            "product_rank_laptop": self.get_product_rank_laptop_mapping,
+            "product_inclusion_laptop": self.get_product_inclusion_laptop_mapping,
+            "minus": self.get_minus_mapping,
         }
         
         if component_type in mapping_methods:

@@ -140,19 +140,43 @@ def laptop_entry_page():
     with col1:
         # Unified searchable template selector - load all templates for fuzzy search
         try:
+            # Load all templates using the new service
             all_laptop_templates = template_service.get_all_templates()
             
-            # Template selection callback for immediate updates
+            if not all_laptop_templates:
+                st.warning("No laptop templates available. Please check data configuration.")
+                all_laptop_templates = []
+            
+            # Template selection callback with comprehensive error handling
             def on_laptop_template_change():
                 selected = st.session_state.laptop_template_selector
                 if selected and selected != "":
-                    extracted_info = template_service.parse_template(selected)
-                    if extracted_info:
-                        # Update session state immediately like smartphone entry
-                        if 'laptop_form_data' not in st.session_state:
-                            st.session_state.laptop_form_data = {}
-                        st.session_state.laptop_form_data.update(extracted_info)
-                        st.session_state.current_laptop_template = selected
+                    print(f"🔍 Template selected: {selected}")
+                    
+                    try:
+                        extracted_info = template_service.parse_template(selected)
+                        if extracted_info:
+                            print(f"✅ Template parsed successfully: {len(extracted_info)} fields")
+                            
+                            # Initialize session state if needed
+                            if 'laptop_form_data' not in st.session_state:
+                                st.session_state.laptop_form_data = {}
+                            
+                            # Update session state with parsed data
+                            st.session_state.laptop_form_data.update(extracted_info)
+                            st.session_state.current_laptop_template = selected
+                            
+                            # Show success message
+                            st.success(f"✅ Template loaded: {extracted_info.get('title', 'Laptop')}")
+                        else:
+                            print("❌ Template parsing failed")
+                            st.error(f"Failed to parse template: {selected}")
+                            st.error("Please try selecting a different template or contact support.")
+                            
+                    except Exception as e:
+                        print(f"❌ Error in template parsing: {e}")
+                        st.error(f"Error processing template: {str(e)}")
+                        st.error("Please try refreshing the page or selecting a different template.")
             
             selected_template = st.selectbox(
                 "Search and select laptop template:",
@@ -163,33 +187,40 @@ def laptop_entry_page():
                 on_change=on_laptop_template_change
             )
             
-            # Show current template info if selected - similar to smartphone pattern
+            # Show current template info if selected with better error handling
             if selected_template and selected_template != "":
-                extracted_info = template_service.parse_template(selected_template)
-                if extracted_info:
-                    brand = extracted_info.get('brand', 'Laptop')
-                    brand_emoji = "💻" if brand == "ASUS" else "🖥️" if brand == "Dell" else "⚡" if brand == "HP" else "💻"
-                    
-                    # Show success message with extracted info
-                    st.success(f"✅ **{extracted_info.get('title', selected_template)}**")
-                    
-                    # Show quick preview of extracted specs
-                    col_a, col_b, col_c = st.columns(3)
-                    with col_a:
-                        cpu_info = extracted_info.get('cpu', 'N/A')
-                        if extracted_info.get('ram'):
-                            cpu_info += f" / {extracted_info.get('ram')}"
-                        st.caption(f"{brand_emoji} {cpu_info}")
-                    with col_b:
-                        gpu_info = extracted_info.get('gpu') or extracted_info.get('integrated_graphics', 'N/A')
-                        st.caption(f"🎮 {gpu_info}")
-                    with col_c:
-                        storage_info = extracted_info.get('storage', 'N/A')
-                        st.caption(f"💾 {storage_info}")
+                try:
+                    extracted_info = template_service.parse_template(selected_template)
+                    if extracted_info:
+                        brand = extracted_info.get('brand', 'Laptop')
+                        brand_emoji = "💻" if brand == "ASUS" else "🖥️" if brand == "Dell" else "⚡" if brand == "HP" else "💻"
+                        
+                        # Show success message with extracted info
+                        st.success(f"✅ **{extracted_info.get('title', selected_template)}**")
+                        
+                        # Show quick preview of extracted specs with null checks
+                        col_a, col_b, col_c = st.columns(3)
+                        with col_a:
+                            cpu_info = extracted_info.get('cpu', 'N/A')
+                            if extracted_info.get('ram'):
+                                cpu_info += f" / {extracted_info.get('ram')}"
+                            st.caption(f"{brand_emoji} {cpu_info[:30]}...'" if len(cpu_info) > 30 else f"{brand_emoji} {cpu_info}")
+                        with col_b:
+                            gpu_info = extracted_info.get('gpu') or extracted_info.get('vga', 'N/A')
+                            st.caption(f"🎮 {gpu_info[:20]}...'" if len(gpu_info) > 20 else f"🎮 {gpu_info}")
+                        with col_c:
+                            storage_info = extracted_info.get('storage', 'N/A')
+                            st.caption(f"💾 {storage_info}")
+                    else:
+                        st.warning("⚠️ Template selected but could not be parsed. Form fields may be empty.")
+                except Exception as e:
+                    st.error(f"Error displaying template info: {str(e)}")
             
         except Exception as e:
             st.error(f"Error loading laptop templates: {str(e)}")
-            # Fallback to empty template list
+            st.error("Falling back to manual entry mode.")
+            
+            # Fallback to empty template selector
             selected_template = st.selectbox(
                 "Search and select laptop template:",
                 [""],
@@ -302,7 +333,7 @@ def laptop_entry_page():
             
             # VGA/Dedicated Graphics searchable dropdown
             vga_options = dropdown_service.get_vga_options()
-            vga_template_value = template_info.get('gpu_full', '')
+            vga_template_value = template_info.get('vga', '')
             vga_index = dropdown_service.find_dropdown_index(vga_options, vga_template_value)
 
             vga_selection = st.selectbox(
@@ -326,7 +357,7 @@ def laptop_entry_page():
             
             # Integrated Graphics searchable dropdown
             graphics_options = dropdown_service.get_graphics_options()
-            graphics_template_value = template_info.get('integrated_graphics', '')
+            graphics_template_value = template_info.get('gpu', '')
             graphics_index = dropdown_service.find_dropdown_index(graphics_options, graphics_template_value)
 
             graphics_selection = st.selectbox(

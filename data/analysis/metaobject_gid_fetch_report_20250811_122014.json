@@ -1,0 +1,140 @@
+{
+  "fetch_timestamp": "2025-08-11T12:20:14.345119",
+  "summary": {
+    "total_metaobject_types_processed": 3,
+    "total_entries_found": 19,
+    "types_with_entries": 3,
+    "empty_types": []
+  },
+  "metaobject_types": {
+    "product_inclusion_laptop": {
+      "entry_count": 4,
+      "entries": [
+        {
+          "gid": "gid://shopify/Metaobject/117265989781",
+          "display_name": "Full set",
+          "handle": "full-set",
+          "field_count": 5
+        },
+        {
+          "gid": "gid://shopify/Metaobject/117268873365",
+          "display_name": "Unit + Bonus charger",
+          "handle": "unit-only",
+          "field_count": 5
+        },
+        {
+          "gid": "gid://shopify/Metaobject/117266055317",
+          "display_name": "Unit + Charger original",
+          "handle": "without-box",
+          "field_count": 5
+        },
+        {
+          "gid": "gid://shopify/Metaobject/117266022549",
+          "display_name": "With box",
+          "handle": "with-box",
+          "field_count": 5
+        }
+      ]
+    },
+    "product_rank_laptop": {
+      "entry_count": 7,
+      "entries": [
+        {
+          "gid": "gid://shopify/Metaobject/117266382997",
+          "display_name": "A",
+          "handle": "a-1",
+          "field_count": 5
+        },
+        {
+          "gid": "gid://shopify/Metaobject/117266350229",
+          "display_name": "A+",
+          "handle": "a",
+          "field_count": 5
+        },
+        {
+          "gid": "gid://shopify/Metaobject/117266186389",
+          "display_name": "BNIB",
+          "handle": "bnib",
+          "field_count": 5
+        },
+        {
+          "gid": "gid://shopify/Metaobject/117266219157",
+          "display_name": "BNOB",
+          "handle": "bnob",
+          "field_count": 5
+        },
+        {
+          "gid": "gid://shopify/Metaobject/117266251925",
+          "display_name": "BNWB",
+          "handle": "bnwb",
+          "field_count": 5
+        },
+        {
+          "gid": "gid://shopify/Metaobject/117266317461",
+          "display_name": "S",
+          "handle": "s-1",
+          "field_count": 5
+        },
+        {
+          "gid": "gid://shopify/Metaobject/117266284693",
+          "display_name": "S+",
+          "handle": "s",
+          "field_count": 5
+        }
+      ]
+    },
+    "minus": {
+      "entry_count": 8,
+      "entries": [
+        {
+          "gid": "gid://shopify/Metaobject/131293020309",
+          "display_name": "Battery degradation",
+          "handle": "battery-degraded",
+          "field_count": 5
+        },
+        {
+          "gid": "gid://shopify/Metaobject/125932535957",
+          "display_name": "Battery service",
+          "handle": "battery-service",
+          "field_count": 5
+        },
+        {
+          "gid": "gid://shopify/Metaobject/125922050197",
+          "display_name": "Dead Pixel",
+          "handle": "dead-pixel",
+          "field_count": 5
+        },
+        {
+          "gid": "gid://shopify/Metaobject/131292987541",
+          "display_name": "Keyboard wear",
+          "handle": "keyboard-wear",
+          "field_count": 5
+        },
+        {
+          "gid": "gid://shopify/Metaobject/131292954773",
+          "display_name": "Minor scratches",
+          "handle": "minor-scratches",
+          "field_count": 5
+        },
+        {
+          "gid": "gid://shopify/Metaobject/125917266069",
+          "display_name": "Shadow",
+          "handle": "shadow",
+          "field_count": 5
+        },
+        {
+          "gid": "gid://shopify/Metaobject/125922508949",
+          "display_name": "Speaker pecah",
+          "handle": "speaker-pecah",
+          "field_count": 5
+        },
+        {
+          "gid": "gid://shopify/Metaobject/125916905621",
+          "display_name": "White spot",
+          "handle": "white-spot",
+          "field_count": 5
+        }
+      ]
+    }
+  }
+}

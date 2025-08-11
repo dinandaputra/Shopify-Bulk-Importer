@@ -287,3 +287,48 @@ class ProductDataRepository:
         self.clear_cache()
         # Force reload
         self.get_all_models()
+    
+    def get_all_models_legacy_format(self) -> Dict[str, Dict]:
+        """
+        Convert current laptop data to expected format for template parsing
+        
+        This method adapts the new JSON-based data format to work with
+        the template parsing system that expects a simpler structure.
+        
+        Returns:
+            Dict with model_key as key and model data as value in legacy format
+        """
+        all_models = {}
+        
+        try:
+            # Load data from all brands
+            for brand in self.get_all_brands():
+                try:
+                    brand_data = self.get_brand_data(brand)
+                    models = brand_data.get("models", {})
+                    
+                    for model_key, model_data in models.items():
+                        # Get configurations (should be a list in new format)
+                        configurations = model_data.get("configurations", [])
+                        
+                        # For template parsing, include ALL configurations
+                        if configurations:
+                            # Transform to expected structure for template parsing
+                            all_models[model_key] = {
+                                "configurations": configurations,  # Include all configurations
+                                "colors": model_data.get("colors", ["Black"]),  # Default color if missing
+                                "brand": brand,
+                                # Include first config fields at top level for backward compatibility
+                                **configurations[0]
+                            }
+                        
+                except Exception as e:
+                    print(f"Warning: Error loading brand {brand}: {e}")
+                    continue
+            
+            print(f"📊 Loaded {len(all_models)} laptop models from {len(self.get_all_brands())} brands for template parsing")
+            return all_models
+            
+        except Exception as e:
+            print(f"❌ Error loading laptop models: {e}")
+            return {}

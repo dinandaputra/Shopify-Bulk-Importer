@@ -1,0 +1,764 @@
+{
+  "timestamp": "2025-08-06T22:54:24.693831",
+  "total_definitions": 34,
+  "definitions": {
+    "shopify--cosmetic-condition": {
+      "id": "gid://shopify/MetaobjectDefinition/7936508053",
+      "type": "shopify--cosmetic-condition",
+      "name": "Cosmetic condition",
+      "description": "Defines the wear and condition of electronics, e.g. new, opened-never used",
+      "field_definitions": [
+        {
+          "key": "label",
+          "name": "Label",
+          "type": "single_line_text_field"
+        },
+        {
+          "key": "taxonomy_reference",
+          "name": "Base cosmetic condition",
+          "type": "product_taxonomy_value_reference"
+        }
+      ]
+    },
+    "shopify--sim-card-capability": {
+      "id": "gid://shopify/MetaobjectDefinition/7936540821",
+      "type": "shopify--sim-card-capability",
+      "name": "SIM card capability",
+      "description": "Indicates the type of SIM card configuration in mobile devices, e.g. dual, embedded",
+      "field_definitions": [
+        {
+          "key": "label",
+          "name": "Label",
+          "type": "single_line_text_field"
+        },
+        {
+          "key": "taxonomy_reference",
+          "name": "Base sim card capability",
+          "type": "product_taxonomy_value_reference"
+        }
+      ]
+    },
+    "shopify--operating-system": {
+      "id": "gid://shopify/MetaobjectDefinition/7936573589",
+      "type": "shopify--operating-system",
+      "name": "Operating system",
+      "description": "Defines the system software a device uses, such as iOS or ChromeOS",
+      "field_definitions": [
+        {
+          "key": "label",
+          "name": "Label",
+          "type": "single_line_text_field"
+        },
+        {
+          "key": "taxonomy_reference",
+          "name": "Base operating system",
+          "type": "product_taxonomy_value_reference"
+        }
+      ]
+    },
+    "shopify--color-pattern": {
+      "id": "gid://shopify/MetaobjectDefinition/7936606357",
+      "type": "shopify--color-pattern",
+      "name": "Color",
+      "description": "Defines the primary color or pattern, such as blue or striped",
+      "field_definitions": [
+        {
+          "key": "label",
+          "name": "Label",
+          "type": "single_line_text_field"
+        },
+        {
+          "key": "color",
+          "name": "Color",
+          "type": "color"
+        },
+        {
+          "key": "image",
+          "name": "Image",
+          "type": "file_reference"
+        },
+        {
+          "key": "color_taxonomy_reference",
+          "name": "Base color",
+          "type": "list.product_taxonomy_value_reference"
+        },
+        {
+          "key": "pattern_taxonomy_reference",
+          "name": "Base pattern",
+          "type": "product_taxonomy_value_reference"
+        }
+      ]
+    },
+    "shopify--subscription-type": {
+      "id": "gid://shopify/MetaobjectDefinition/7936639125",
+      "type": "shopify--subscription-type",
+      "name": "Subscription type",
+      "description": "Specifies the type of subscription, typically for mobile devices; e.g. pay as you go, pre-paid",
+      "field_definitions": [
+        {
+          "key": "label",
+          "name": "Label",
+          "type": "single_line_text_field"
+        },
+        {
+          "key": "taxonomy_reference",
+          "name": "Base subscription type",
+          "type": "product_taxonomy_value_reference"
+        }
+      ]
+    },
+    "shopify--data-network": {
+      "id": "gid://shopify/MetaobjectDefinition/7936671893",
+      "type": "shopify--data-network",
+      "name": "Data network",
+      "description": "Specifies the data network compatibility of mobile devices, like LTE or 3G",
+      "field_definitions": [
+        {
+          "key": "label",
+          "name": "Label",
+          "type": "single_line_text_field"
+        },
+        {
+          "key": "taxonomy_reference",
+          "name": "Base data network",
+          "type": "product_taxonomy_value_reference"
+        }
+      ]
+    },
+    "shopify--memory-technology": {
+      "id": "gid://shopify/MetaobjectDefinition/7937360021",
+      "type": "shopify--memory-technology",
+      "name": "Memory technology",
+      "description": "Specifies the type of memory used in electronic devices, such as DDR or SDRAM",
+      "field_definitions": [
+        {
+          "key": "label",
+          "name": "Label",
+          "type": "single_line_text_field"
+        },
+        {
+          "key": "taxonomy_reference",
+          "name": "Base memory technology",
+          "type": "product_taxonomy_value_reference"
+        }
+      ]
+    },
+    "shopify--storage-types-supported": {
+      "id": "gid://shopify/MetaobjectDefinition/7937392789",
+      "type": "shopify--storage-types-supported",
+      "name": "Storage types supported",
+      "description": "Defines compatible storage systems for electronics, e.g. Hard disk drive (HDD)",
+      "field_definitions": [
+        {
+          "key": "label",
+          "name": "Label",
+          "type": "single_line_text_field"
+        },
+        {
+          "key": "taxonomy_reference",
+          "name": "Base storage types supported",
+          "type": "product_taxonomy_value_reference"
+        }
+      ]
+    },
+    "shopify--processor-family": {
+      "id": "gid://shopify/MetaobjectDefinition/7937425557",
+      "type": "shopify--processor-family",
+      "name": "Processor family",
+      "description": "Identifies the series or brand of the electronic device's CPU, e.g. Intel Core i7",
+      "field_definitions": [
+        {
+          "key": "label",
+          "name": "Label",
+          "type": "single_line_text_field"
+        },
+        {
+          "key": "taxonomy_reference",
+          "name": "Base processor family",
+          "type": "product_taxonomy_value_reference"
+        }
+      ]
+    },
+    "shopify--connection-type": {
+      "id": "gid://shopify/MetaobjectDefinition/7937458325",
+      "type": "shopify--connection-type",
+      "name": "Connection type",
+      "description": "Specifies the type of connection used by electronics, such as wired or Bluetooth",
+      "field_definitions": [
+        {
+          "key": "label",
+          "name": "Label",
+          "type": "single_line_text_field"
+        },
+        {
+          "key": "taxonomy_reference",
+          "name": "Base connection type",
+          "type": "product_taxonomy_value_reference"
+        }
+      ]
+    },
+    "shopify--computer-form": {
+      "id": "gid://shopify/MetaobjectDefinition/7937491093",
+      "type": "shopify--computer-form",
+      "name": "Computer form",
+      "description": "Defines the physical design or layout of a computer, such as all-in-one or notebook",
+      "field_definitions": [
+        {
+          "key": "label",
+          "name": "Label",
+          "type": "single_line_text_field"
+        },
+        {
+          "key": "taxonomy_reference",
+          "name": "Base computer form",
+          "type": "product_taxonomy_value_reference"
+        }
+      ]
+    },
+    "shopify--graphics-card-type": {
+      "id": "gid://shopify/MetaobjectDefinition/7937523861",
+      "type": "shopify--graphics-card-type",
+      "name": "Graphics card type",
+      "description": "Specifies the type of graphics card in a computer, e.g. professional, dedicated",
+      "field_definitions": [
+        {
+          "key": "label",
+          "name": "Label",
+          "type": "single_line_text_field"
+        },
+        {
+          "key": "taxonomy_reference",
+          "name": "Base graphics card type",
+          "type": "product_taxonomy_value_reference"
+        }
+      ]
+    },
+    "shopify--computer-specialized-features": {
+      "id": "gid://shopify/MetaobjectDefinition/7937589397",
+      "type": "shopify--computer-specialized-features",
+      "name": "Computer specialized features",
+      "description": "Highlights specific computer features, like liquid cooling system or RGB lighting",
+      "field_definitions": [
+        {
+          "key": "label",
+          "name": "Label",
+          "type": "single_line_text_field"
+        },
+        {
+          "key": "taxonomy_reference",
+          "name": "Base computer specialized features",
+          "type": "product_taxonomy_value_reference"
+        }
+      ]
+    },
+    "shopify--condition": {
+      "id": "gid://shopify/MetaobjectDefinition/9849700501",
+      "type": "shopify--condition",
+      "name": "Condition",
+      "description": "Describes the state or quality of a product, e.g. mint (M), poor (P)",
+      "field_definitions": [
+        {
+          "key": "label",
+          "name": "Label",
+          "type": "single_line_text_field"
+        },
+        {
+          "key": "taxonomy_reference",
+          "name": "Base condition",
+          "type": "product_taxonomy_value_reference"
+        }
+      ]
+    },
+    "sim_carrier": {
+      "id": "gid://shopify/MetaobjectDefinition/10054795413",
+      "type": "sim_carrier",
+      "name": "SIM Carrier",
+      "description": "",
+      "field_definitions": [
+        {
+          "key": "name",
+          "name": "Name",
+          "type": "single_line_text_field"
+        }
+      ]
+    },
+    "product_includes": {
+      "id": "gid://shopify/MetaobjectDefinition/10055319701",
+      "type": "product_includes",
+      "name": "Product Inclusion",
+      "description": "",
+      "field_definitions": [
+        {
+          "key": "name",
+          "name": "Label",
+          "type": "single_line_text_field"
+        },
+        {
+          "key": "description_en",
+          "name": "Description (EN)",
+          "type": "single_line_text_field"
+        },
+        {
+          "key": "description_id",
+          "name": "Description (ID)",
+          "type": "single_line_text_field"
+        },
+        {
+          "key": "description_ja",
+          "name": "Description (JA)",
+          "type": "single_line_text_field"
+        },
+        {
+          "key": "description_mm",
+          "name": "Description (MM)",
+          "type": "single_line_text_field"
+        }
+      ]
+    },
+    "product_rank": {
+      "id": "gid://shopify/MetaobjectDefinition/10073866389",
+      "type": "product_rank",
+      "name": "Product Rank",
+      "description": "",
+      "field_definitions": [
+        {
+          "key": "label",
+          "name": "Label",
+          "type": "single_line_text_field"
+        },
+        {
+          "key": "description_en",
+          "name": "Description (EN)",
+          "type": "single_line_text_field"
+        },
+        {
+          "key": "description_id",
+          "name": "Description (ID)",
+          "type": "single_line_text_field"
+        },
+        {
+          "key": "description_ja",
+          "name": "Description (JA)",
+          "type": "single_line_text_field"
+        },
+        {
+          "key": "description_mm",
+          "name": "Description (MM)",
+          "type": "single_line_text_field"
+        }
+      ]
+    },
+    "display_laptop": {
+      "id": "gid://shopify/MetaobjectDefinition/10078388373",
+      "type": "display_laptop",
+      "name": "Display(Laptop)",
+      "description": "",
+      "field_definitions": [
+        {
+          "key": "label",
+          "name": "Label",
+          "type": "single_line_text_field"
+        }
+      ]
+    },
+    "processor": {
+      "id": "gid://shopify/MetaobjectDefinition/10078486677",
+      "type": "processor",
+      "name": "Processor(Laptop)",
+      "description": "",
+      "field_definitions": [
+        {
+          "key": "label",
+          "name": "Label",
+          "type": "single_line_text_field"
+        }
+      ]
+    },
+    "integrated_graphics": {
+      "id": "gid://shopify/MetaobjectDefinition/10078617749",
+      "type": "integrated_graphics",
+      "name": "Integrated Graphics",
+      "description": "",
+      "field_definitions": [
+        {
+          "key": "label",
+          "name": "Label",
+          "type": "single_line_text_field"
+        }
+      ]
+    },
+    "dedicated_graphics": {
+      "id": "gid://shopify/MetaobjectDefinition/10078650517",
+      "type": "dedicated_graphics",
+      "name": "Dedicated Graphics",
+      "description": "",
+      "field_definitions": [
+        {
+          "key": "label",
+          "name": "Label",
+          "type": "single_line_text_field"
+        }
+      ]
+    },
+    "shopify--keyboard-type": {
+      "id": "gid://shopify/MetaobjectDefinition/10097459349",
+      "type": "shopify--keyboard-type",
+      "name": "Keyboard type",
+      "description": "Specifies the design and functionality of a keyboard, e.g. standard, backlit",
+      "field_definitions": [
+        {
+          "key": "label",
+          "name": "Label",
+          "type": "single_line_text_field"
+        },
+        {
+          "key": "taxonomy_reference",
+          "name": "Base keyboard type",
+          "type": "product_taxonomy_value_reference"
+        }
+      ]
+    },
+    "shopify--language-version": {
+      "id": "gid://shopify/MetaobjectDefinition/10097557653",
+      "type": "shopify--language-version",
+      "name": "Language version",
+      "description": "Specifies the language version of a media product, such as ENG-US or ARA- Arabic",
+      "field_definitions": [
+        {
+          "key": "label",
+          "name": "Label",
+          "type": "single_line_text_field"
+        },
+        {
+          "key": "taxonomy_reference",
+          "name": "Base language version",
+          "type": "product_taxonomy_value_reference"
+        }
+      ]
+    },
+    "keyboard_backlight": {
+      "id": "gid://shopify/MetaobjectDefinition/10097787029",
+      "type": "keyboard_backlight",
+      "name": "Keyboard Backlight",
+      "description": "",
+      "field_definitions": [
+        {
+          "key": "label",
+          "name": "Label",
+          "type": "single_line_text_field"
+        }
+      ]
+    },
+    "keyboard_layout": {
+      "id": "gid://shopify/MetaobjectDefinition/10097819797",
+      "type": "keyboard_layout",
+      "name": "Keyboard Layout",
+      "description": "",
+      "field_definitions": [
+        {
+          "key": "label",
+          "name": "label",
+          "type": "single_line_text_field"
+        }
+      ]
+    },
+    "storage_laptop": {
+      "id": "gid://shopify/MetaobjectDefinition/10097983637",
+      "type": "storage_laptop",
+      "name": "Storage(Laptop)",
+      "description": "",
+      "field_definitions": [
+        {
+          "key": "label",
+          "name": "Label",
+          "type": "single_line_text_field"
+        }
+      ]
+    },
+    "product_inclusion_laptop": {
+      "id": "gid://shopify/MetaobjectDefinition/10098049173",
+      "type": "product_inclusion_laptop",
+      "name": "Product Inclusion (Laptop)",
+      "description": "",
+      "field_definitions": [
+        {
+          "key": "label",
+          "name": "Label",
+          "type": "single_line_text_field"
+        },
+        {
+          "key": "description_en",
+          "name": "Description (EN)",
+          "type": "single_line_text_field"
+        },
+        {
+          "key": "description_id",
+          "name": "Description (ID)",
+          "type": "single_line_text_field"
+        },
+        {
+          "key": "description_ja",
+          "name": "Description (JA)",
+          "type": "single_line_text_field"
+        },
+        {
+          "key": "description_mm",
+          "name": "Description (MM)",
+          "type": "single_line_text_field"
+        }
+      ]
+    },
+    "product_rank_laptop": {
+      "id": "gid://shopify/MetaobjectDefinition/10098147477",
+      "type": "product_rank_laptop",
+      "name": "Product Rank (Laptop)",
+      "description": "",
+      "field_definitions": [
+        {
+          "key": "label",
+          "name": "Label",
+          "type": "single_line_text_field"
+        },
+        {
+          "key": "description_en",
+          "name": "Description (EN)",
+          "type": "single_line_text_field"
+        },
+        {
+          "key": "description_id",
+          "name": "Description (ID)",
+          "type": "single_line_text_field"
+        },
+        {
+          "key": "description_ja",
+          "name": "Description (JA)",
+          "type": "single_line_text_field"
+        },
+        {
+          "key": "description_mm",
+          "name": "Description (MM)",
+          "type": "single_line_text_field"
+        }
+      ]
+    },
+    "storage": {
+      "id": "gid://shopify/MetaobjectDefinition/10099556501",
+      "type": "storage",
+      "name": "Storage",
+      "description": "",
+      "field_definitions": [
+        {
+          "key": "label",
+          "name": "Label",
+          "type": "single_line_text_field"
+        }
+      ]
+    },
+    "sim_variant": {
+      "id": "gid://shopify/MetaobjectDefinition/10474913941",
+      "type": "sim_variant",
+      "name": "SIM Variant",
+      "description": "",
+      "field_definitions": [
+        {
+          "key": "label",
+          "name": "Label",
+          "type": "single_line_text_field"
+        }
+      ]
+    },
+    "os_laptop": {
+      "id": "gid://shopify/MetaobjectDefinition/10827989141",
+      "type": "os_laptop",
+      "name": "OS Laptop",
+      "description": "",
+      "field_definitions": [
+        {
+          "key": "label",
+          "name": "Label",
+          "type": "single_line_text_field"
+        }
+      ]
+    },
+    "ram_laptop": {
+      "id": "gid://shopify/MetaobjectDefinition/10828644501",
+      "type": "ram_laptop",
+      "name": "RAM Laptop",
+      "description": "",
+      "field_definitions": [
+        {
+          "key": "label",
+          "name": "Label",
+          "type": "single_line_text_field"
+        }
+      ]
+    },
+    "minus": {
+      "id": "gid://shopify/MetaobjectDefinition/10847748245",
+      "type": "minus",
+      "name": "Minus",
+      "description": "",
+      "field_definitions": [
+        {
+          "key": "label",
+          "name": "Label",
+          "type": "single_line_text_field"
+        },
+        {
+          "key": "description_en",
+          "name": "Description (EN)",
+          "type": "single_line_text_field"
+        },
+        {
+          "key": "description_id",
+          "name": "Description (ID)",
+          "type": "single_line_text_field"
+        },
+        {
+          "key": "description_jp",
+          "name": "Description (JP)",
+          "type": "single_line_text_field"
+        },
+        {
+          "key": "description_mm",
+          "name": "Description (MM)",
+          "type": "single_line_text_field"
+        }
+      ]
+    },
+    "ram_smart_gadget": {
+      "id": "gid://shopify/MetaobjectDefinition/10970890389",
+      "type": "ram_smart_gadget",
+      "name": "RAM (Smart Gadget)",
+      "description": "",
+      "field_definitions": [
+        {
+          "key": "label",
+          "name": "Label",
+          "type": "single_line_text_field"
+        }
+      ]
+    }
+  },
+  "component_analysis": {
+    "processors": [
+      "shopify--processor-family",
+      "processor"
+    ],
+    "vga_graphics": [
+      "shopify--graphics-card-type",
+      "integrated_graphics",
+      "dedicated_graphics"
+    ],
+    "integrated_graphics": [
+      "shopify--processor-family",
+      "shopify--graphics-card-type",
+      "integrated_graphics",
+      "dedicated_graphics"
+    ],
+    "displays": [
+      "display_laptop"
+    ],
+    "storage": [
+      "shopify--storage-types-supported",
+      "storage_laptop",
+      "storage"
+    ],
+    "colors": [
+      "shopify--color-pattern"
+    ],
+    "os": [
+      "shopify--cosmetic-condition",
+      "shopify--operating-system",
+      "shopify--storage-types-supported",
+      "shopify--computer-specialized-features",
+      "os_laptop"
+    ],
+    "keyboard_layouts": [
+      "shopify--computer-form",
+      "shopify--keyboard-type",
+      "keyboard_backlight",
+      "keyboard_layout"
+    ],
+    "keyboard_backlights": [
+      "shopify--computer-specialized-features",
+      "shopify--keyboard-type",
+      "keyboard_backlight"
+    ]
+  },
+  "type_counts": {
+    "shopify--cosmetic-condition": 2,
+    "shopify--sim-card-capability": 2,
+    "shopify--operating-system": 9,
+    "shopify--color-pattern": 81,
+    "shopify--subscription-type": 1,
+    "shopify--data-network": 1,
+    "shopify--memory-technology": 1,
+    "shopify--storage-types-supported": 1,
+    "shopify--processor-family": 1,
+    "shopify--connection-type": 5,
+    "shopify--computer-form": 1,
+    "shopify--graphics-card-type": 1,
+    "shopify--computer-specialized-features": 1,
+    "shopify--condition": 0,
+    "sim_carrier": 5,
+    "product_includes": 9,
+    "product_rank": 7,
+    "display_laptop": 62,
+    "processor": 186,
+    "integrated_graphics": 75,
+    "dedicated_graphics": 41,
+    "shopify--keyboard-type": 0,
+    "shopify--language-version": 0,
+    "keyboard_backlight": 3,
+    "keyboard_layout": 5,
+    "storage_laptop": 16,
+    "product_inclusion_laptop": 7,
+    "product_rank_laptop": 7,
+    "storage": 8,
+    "sim_variant": 0,
+    "os_laptop": 12,
+    "ram_laptop": 0,
+    "minus": 8,
+    "ram_smart_gadget": 6
+  },
+  "recommendations": {
+    "processors": [
+      "✅ Recommended type: processor (186 entries)",
+      "🎯 Meets target: 186 >= 186",
+      "🔄 Alternatives: shopify--processor-family"
+    ],
+    "vga_graphics": [
+      "✅ Recommended type: integrated_graphics (75 entries)",
+      "🎯 Meets target: 75 >= 41",
+      "🔄 Alternatives: shopify--graphics-card-type, dedicated_graphics"
+    ],
+    "integrated_graphics": [
+      "✅ Recommended type: integrated_graphics (75 entries)",
+      "🎯 Meets target: 75 >= 75",
+      "🔄 Alternatives: shopify--processor-family, shopify--graphics-card-type, dedicated_graphics"
+    ],
+    "displays": [
+      "✅ Recommended type: display_laptop (62 entries)"
+    ],
+    "storage": [
+      "✅ Recommended type: storage_laptop (16 entries)",
+      "🔄 Alternatives: shopify--storage-types-supported, storage"
+    ],
+    "colors": [
+      "✅ Recommended type: shopify--color-pattern (81 entries)"
+    ],
+    "os": [
+      "✅ Recommended type: os_laptop (12 entries)",
+      "🔄 Alternatives: shopify--cosmetic-condition, shopify--operating-system, shopify--storage-types-supported, shopify--computer-specialized-features"
+    ],
+    "keyboard_layouts": [
+      "✅ Recommended type: keyboard_layout (5 entries)",
+      "🔄 Alternatives: shopify--computer-form, shopify--keyboard-type, keyboard_backlight"
+    ],
+    "keyboard_backlights": [
+      "✅ Recommended type: keyboard_backlight (3 entries)",
+      "🔄 Alternatives: shopify--computer-specialized-features, shopify--keyboard-type"
+    ]
+  }
+}
