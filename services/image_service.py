@@ -2,7 +2,9 @@ import requests
 import base64
 import os
 import time
+import re
 from typing import List, Dict, Optional, Union
+from urllib.parse import urlparse
 from services.shopify_api import ShopifyAPIClient, ShopifyAPIError
 import streamlit as st
 
@@ -47,6 +49,50 @@ class ImageService:
             
         return True
     
+    def validate_image_url(self, url: str) -> bool:
+        """
+        Validate image URL
+        
+        Args:
+            url: Image URL to validate
+            
+        Returns:
+            bool: True if valid, False otherwise
+        """
+        try:
+            # Basic URL validation
+            parsed = urlparse(url)
+            if not parsed.scheme or not parsed.netloc:
+                st.error(f"Invalid URL format: {url}")
+                return False
+            
+            # Check if URL scheme is http or https
+            if parsed.scheme not in ['http', 'https']:
+                st.error(f"URL must use HTTP or HTTPS protocol: {url}")
+                return False
+            
+            # Check if URL ends with a supported image extension
+            path = parsed.path.lower()
+            has_image_extension = any(path.endswith(ext) for ext in self.supported_formats)
+            
+            # If no clear extension, try to validate via HEAD request
+            if not has_image_extension:
+                try:
+                    response = requests.head(url, timeout=5, allow_redirects=True)
+                    content_type = response.headers.get('content-type', '').lower()
+                    if not any(img_type in content_type for img_type in ['image/jpeg', 'image/jpg', 'image/png', 'image/webp', 'image/gif']):
+                        st.error(f"URL does not point to a valid image: {url}")
+                        return False
+                except requests.RequestException:
+                    # If HEAD request fails, we'll let Shopify handle validation
+                    pass
+            
+            return True
+            
+        except Exception as e:
+            st.error(f"Error validating URL: {str(e)}")
+            return False
+    
     def encode_image_to_base64(self, uploaded_file) -> str:
         """
         Convert uploaded file to base64 for Shopify API
@@ -81,6 +127,55 @@ class ImageService:
             return f"{product_handle}"
         else:
             return f"{product_handle}_{image_index + 1}"
+    
+    def upload_image_from_url(self, product_id: str, image_url: str, position: int = 1, alt_text: str = "") -> Dict:
+        """
+        Upload image to Shopify product using URL
+        
+        Args:
+            product_id: Shopify product ID
+            image_url: URL of the image
+            position: Image position in product gallery
+            alt_text: Alternative text for the image
+            
+        Returns:
+            dict: Shopify image response data
+            
+        Raises:
+            ImageUploadError: If upload fails
+        """
+        try:
+            # Validate URL
+            if not self.validate_image_url(image_url):
+                raise ImageUploadError("Image URL validation failed")
+            
+            # Extract filename from URL
+            parsed_url = urlparse(image_url)
+            filename = os.path.basename(parsed_url.path) or f"image_{position}"
+            
+            # Prepare image data for Shopify API (using REST API with URL)
+            image_data = {
+                "image": {
+                    "src": image_url,
+                    "position": position
+                }
+            }
+            
+            # Add alt text if provided
+            if alt_text:
+                image_data["image"]["alt"] = alt_text
+            
+            # Upload to Shopify
+            endpoint = f"products/{product_id}/images.json"
+            response = self.shopify_client._make_request("POST", endpoint, data=image_data)
+            
+            image_response = response.get('image', {})
+            return image_response
+            
+        except ShopifyAPIError as e:
+            raise ImageUploadError(f"Shopify API error: {str(e)}")
+        except Exception as e:
+            raise ImageUploadError(f"Image URL upload failed: {str(e)}")
     
     def upload_image_to_shopify(self, product_id: str, uploaded_file, position: int = 1) -> Dict:
         """
@@ -127,6 +222,59 @@ class ImageService:
             raise ImageUploadError(f"Shopify API error: {str(e)}")
         except Exception as e:
             raise ImageUploadError(f"Image upload failed: {str(e)}")
+    
+    def upload_multiple_urls(self, product_id: str, image_urls: List[str], progress_callback=None) -> List[Dict]:
+        """
+        Upload multiple images from URLs to Shopify product
+        
+        Args:
+            product_id: Shopify product ID
+            image_urls: List of image URLs
+            progress_callback: Optional callback for progress updates
+            
+        Returns:
+            list: List of uploaded image data
+        """
+        uploaded_images = []
+        failed_uploads = []
+        
+        for i, image_url in enumerate(image_urls):
+            try:
+                # Update progress if callback provided
+                if progress_callback:
+                    progress_callback(i + 1, len(image_urls), image_url)
+                
+                # Upload image from URL
+                image_data = self.upload_image_from_url(product_id, image_url, position=i + 1)
+                uploaded_images.append(image_data)
+                
+                # Small delay between uploads to respect rate limits
+                if i < len(image_urls) - 1:
+                    time.sleep(0.5)
+                    
+            except ImageUploadError as e:
+                failed_uploads.append({
+                    'url': image_url,
+                    'error': str(e)
+                })
+                continue
+            except Exception as e:
+                failed_uploads.append({
+                    'url': image_url,
+                    'error': f'Unexpected error: {str(e)}'
+                })
+                continue
+        
+        # Report results
+        if uploaded_images:
+            st.success(f"Successfully uploaded {len(uploaded_images)} image(s) from URLs")
+        
+        if failed_uploads:
+            st.warning(f"Failed to upload {len(failed_uploads)} image(s):")
+            for failure in failed_uploads:
+                st.error(f"- {failure['url']}: {failure['error']}")
+        
+        return uploaded_images
     
     def upload_multiple_images(self, product_id: str, uploaded_files: List, progress_callback=None) -> List[Dict]:
         """
@@ -222,6 +370,79 @@ class ImageService:
         except ShopifyAPIError as e:
             st.error(f"Failed to fetch product images: {str(e)}")
             return []
+    
+    def parse_image_urls(self, urls_text: str) -> List[str]:
+        """
+        Parse image URLs from text input
+        
+        Args:
+            urls_text: Text containing URLs (comma-separated or newline-separated)
+            
+        Returns:
+            list: List of cleaned URLs
+        """
+        if not urls_text:
+            return []
+        
+        # Split by commas or newlines
+        urls = re.split(r'[,\n]+', urls_text)
+        
+        # Clean and filter URLs
+        cleaned_urls = []
+        for url in urls:
+            url = url.strip()
+            if url and (url.startswith('http://') or url.startswith('https://')):
+                cleaned_urls.append(url)
+        
+        return cleaned_urls
+    
+    def render_url_input_interface(self, key_suffix: str = "") -> List[str]:
+        """
+        Render URL input interface for image uploads
+        
+        Args:
+            key_suffix: Unique suffix for widget keys
+            
+        Returns:
+            list: List of image URLs
+        """
+        st.subheader("🔗 Upload Images from URLs")
+        
+        # Instructions
+        st.markdown("""
+        **Provide image URLs (optional)**
+        - Enter one URL per line or separate with commas
+        - URLs must be publicly accessible
+        - Supported formats: JPG, PNG, WebP, GIF
+        - Images will be downloaded and stored on Shopify CDN
+        """)
+        
+        # Generate dynamic key
+        if "form_reset_counter" not in st.session_state:
+            st.session_state.form_reset_counter = 0
+        
+        dynamic_key = f"image_urls_{key_suffix}_{st.session_state.form_reset_counter}"
+        
+        # Text area for URLs
+        urls_text = st.text_area(
+            "Image URLs",
+            placeholder="https://example.com/image1.jpg\nhttps://example.com/image2.png",
+            height=100,
+            key=dynamic_key,
+            help="Enter image URLs, one per line or comma-separated"
+        )
+        
+        # Parse and validate URLs
+        image_urls = self.parse_image_urls(urls_text)
+        
+        # Show preview of valid URLs
+        if image_urls:
+            st.info(f"Found {len(image_urls)} valid URL(s)")
+            with st.expander("Preview URLs"):
+                for i, url in enumerate(image_urls, 1):
+                    st.text(f"{i}. {url}")
+        
+        return image_urls
     
     def render_image_upload_interface(self, key_suffix: str = "") -> List:
         """
@@ -321,6 +542,94 @@ class ImageService:
                     st.error(f"Cannot preview {uploaded_file.name}: {str(e)}")
         
         return active_files
+    
+    def handle_combined_upload(self, product_id: str, uploaded_files: List = None, image_urls: List[str] = None) -> bool:
+        """
+        Handle both file and URL image uploads after product creation
+        
+        Args:
+            product_id: Shopify product ID
+            uploaded_files: List of uploaded file objects (optional)
+            image_urls: List of image URLs (optional)
+            
+        Returns:
+            bool: True if all uploads successful, False if some failed
+        """
+        total_success = True
+        
+        # Handle file uploads
+        if uploaded_files:
+            st.info(f"Uploading {len(uploaded_files)} image file(s) to Shopify...")
+            
+            # Progress bar for files
+            progress_bar = st.progress(0)
+            status_text = st.empty()
+            
+            def file_progress_callback(current: int, total: int, filename: str):
+                progress = current / total
+                progress_bar.progress(progress)
+                status_text.text(f"Uploading file {current}/{total}: {filename}")
+            
+            try:
+                # Upload files
+                uploaded_images = self.upload_multiple_images(
+                    product_id, 
+                    uploaded_files, 
+                    file_progress_callback
+                )
+                
+                # Clear progress indicators
+                progress_bar.empty()
+                status_text.empty()
+                
+                # Check success
+                if len(uploaded_images) < len(uploaded_files):
+                    total_success = False
+                    
+            except Exception as e:
+                progress_bar.empty()
+                status_text.empty()
+                st.error(f"File upload error: {str(e)}")
+                total_success = False
+        
+        # Handle URL uploads
+        if image_urls:
+            st.info(f"Uploading {len(image_urls)} image(s) from URLs to Shopify...")
+            
+            # Progress bar for URLs
+            progress_bar = st.progress(0)
+            status_text = st.empty()
+            
+            def url_progress_callback(current: int, total: int, url: str):
+                progress = current / total
+                progress_bar.progress(progress)
+                # Show shortened URL for display
+                display_url = url[:50] + "..." if len(url) > 50 else url
+                status_text.text(f"Uploading URL {current}/{total}: {display_url}")
+            
+            try:
+                # Upload URLs
+                uploaded_url_images = self.upload_multiple_urls(
+                    product_id,
+                    image_urls,
+                    url_progress_callback
+                )
+                
+                # Clear progress indicators
+                progress_bar.empty()
+                status_text.empty()
+                
+                # Check success
+                if len(uploaded_url_images) < len(image_urls):
+                    total_success = False
+                    
+            except Exception as e:
+                progress_bar.empty()
+                status_text.empty()
+                st.error(f"URL upload error: {str(e)}")
+                total_success = False
+        
+        return total_success
     
     def handle_post_creation_upload(self, product_id: str, uploaded_files: List) -> bool:
         """

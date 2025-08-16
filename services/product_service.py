@@ -247,18 +247,28 @@ class ProductService:
                 print(f"✅ Successfully created: {smartphone.title}")
                 
                 # Handle image upload if images exist for this product
-                if product_images and smartphone.handle in product_images:
-                    from services.image_service import image_service
-                    product_id = result.get('product_id')
-                    uploaded_files = product_images[smartphone.handle]
+                from services.image_service import image_service
+                product_id = result.get('product_id')
+                has_files = product_images and smartphone.handle in product_images
+                has_urls = smartphone.image_urls and len(smartphone.image_urls) > 0
+                
+                if product_id and (has_files or has_urls):
+                    uploaded_files = product_images[smartphone.handle] if has_files else None
+                    image_urls = smartphone.image_urls if has_urls else None
                     
-                    if product_id and uploaded_files:
-                        print(f"📸 Uploading {len(uploaded_files)} image(s) for {smartphone.title}")
-                        image_success = image_service.handle_post_creation_upload(product_id, uploaded_files)
-                        if image_success:
-                            result['images_uploaded'] = len(uploaded_files)
-                        else:
-                            result['image_upload_partial'] = True
+                    total_images = (len(uploaded_files) if uploaded_files else 0) + (len(image_urls) if image_urls else 0)
+                    print(f"📸 Uploading {total_images} image(s) for {smartphone.title}")
+                    
+                    image_success = image_service.handle_combined_upload(
+                        product_id, 
+                        uploaded_files=uploaded_files,
+                        image_urls=image_urls
+                    )
+                    
+                    if image_success:
+                        result['images_uploaded'] = total_images
+                    else:
+                        result['image_upload_partial'] = True
                     
             else:
                 results['failed'] += 1
@@ -307,18 +317,28 @@ class ProductService:
                 print(f"✅ Successfully created: {laptop.title}")
                 
                 # Handle image upload if images exist for this product
-                if product_images and laptop.handle in product_images:
-                    from services.image_service import image_service
-                    product_id = result.get('product_id')
-                    uploaded_files = product_images[laptop.handle]
+                from services.image_service import image_service
+                product_id = result.get('product_id')
+                has_files = product_images and laptop.handle in product_images
+                has_urls = laptop.image_urls and len(laptop.image_urls) > 0
+                
+                if product_id and (has_files or has_urls):
+                    uploaded_files = product_images[laptop.handle] if has_files else None
+                    image_urls = laptop.image_urls if has_urls else None
                     
-                    if product_id and uploaded_files:
-                        print(f"📸 Uploading {len(uploaded_files)} image(s) for {laptop.title}")
-                        image_success = image_service.handle_post_creation_upload(product_id, uploaded_files)
-                        if image_success:
-                            result['images_uploaded'] = len(uploaded_files)
-                        else:
-                            result['image_upload_partial'] = True
+                    total_images = (len(uploaded_files) if uploaded_files else 0) + (len(image_urls) if image_urls else 0)
+                    print(f"📸 Uploading {total_images} image(s) for {laptop.title}")
+                    
+                    image_success = image_service.handle_combined_upload(
+                        product_id, 
+                        uploaded_files=uploaded_files,
+                        image_urls=image_urls
+                    )
+                    
+                    if image_success:
+                        result['images_uploaded'] = total_images
+                    else:
+                        result['image_upload_partial'] = True
                     
             else:
                 results['failed'] += 1

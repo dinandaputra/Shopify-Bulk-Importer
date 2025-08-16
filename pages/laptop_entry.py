@@ -255,12 +255,20 @@ def laptop_entry_page():
         
         # Image upload section (inside form like smartphone implementation)
         st.markdown("### 📸 Product Images")
-        uploaded_files = image_service.render_image_upload_interface("form")
         
-        # Image preview with delete functionality
-        active_images = []
-        if uploaded_files:
-            active_images = image_service.render_image_preview(uploaded_files, "form")
+        # Tabs for file upload and URL input
+        image_tab1, image_tab2 = st.tabs(["Upload Files", "Image URLs"])
+        
+        with image_tab1:
+            uploaded_files = image_service.render_image_upload_interface("form")
+            
+            # Image preview with delete functionality
+            active_images = []
+            if uploaded_files:
+                active_images = image_service.render_image_preview(uploaded_files, "form")
+        
+        with image_tab2:
+            image_urls = image_service.render_url_input_interface("form")
         
         st.divider()
         col1, col2 = st.columns(2)
@@ -577,7 +585,8 @@ def laptop_entry_page():
                     'keyboard_backlight': keyboard_backlight,
                     'inclusions': inclusions,
                     'minus': minus_issues,
-                    'metafield_mappings': template_info.get('metafield_mappings', {})
+                    'metafield_mappings': template_info.get('metafield_mappings', {}),
+                    'image_urls': image_urls if image_urls else None  # Add image URLs
                 }
                 
                 # Check for missing metaobjects using enhanced logging
@@ -624,6 +633,7 @@ def laptop_entry_page():
                 validation_data['gpu'] = validation_data.pop('vga', '')  # Dedicated graphics (VGA field) → gpu
                 validation_data['integrated_graphics'] = validation_data.pop('graphics', '')  # Integrated graphics → integrated_graphics
                 validation_data['os'] = validation_data.pop('operating_system', '')
+                # image_urls should already be in validation_data from laptop_data
                 
                 laptop_product = LaptopProduct(**validation_data)
                 

@@ -707,6 +707,94 @@ class ShopifyAPIClient:
                 'error': str(e)
             }
     
+    def create_product_media_from_url(self, product_id: str, image_urls: List[str]) -> dict:
+        """
+        Create product media from URLs using GraphQL (modern approach)
+        
+        Args:
+            product_id: Shopify product GID (e.g., "gid://shopify/Product/123")
+            image_urls: List of image URLs to upload
+            
+        Returns:
+            GraphQL response with created media
+        """
+        # Ensure product_id is in GID format
+        if not product_id.startswith('gid://'):
+            product_id = f"gid://shopify/Product/{product_id}"
+        
+        # Build media list for mutation
+        media_list = []
+        for url in image_urls:
+            media_list.append({
+                "mediaContentType": "IMAGE",
+                "originalSource": url
+            })
+        
+        mutation = """
+        mutation productCreateMedia($productId: ID!, $media: [CreateMediaInput!]!) {
+            productCreateMedia(productId: $productId, media: $media) {
+                media {
+                    id
+                    alt
+                    mediaContentType
+                    preview {
+                        image {
+                            url
+                            width
+                            height
+                        }
+                    }
+                    ... on MediaImage {
+                        image {
+                            url
+                        }
+                    }
+                }
+                mediaUserErrors {
+                    field
+                    message
+                    code
+                }
+            }
+        }
+        """
+        
+        variables = {
+            "productId": product_id,
+            "media": media_list
+        }
+        
+        try:
+            response = self._make_graphql_request(mutation, variables)
+            
+            if response.get('data', {}).get('productCreateMedia'):
+                result = response['data']['productCreateMedia']
+                
+                if result.get('mediaUserErrors') and len(result['mediaUserErrors']) > 0:
+                    return {
+                        'success': False,
+                        'errors': result['mediaUserErrors'],
+                        'response': response
+                    }
+                
+                return {
+                    'success': True,
+                    'media': result.get('media', []),
+                    'response': response
+                }
+            else:
+                return {
+                    'success': False,
+                    'error': 'Invalid GraphQL response structure',
+                    'response': response
+                }
+                
+        except Exception as e:
+            return {
+                'success': False,
+                'error': f'Failed to create product media: {str(e)}'
+            }
+    
     def publish_product_to_channel(self, product_id: int, channel_gid: str) -> Dict[str, Any]:
         """
         Publish a product to a sales channel using GraphQL

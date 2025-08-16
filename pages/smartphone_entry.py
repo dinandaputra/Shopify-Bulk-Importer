@@ -242,12 +242,21 @@ def smartphone_entry_page():
         st.divider()
         
         # Image upload section
-        uploaded_files = image_service.render_image_upload_interface("form")
+        st.markdown("### 📸 Product Images")
         
-        # Image preview with delete functionality
-        active_images = []
-        if uploaded_files:
-            active_images = image_service.render_image_preview(uploaded_files, "form")
+        # Tabs for file upload and URL input
+        image_tab1, image_tab2 = st.tabs(["Upload Files", "Image URLs"])
+        
+        with image_tab1:
+            uploaded_files = image_service.render_image_upload_interface("form")
+            
+            # Image preview with delete functionality
+            active_images = []
+            if uploaded_files:
+                active_images = image_service.render_image_preview(uploaded_files, "form")
+        
+        with image_tab2:
+            image_urls = image_service.render_url_input_interface("form")
         
         st.divider()
         
@@ -302,7 +311,8 @@ def smartphone_entry_page():
                     "collections": parsed_collections,
                     "sales_channels": ["online_store", "pos", "shop"],
                     "color_metafield_gid": st.session_state.form_data.get("color_metafield_gid"),
-                    "template": st.session_state.form_data.get("template", "")
+                    "template": st.session_state.form_data.get("template", ""),
+                    "image_urls": image_urls if image_urls else None  # Add image URLs
                 }
                 
                 # Generate handle

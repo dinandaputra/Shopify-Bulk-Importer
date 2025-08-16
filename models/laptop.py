@@ -28,6 +28,9 @@ class LaptopProduct(BaseModel):
     color: Optional[str] = Field(None, description="Laptop color/finish")
     template: Optional[str] = Field(None, description="Source template used for product creation")
     
+    # Image fields (new)
+    image_urls: Optional[List[str]] = Field(None, description="List of image URLs to upload")
+    
     # Metafields for laptop category
     rank: Optional[str] = Field(None, description="Product condition rank (A, A+, S, S+, BNWB, BNOB, BNIB)")
     inclusions: Optional[List[str]] = Field(None, description="What's included with the laptop")

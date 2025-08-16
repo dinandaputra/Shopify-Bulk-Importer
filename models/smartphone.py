@@ -11,6 +11,9 @@ class SmartphoneProduct(BaseModel):
     price: float = Field(..., gt=0, description="Price in JPY")
     quantity: int = Field(1, ge=1, description="Quantity")
     
+    # Image fields (new)
+    image_urls: Optional[List[str]] = Field(None, description="List of image URLs to upload")
+    
     # New fields for enhanced template system
     collections: Optional[List[str]] = Field(None, description="Shopify collections to assign product to")
     sales_channels: List[str] = Field(["online_store", "pos", "shop"], description="Sales channels where product should be available")
@@ -115,6 +118,7 @@ class SmartphoneProduct(BaseModel):
             'product_inclusions': self.product_inclusions,
             'product_rank': self.product_rank,
             'ram_size': self.ram_size,
+            'image_urls': self.image_urls,
             'created_at': self.created_at
         }
     
