@@ -8,34 +8,34 @@ from dataclasses import dataclass
 
 # iPhone Color GID Mappings - Updated with actual Shopify metaobject GIDs
 IPHONE_COLOR_GIDS = {
-    "Black": "gid://shopify/Metaobject/108876857493",  # Fixed: Now uses correct Black metaobject
-    "White": "gid://shopify/Metaobject/131501686933",
-    "Blue": "gid://shopify/Metaobject/131501097109",
-    "Green": "gid://shopify/Metaobject/131501785237",
-    "Space Gray": "gid://shopify/Metaobject/131501228181",
-    "Silver": "gid://shopify/Metaobject/131501195413",
-    "Gold": "gid://shopify/Metaobject/131501523093",
-    "Pacific Blue": "gid://shopify/Metaobject/131501359253",
-    "Graphite": "gid://shopify/Metaobject/131501392021",
-    "Sierra Blue": "gid://shopify/Metaobject/131501719701",
-    "Midnight": "gid://shopify/Metaobject/131501752469",
-    "Starlight": "gid://shopify/Metaobject/131501555861",
-    "Space Black": "gid://shopify/Metaobject/131501850773",
-    "Midnight Green": "gid://shopify/Metaobject/131501654165",
-    "Black Titanium": "gid://shopify/Metaobject/131501424789",
-    "White Titanium": "gid://shopify/Metaobject/131501162645",
-    "Natural Titanium": "gid://shopify/Metaobject/131501195413",
-    "Desert Titanium": "gid://shopify/Metaobject/131501523093",
-    "Blue Titanium": "gid://shopify/Metaobject/131501097109",
-    "(PRODUCT)RED": "gid://shopify/Metaobject/131501064341",
-    "Pink": "gid://shopify/Metaobject/131501293717",
-    "Yellow": "gid://shopify/Metaobject/131501883541",
-    "Purple": "gid://shopify/Metaobject/131501654165",
-    "Coral": "gid://shopify/Metaobject/131501293717",
-    "Deep Purple": "gid://shopify/Metaobject/131501654165",
-    "Red": "gid://shopify/Metaobject/131501064341",
-    "Teal": "gid://shopify/Metaobject/131501359253",
-    "Ultramarine": "gid://shopify/Metaobject/131501097109",
+    "Black": "gid://shopify/Metaobject/108876857493",
+    "White": "gid://shopify/Metaobject/126394368149",
+    "Blue": "gid://shopify/Metaobject/111343370389", 
+    "Green": "gid://shopify/Metaobject/111343435925",
+    "Space Gray": "gid://shopify/Metaobject/125795303573",
+    "Silver": "gid://shopify/Metaobject/118603284629",
+    "Gold": "gid://shopify/Metaobject/111343403157",
+    "Pacific Blue": "gid://shopify/Metaobject/126233608341",
+    "Graphite": "gid://shopify/Metaobject/127395233941",
+    "Sierra Blue": "gid://shopify/Metaobject/127395135637",
+    "Midnight": "gid://shopify/Metaobject/125799497877",
+    "Starlight": "gid://shopify/Metaobject/127394644117",
+    "Space Black": "gid://shopify/Metaobject/126919508117",
+    "Midnight Green": "gid://shopify/Metaobject/127395266709",
+    "Black Titanium": "gid://shopify/Metaobject/118601613461",
+    "White Titanium": "gid://shopify/Metaobject/118601580693",
+    "Natural Titanium": "gid://shopify/Metaobject/118601449621",
+    "Desert Titanium": "gid://shopify/Metaobject/118601547925",
+    "Blue Titanium": "gid://shopify/Metaobject/126415896725",
+    "(PRODUCT)RED": "gid://shopify/Metaobject/127394676885",
+    "Pink": "gid://shopify/Metaobject/126394400917",
+    "Yellow": "gid://shopify/Metaobject/111476342933",
+    "Purple": "gid://shopify/Metaobject/127394709653",
+    "Coral": "gid://shopify/Metaobject/126394400917",
+    "Deep Purple": "gid://shopify/Metaobject/126919573653",
+    "Red": "gid://shopify/Metaobject/127394676885",
+    "Teal": "gid://shopify/Metaobject/126393909397",
+    "Ultramarine": "gid://shopify/Metaobject/126394073237",
 }
 
 @dataclass
@@ -456,43 +456,43 @@ def get_templates_by_series(series: str) -> List[str]:
 
 # Color mapping for metafields (to be populated with actual Shopify metaobject GIDs)
 COLOR_METAFIELD_MAPPINGS = {
-    # iPhone 16 Series Colors
-    'Black': 'gid://shopify/Metaobject/TBD_BLACK',
-    'White': 'gid://shopify/Metaobject/TBD_WHITE', 
-    'Pink': 'gid://shopify/Metaobject/TBD_PINK',
-    'Teal': 'gid://shopify/Metaobject/TBD_TEAL',
-    'Ultramarine': 'gid://shopify/Metaobject/TBD_ULTRAMARINE',
+    # iPhone Standard Colors - Updated with correct GIDs from colors.json
+    'Black': 'gid://shopify/Metaobject/108876857493',
+    'White': 'gid://shopify/Metaobject/126394368149', 
+    'Pink': 'gid://shopify/Metaobject/126394400917',
+    'Teal': 'gid://shopify/Metaobject/126393909397',
+    'Ultramarine': 'gid://shopify/Metaobject/126394073237',
     
-    # Titanium Colors (Pro Models)
-    'Black Titanium': 'gid://shopify/Metaobject/TBD_BLACK_TITANIUM',
-    'White Titanium': 'gid://shopify/Metaobject/TBD_WHITE_TITANIUM',
-    'Natural Titanium': 'gid://shopify/Metaobject/TBD_NATURAL_TITANIUM',
-    'Desert Titanium': 'gid://shopify/Metaobject/TBD_DESERT_TITANIUM',
-    'Blue Titanium': 'gid://shopify/Metaobject/TBD_BLUE_TITANIUM',
+    # Titanium Colors (Pro Models) - Updated with correct GIDs
+    'Black Titanium': 'gid://shopify/Metaobject/118601613461',
+    'White Titanium': 'gid://shopify/Metaobject/118601580693',
+    'Natural Titanium': 'gid://shopify/Metaobject/118601449621',
+    'Desert Titanium': 'gid://shopify/Metaobject/118601547925',
+    'Blue Titanium': 'gid://shopify/Metaobject/126415896725',
     
-    # Standard Colors
-    'Blue': 'gid://shopify/Metaobject/111343370389',  # Existing mapping
-    'Green': 'gid://shopify/Metaobject/TBD_GREEN',
-    'Yellow': 'gid://shopify/Metaobject/TBD_YELLOW',
-    'Purple': 'gid://shopify/Metaobject/TBD_PURPLE',
-    'Midnight': 'gid://shopify/Metaobject/TBD_MIDNIGHT',
-    'Starlight': 'gid://shopify/Metaobject/TBD_STARLIGHT',
-    '(PRODUCT)RED': 'gid://shopify/Metaobject/TBD_PRODUCT_RED',
-    'Red': 'gid://shopify/Metaobject/TBD_RED',
+    # Standard Colors - Updated with correct GIDs
+    'Blue': 'gid://shopify/Metaobject/111343370389',
+    'Green': 'gid://shopify/Metaobject/111343435925',
+    'Yellow': 'gid://shopify/Metaobject/111476342933',
+    'Purple': 'gid://shopify/Metaobject/127394709653',
+    'Midnight': 'gid://shopify/Metaobject/125799497877',
+    'Starlight': 'gid://shopify/Metaobject/127394644117',
+    '(PRODUCT)RED': 'gid://shopify/Metaobject/127394676885',
+    'Red': 'gid://shopify/Metaobject/127394676885',
     
-    # Pro Colors
-    'Deep Purple': 'gid://shopify/Metaobject/TBD_DEEP_PURPLE',
-    'Gold': 'gid://shopify/Metaobject/111343403157',  # Existing mapping
-    'Silver': 'gid://shopify/Metaobject/118603284629',  # Existing mapping
-    'Space Black': 'gid://shopify/Metaobject/TBD_SPACE_BLACK',
-    'Sierra Blue': 'gid://shopify/Metaobject/TBD_SIERRA_BLUE',
-    'Graphite': 'gid://shopify/Metaobject/TBD_GRAPHITE',
-    'Pacific Blue': 'gid://shopify/Metaobject/126233608341',  # Existing mapping
+    # Pro Colors - Updated with correct GIDs
+    'Deep Purple': 'gid://shopify/Metaobject/126919573653',
+    'Gold': 'gid://shopify/Metaobject/111343403157',
+    'Silver': 'gid://shopify/Metaobject/118603284629',
+    'Space Black': 'gid://shopify/Metaobject/126919508117',
+    'Sierra Blue': 'gid://shopify/Metaobject/127395135637',
+    'Graphite': 'gid://shopify/Metaobject/127395233941',
+    'Pacific Blue': 'gid://shopify/Metaobject/126233608341',
     
-    # iPhone 11 and older colors
-    'Midnight Green': 'gid://shopify/Metaobject/TBD_MIDNIGHT_GREEN',
-    'Space Gray': 'gid://shopify/Metaobject/125795303573',  # Existing mapping
-    'Coral': 'gid://shopify/Metaobject/TBD_CORAL'
+    # iPhone 11 and older colors - Updated with correct GIDs
+    'Midnight Green': 'gid://shopify/Metaobject/127395266709',
+    'Space Gray': 'gid://shopify/Metaobject/125795303573',
+    'Coral': 'gid://shopify/Metaobject/126394400917'
 }
 
 def get_color_metafield_gid(color: str) -> str:

@@ -2,6 +2,123 @@
 
 This document tracks all significant development work, decisions, and changes made to the Shopify Bulk Importer project.
 
+## 2025-08-16
+
+### SMARTPHONE COLOR MAPPING FIX - CRITICAL ISSUE RESOLVED ✅
+**Agent**: Main Claude Code Agent (shopify-api-developer specialized)  
+**Status**: ✅ Complete - Critical Color GID Mapping Issue Fixed
+
+#### 🐛 Issue Identified and Resolved
+**Problem**: Smartphone color mapping was completely incorrect, causing wrong colors to appear in Shopify products. For example:
+- Input "Natural Titanium" → Shopify showed "Cool Silver"
+- Input "Ultramarine" → Shopify showed "Asus Blue"
+- Input "Desert Titanium" → Shopify showed "Metallic Hairline"
+
+**Root Cause**: Both `IPHONE_COLOR_GIDS` and `COLOR_METAFIELD_MAPPINGS` dictionaries in `config/iphone_specs.py` contained incorrect GID mappings that pointed to wrong color metaobjects in Shopify.
+
+#### 🔧 Technical Fix Implementation
+**Files Modified**: `config/iphone_specs.py`
+- **Updated IPHONE_COLOR_GIDS**: Fixed all 28 color mappings with correct GIDs from `data/metaobjects/colors.json`
+- **Updated COLOR_METAFIELD_MAPPINGS**: Fixed all color mappings used by `get_color_metafield_gid()` function
+
+#### 📊 Specific Corrections Made
+**Critical Titanium Color Fixes**:
+- Natural Titanium: `131501195413` (Cool Silver) → `118601449621` (correct)
+- Ultramarine: `131501097109` (Asus Blue) → `126394073237` (correct)
+- Desert Titanium: `131501523093` (Metallic Hairline) → `118601547925` (correct)
+- Blue Titanium: `131501097109` (Asus Blue) → `126415896725` (correct)
+- White Titanium: `131501162645` (Brushed Metal) → `118601580693` (correct)
+- Black Titanium: `131501424789` (Gun Metal) → `118601613461` (correct)
+
+**Standard Color Fixes**:
+- All iPhone standard colors (Black, White, Blue, Green, etc.) updated with correct GIDs
+- All Pro model colors (Space Black, Graphite, Sierra Blue, etc.) updated with correct GIDs
+
+#### ✅ Verification & Testing
+**Testing Results**:
+- ✅ Natural Titanium: Correct GID mapping verified
+- ✅ Ultramarine: Correct GID mapping verified  
+- ✅ All Titanium colors: 6/6 correct mappings verified
+- ✅ Both mapping dictionaries: All colors now map to correct metaobjects
+
+#### 🎯 Business Impact
+**User Experience**: Staff can now enter iPhone colors with confidence that the correct colors will appear in Shopify products
+**Data Integrity**: All color specifications properly stored in Shopify with correct metaobject references
+**Admin Interface**: Colors will display correctly in Shopify product admin panels
+**Search/Filtering**: Products can be correctly filtered by color in Shopify storefront
+
+#### 🔍 Quality Assurance
+**Protected Systems**: All smartphone logic and variant metafield systems completely untouched
+**Backward Compatibility**: Fix is corrective - no functionality changes, only correct data mapping
+**Complete Coverage**: All 28+ iPhone colors now have correct GID mappings
+**Verification**: Python scripts validated all mappings against authoritative `colors.json` data
+
+## 2025-08-11
+
+### URL-BASED IMAGE UPLOAD FEATURE IMPLEMENTATION ✅
+**Agent**: Main Claude Code Agent  
+**Status**: ✅ Complete - Full URL-based image upload functionality implemented
+
+#### 🎯 Feature Overview
+Implemented comprehensive URL-based image upload functionality allowing users to upload product images directly from external URLs, in addition to existing file upload capabilities.
+
+#### 📊 Implementation Scope
+**Files Modified**: 6 files across services, models, and pages
+- `services/image_service.py`: Extended with URL validation and upload methods
+- `services/shopify_api.py`: Added GraphQL mutation for media creation
+- `services/product_service.py`: Updated to handle both file and URL uploads
+- `models/smartphone.py`: Added image_urls field
+- `models/laptop.py`: Added image_urls field  
+- `pages/smartphone_entry.py`: Integrated URL input UI
+- `pages/laptop_entry.py`: Integrated URL input UI
+
+#### ✅ Core Features Implemented
+1. **URL Validation**: 
+   - Protocol validation (HTTP/HTTPS only)
+   - Image format verification
+   - Optional HEAD request validation for content-type
+
+2. **REST API Integration**:
+   - Direct URL upload via Shopify REST API
+   - Automatic download and CDN storage by Shopify
+   - Rate limiting and error handling
+
+3. **GraphQL Support** (Future-proofing):
+   - Added `productCreateMedia` mutation
+   - Modern approach for Shopify API 2025+
+   - Supports batch media uploads
+
+4. **UI Enhancements**:
+   - Tab-based interface for Files vs URLs
+   - Multi-line URL input with parsing
+   - URL preview and validation feedback
+   - Combined upload progress tracking
+
+5. **Hybrid Upload Support**:
+   - Mix file uploads and URL references
+   - Unified image management
+   - Progress tracking for both methods
+
+#### 🚀 Technical Highlights
+- **Architecture**: Clean service layer extension maintaining backward compatibility
+- **Validation**: Comprehensive URL validation with format checking
+- **Error Handling**: Graceful failure handling with detailed user feedback
+- **Performance**: Rate limiting and batch processing support
+- **Testing**: All components tested and verified working
+
+#### 📈 Business Impact
+- **Efficiency**: Staff can use manufacturer images directly without downloading
+- **Time Savings**: No need to download/re-upload existing images
+- **Accuracy**: Direct linking ensures latest product images
+- **Scalability**: Faster bulk product creation with image URLs
+
+#### ✅ Quality Assurance
+- All existing functionality preserved
+- Backward compatible implementation
+- No breaking changes to existing workflows
+- Comprehensive error handling added
+- Test verification completed successfully
+
 ## 2025-08-07 (Today)
 
 ### COMPREHENSIVE METAOBJECT FETCH - COMPLETE LAPTOP COMPONENT MAPPING ACHIEVED ✅
