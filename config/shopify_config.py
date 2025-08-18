@@ -7,7 +7,31 @@ class ShopifyConfig:
     """
     
     def __init__(self):
-        # Auto-load environment variables from .env file
+        # Auto-load environment variables from .env file (local development)
+        # Or from Streamlit secrets (cloud deployment)
+        try:
+            import streamlit as st
+            # Check if running in Streamlit Cloud with secrets
+            if hasattr(st, 'secrets') and 'SHOPIFY_API_KEY' in st.secrets:
+                # Use Streamlit secrets
+                self.API_KEY = st.secrets.get("SHOPIFY_API_KEY", "")
+                self.API_SECRET = st.secrets.get("SHOPIFY_API_SECRET", "")
+                self.ACCESS_TOKEN = st.secrets.get("SHOPIFY_ACCESS_TOKEN", "")
+                self.SHOP_DOMAIN = st.secrets.get("SHOPIFY_SHOP_DOMAIN", "")
+                # API settings
+                self.API_VERSION = st.secrets.get("SHOPIFY_API_VERSION", "2025-07")
+                self.RATE_LIMIT_DELAY = float(st.secrets.get("RATE_LIMIT_DELAY", "0.5"))
+                # Validate configuration
+                self._validate_config()
+            else:
+                # Fall back to environment variables
+                self._load_from_env()
+        except ImportError:
+            # Streamlit not available, use environment variables
+            self._load_from_env()
+    
+    def _load_from_env(self):
+        """Load configuration from environment variables or .env file"""
         try:
             from dotenv import load_dotenv
             load_dotenv()
@@ -15,7 +39,7 @@ class ShopifyConfig:
             # dotenv not available, continue with system environment variables
             pass
         
-        # API credentials (should be environment variables)
+        # API credentials from environment variables
         self.API_KEY = os.getenv("SHOPIFY_API_KEY", "")
         self.API_SECRET = os.getenv("SHOPIFY_API_SECRET", "")
         self.ACCESS_TOKEN = os.getenv("SHOPIFY_ACCESS_TOKEN", "")

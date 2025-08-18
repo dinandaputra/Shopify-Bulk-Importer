@@ -61,5 +61,8 @@ handle_counter.json
 *_specific_metaobjects.json
 metaobject_creation_results_*.json
 
-# Streamlit cache
-.streamlit/
+# Streamlit cache and secrets
+.streamlit/secrets.toml
+.streamlit/cache/
+!.streamlit/config.toml
+!.streamlit/secrets.toml.example

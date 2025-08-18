@@ -1,5 +1,5 @@
 {
-  "generated_at": "2025-08-07T17:24:24.678885",
+  "generated_at": "2025-08-17T15:41:24.695709",
   "total_templates": 162,
   "templates": [
     "ASUS ROG Strix G15 G512 [Ryzen 7 4800H/16GB DDR4/RTX 3060/144Hz/512GB SSD] [Eclipse Gray]",
@@ -168,10 +168,10 @@
   "version": "1.0",
   "source_files": [
     "data/products/laptops/asus.json",
+    "data/products/laptops/brands_index.json",
     "data/products/laptops/dell.json",
     "data/products/laptops/hp.json",
     "data/products/laptops/lenovo.json",
-    "data/products/laptops/msi.json",
-    "data/products/laptops/brands_index.json"
+    "data/products/laptops/msi.json"
   ]
 }

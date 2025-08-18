@@ -22,7 +22,7 @@ class ComponentNameStandardizer:
     """Standardizes component names to match Shopify metaobject formats."""
     
     def __init__(self):
-        self.base_path = Path("/home/dinanda/Documents/Shopify-Bulk-Importer")
+        self.base_path = Path(__file__).parent.parent.parent  # Go up to project root
         self.metaobjects_path = self.base_path / "data" / "metaobjects"
         self.products_path = self.base_path / "data" / "products" / "laptops"
         
