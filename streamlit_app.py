@@ -11,6 +11,7 @@ sys.path.append(os.path.dirname(os.path.abspath(__file__)))
 
 from pages.smartphone_entry import smartphone_entry_page
 from pages.laptop_entry import laptop_entry_page
+from config.shopify_config import shopify_config
 
 def main():
     st.set_page_config(
@@ -41,7 +42,7 @@ def main():
             st.session_state.products = []
         
         st.metric("Products in Session", len(st.session_state.products))
-        st.metric("Session Limit", f"{len(st.session_state.products)}/10")
+        st.metric("Session Limit", f"{len(st.session_state.products)}/{shopify_config.SESSION_LIMIT}")
         
         if len(st.session_state.products) > 0:
             if st.button("Clear Session", type="secondary"):

@@ -21,6 +21,7 @@ class ShopifyConfig:
                 # API settings
                 self.API_VERSION = st.secrets.get("SHOPIFY_API_VERSION", "2025-07")
                 self.RATE_LIMIT_DELAY = float(st.secrets.get("RATE_LIMIT_DELAY", "0.5"))
+                self.SESSION_LIMIT = int(st.secrets.get("SESSION_LIMIT", "25"))
                 # Validate configuration
                 self._validate_config()
             else:
@@ -48,6 +49,7 @@ class ShopifyConfig:
         # API settings
         self.API_VERSION = "2025-07"
         self.RATE_LIMIT_DELAY = 0.5  # seconds between API calls
+        self.SESSION_LIMIT = int(os.getenv("SESSION_LIMIT", "25"))
         
         # Validate configuration
         self._validate_config()

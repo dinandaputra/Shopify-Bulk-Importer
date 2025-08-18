@@ -18,6 +18,7 @@ from utils.handle_generator import preview_handle, generate_handle
 from services.export_service import export_to_csv
 from services.product_service import product_service
 from services.image_service import image_service
+from config.shopify_config import shopify_config
 from pydantic import ValidationError
 
 def clean_stale_image_references():
@@ -128,8 +129,8 @@ def laptop_entry_page():
         st.session_state.product_images = {}
     
     # Check session limit
-    if len(st.session_state.products) >= 10:
-        st.error("Session limit reached (10 products). Please create products or clear session to continue.")
+    if len(st.session_state.products) >= shopify_config.SESSION_LIMIT:
+        st.error(f"Session limit reached ({shopify_config.SESSION_LIMIT} products). Please create products or clear session to continue.")
         return
     
     # Template Selection Section - Unified Fuzzy Search Pattern
