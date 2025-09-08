@@ -23,14 +23,38 @@ This file provides **MANDATORY** guidance to Claude Code (claude.ai/code) when w
    - `test-coverage-specialist` - Comprehensive testing support
    - `ux-design-specialist` - UI/UX design and optimization
 
-#### 2. MANDATORY QUALITY GATES
+#### 2. MANDATORY MCP TOOL USAGE
+**CRITICAL: Use these MCP tools throughout development:**
+
+1. **Context7 MCP for Documentation (MANDATORY FOR ALL TASKS)**
+   - **ALWAYS** use Context7 MCP tools before planning and making file changes:
+     - Use `mcp__context7__resolve-library-id` to find relevant library documentation
+     - Use `mcp__context7__get-library-docs` to retrieve up-to-date documentation
+     - Reference official documentation for frameworks, libraries, and tools
+     - Verify current best practices and API patterns before implementation
+     - Check for breaking changes and new features in dependencies
+   - **REQUIRED BEFORE**: Planning features, making architectural decisions, implementing APIs
+   - **CRITICAL**: Never assume library behavior - always verify with current docs
+
+2. **Playwright MCP for Debugging (MANDATORY FOR ALL DEBUGGING)**
+   - **ALWAYS** use playwright MCP tools during debugging to:
+     - Identify visual problems in frontend
+     - Capture console logs and errors
+     - Monitor network requests
+     - Verify UI state and behavior
+     - Debug backend issues through frontend interactions
+   - Use browser_snapshot for accessibility testing
+   - Use browser_console_messages for error tracking
+   - Use browser_network_requests for API debugging
+
+#### 3. MANDATORY QUALITY GATES
 **Every task MUST follow these quality checkpoints:**
 
 1. **PRE-CODING**: Read `.ai/checklists/PRE_CODING.md` before starting work
 2. **PRE-COMMIT**: Read `.ai/checklists/PRE_COMMIT.md` before committing
 3. **CODE REVIEW**: Use `.ai/checklists/CODE_REVIEW.md` for all reviews
 
-#### 3. REQUIRED PROGRESS LOGGING
+#### 4. REQUIRED PROGRESS LOGGING
 **Agents MUST update these files during work:**
 
 - **`.ai/context/WORK_LOG.md`** - Log all significant work completed (MANDATORY - update at end of session)
@@ -38,14 +62,14 @@ This file provides **MANDATORY** guidance to Claude Code (claude.ai/code) when w
 - **`.ai/context/KNOWN_ISSUES.md`** - Log new issues discovered
 - **`.ai/context/ARCHITECTURE_DECISIONS.md`** - Document architectural decisions
 
-#### 4. WORKFLOW SELECTION (MANDATORY)
+#### 5. WORKFLOW SELECTION (MANDATORY)
 **Choose appropriate workflow based on task type:**
 
 - **New Features**: Follow `.ai/workflows/feature_implementation.md`
 - **Bug Fixes**: Follow `.ai/workflows/bug_fixing.md`  
 - **Code Changes**: Follow `.ai/workflows/code_review.md`
 
-#### 5. PATTERN APPLICATION (MANDATORY)
+#### 6. PATTERN APPLICATION (MANDATORY)
 **Use established patterns from:**
 
 - **`.ai/patterns/api_patterns.md`** - For Shopify API work
@@ -132,12 +156,15 @@ Shopify Bulk Importer - Streamlit web app for MyByte International staff to effi
 **Every new session MUST:**
 
 1. **START** by reading the 5 required context files
-2. **IDENTIFY** appropriate Claude Code sub-agent(s) for the task
-3. **USE** Claude Code sub-agents via Task tool: `Use the [sub-agent-name] to [task description]`
-4. **FOLLOW** established workflows and patterns
-5. **USE** mandatory quality gates (PRE-CODING, PRE-COMMIT, CODE_REVIEW)
-6. **LOG** progress in WORK_LOG.md at session end
-7. **PROTECT** critical systems (variant metafields, SIM carrier variants)
+2. **READ** relevant documentation files before planning or coding
+3. **USE** Context7 MCP tools to reference up-to-date documentation before ANY planning or file changes
+4. **IDENTIFY** appropriate Claude Code sub-agent(s) for the task
+5. **USE** Claude Code sub-agents via Task tool: `Use the [sub-agent-name] to [task description]`
+6. **FOLLOW** established workflows and patterns
+7. **USE** mandatory quality gates (PRE-CODING, PRE-COMMIT, CODE_REVIEW)
+8. **USE** playwright MCP tools for ALL debugging (frontend and backend)
+9. **LOG** progress in WORK_LOG.md at session end
+10. **PROTECT** critical systems (variant metafields, SIM carrier variants)
 
 **Available Claude Code Sub-Agents:**
 - `code-quality-architect` - Architecture, testing, performance optimization
