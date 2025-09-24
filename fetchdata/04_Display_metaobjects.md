@@ -1,0 +1,92 @@
+# 04 Display Metaobjects
+
+**Display/screen metaobjects**  
+**Definition ID:** `gid://shopify/MetaobjectDefinition/10078388373`  
+**Total entries:** 84
+
+## All Display Entries
+
+10.5-inch FHD (60Hz) = gid://shopify/Metaobject/133650645141
+10.5-inch HD (60Hz) = gid://shopify/Metaobject/133651988629
+11-inch = gid://shopify/Metaobject/125802217621
+11-inch = gid://shopify/Metaobject/134686769301
+12-inch Retina = gid://shopify/Metaobject/125936631957
+13-inch = gid://shopify/Metaobject/125802053781
+13-inch 4K (60Hz) = gid://shopify/Metaobject/131292397717
+13-inch FHD (59Hz) = gid://shopify/Metaobject/125934862485
+13-inch FHD (60Hz) = gid://shopify/Metaobject/133652512917
+13-inch FHD (60Hz) Touch Screen = gid://shopify/Metaobject/125933617301
+13-inch Retina = gid://shopify/Metaobject/125795336341
+13.3-inch = gid://shopify/Metaobject/134065258645
+13.3-inch 4K (60Hz) = gid://shopify/Metaobject/131309273237
+13.3-inch FHD (60Hz) = gid://shopify/Metaobject/131309207701
+13.3-inch QHD (60Hz) = gid://shopify/Metaobject/131309240469
+13.3-inch Retina = gid://shopify/Metaobject/125802348693
+13.4 Inch FHD (120Hz) Touchscreen = gid://shopify/Metaobject/119138222229
+13.4-inch FHD (120Hz) = gid://shopify/Metaobject/125803954325
+13.5-inch 3K Touchscreen (60Hz) = gid://shopify/Metaobject/138252550293
+13.6-inch Retina = gid://shopify/Metaobject/125799596181
+14-inch 2K (120Hz) = gid://shopify/Metaobject/136103231637
+14-inch 2K (60Hz) OLED = gid://shopify/Metaobject/136431468693
+14-inch 2K (90Hz) = gid://shopify/Metaobject/131292332181
+14-inch 4K (60Hz) = gid://shopify/Metaobject/131309404309
+14-inch FHD (120Hz) = gid://shopify/Metaobject/133654806677
+14-inch FHD (144Hz) = gid://shopify/Metaobject/125935354005
+14-inch FHD (60Hz) = gid://shopify/Metaobject/131309306005
+14-inch FHD (60Hz) = gid://shopify/Metaobject/136104247445
+14-inch FHD (90Hz) = gid://shopify/Metaobject/131309338773
+14-inch Liquid Retina XDR = gid://shopify/Metaobject/134082101397
+14-inch OLED (120Hz) = gid://shopify/Metaobject/131492348053
+14-inch QHD (120Hz) = gid://shopify/Metaobject/131309371541
+14-inch WQXGA (165Hz) = gid://shopify/Metaobject/133655232661
+14-inch WUXGA (60Hz) = gid://shopify/Metaobject/133658083477
+15-inch 2K (165Hz) = gid://shopify/Metaobject/136555954325
+15-inch 4K UHD (60Hz) = gid://shopify/Metaobject/131492380821
+15-inch FHD (120Hz) = gid://shopify/Metaobject/131492413589
+15-inch FHD (144Hz) = gid://shopify/Metaobject/125802905749
+15-inch FHD (144Hz) = gid://shopify/Metaobject/125803593877
+15-inch FHD (165Hz) = gid://shopify/Metaobject/131492446357
+15-inch FHD (240Hz) = gid://shopify/Metaobject/125803331733
+15-inch FHD (300Hz) = gid://shopify/Metaobject/125922312341
+15-inch FHD (300Hz) = gid://shopify/Metaobject/125936533653
+15-inch FHD (60Hz) = gid://shopify/Metaobject/125794517141
+15-inch FHD (60Hz) = gid://shopify/Metaobject/133648187541
+15-inch FHD 144Hz = gid://shopify/Metaobject/117533442197
+15-inch HD (60Hz) = gid://shopify/Metaobject/125935911061
+15-inch QHD (165Hz) = gid://shopify/Metaobject/131292430485
+15-inch QHD (240Hz) = gid://shopify/Metaobject/131492479125
+15-inch Retina = gid://shopify/Metaobject/118603120789
+15.3-inch Retina = gid://shopify/Metaobject/135088570517
+15.4-inch Retina = gid://shopify/Metaobject/125799923861
+15.6-inch 2K (165Hz) = gid://shopify/Metaobject/134180176021
+15.6-inch 4K (60Hz) = gid://shopify/Metaobject/131309666453
+15.6-inch FHD (120Hz) = gid://shopify/Metaobject/131309502613
+15.6-inch FHD (144Hz) = gid://shopify/Metaobject/117180760213
+15.6-inch FHD (144Hz) = gid://shopify/Metaobject/125933781141
+15.6-inch FHD (144Hz) = gid://shopify/Metaobject/131309535381
+15.6-inch FHD (144Hz) = gid://shopify/Metaobject/134839271573
+15.6-inch FHD (165Hz) = gid://shopify/Metaobject/131309568149
+15.6-inch FHD (60Hz) = gid://shopify/Metaobject/131309469845
+15.6-inch HD (60Hz) = gid://shopify/Metaobject/131309437077
+15.6-inch QHD (120Hz) = gid://shopify/Metaobject/131309600917
+15.6-inch QHD (165Hz) = gid://shopify/Metaobject/131309633685
+15.6-inch WQHD (165Hz) = gid://shopify/Metaobject/134179913877
+16-inch 4K (60Hz) = gid://shopify/Metaobject/131292364949
+16-inch 4K (60Hz) = gid://shopify/Metaobject/131309797525
+16-inch FHD (60Hz) = gid://shopify/Metaobject/131309699221
+16-inch OLED (240Hz) = gid://shopify/Metaobject/131492511893
+16-inch QHD (120Hz) = gid://shopify/Metaobject/131309731989
+16-inch QHD (165Hz) = gid://shopify/Metaobject/131309764757
+16-inch Retina = gid://shopify/Metaobject/125796778133
+16-inch WUXGA (165Hz) = gid://shopify/Metaobject/133772968085
+17-inch FHD (144Hz) = gid://shopify/Metaobject/131292463253
+17.3 120Hz = gid://shopify/Metaobject/131492577429
+17.3-inch 4K (120Hz) = gid://shopify/Metaobject/131309994133
+17.3-inch FHD (144Hz) = gid://shopify/Metaobject/131309863061
+17.3-inch FHD (165Hz) = gid://shopify/Metaobject/131492544661
+17.3-inch FHD (240Hz) = gid://shopify/Metaobject/131309895829
+17.3-inch FHD (300Hz) = gid://shopify/Metaobject/131309928597
+17.3-inch FHD (60Hz) = gid://shopify/Metaobject/131309830293
+17.3-inch FHD (60Hz) = gid://shopify/Metaobject/133658280085
+17.3-inch QHD (165Hz) = gid://shopify/Metaobject/131309961365
+7-inch HD (60Hz) = gid://shopify/Metaobject/134191317141

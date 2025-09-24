@@ -7,20 +7,13 @@ operations using the Shopify API.
 
 from typing import List, Dict, Any, Optional
 import logging
-from repositories.interfaces.product_repository import ProductRepository
 from services.shopify_api import ShopifyAPIClient
-from infrastructure.exceptions import (
-    ProductCreationException,
-    ProductUpdateException,
-    ProductNotFoundException,
-    ProductRetrievalException,
-    MetafieldAssignmentException,
-    BulkOperationException,
-    ProductArchiveException
-)
+
+# Note: Interface and infrastructure imports removed - moved to archive/enhanced_architecture/
+# This file now works as a standalone concrete implementation
 
 
-class ShopifyProductRepository(ProductRepository):
+class ShopifyProductRepository:
     """
     Shopify implementation of product repository.
     
@@ -50,7 +43,7 @@ class ShopifyProductRepository(ProductRepository):
         """Update entity (delegates to update_product)."""
         product_id = entity.get('id')
         if not product_id:
-            raise ProductUpdateException("Product ID is required for update")
+            raise Exception("Product ID is required for update")
         return await self.update_product(product_id, entity)
     
     async def delete(self, entity_id: str) -> bool:
@@ -67,7 +60,7 @@ class ShopifyProductRepository(ProductRepository):
             query = filters.get('query', '') if filters else ''
             return await self.search_products(query, filters, limit)
         except Exception as e:
-            raise ProductRetrievalException(f"Failed to find products: {str(e)}")
+            raise Exception(f"Failed to find products: {str(e)}")
     
     async def count(self, filters: Optional[Dict[str, Any]] = None) -> int:
         """Count products matching filters."""
@@ -90,7 +83,7 @@ class ShopifyProductRepository(ProductRepository):
             Created product data
             
         Raises:
-            ProductCreationException: If creation fails
+            Exception: If creation fails
         """
         try:
             # Convert async to sync for now (current API is synchronous)
@@ -98,12 +91,12 @@ class ShopifyProductRepository(ProductRepository):
             if result.get('success'):
                 return result['product']
             else:
-                raise ProductCreationException(
+                raise Exception(
                     f"Product creation failed: {result.get('error', 'Unknown error')}"
                 )
         except Exception as e:
             self._logger.error(f"Product creation error: {str(e)}")
-            raise ProductCreationException(f"Failed to create product: {str(e)}")
+            raise Exception(f"Failed to create product: {str(e)}")
     
     async def update_product(self, product_id: str, updates: Dict[str, Any]) -> Dict[str, Any]:
         """
@@ -117,28 +110,28 @@ class ShopifyProductRepository(ProductRepository):
             Updated product data
             
         Raises:
-            ProductUpdateException: If update fails
-            ProductNotFoundException: If product not found
+            Exception: If update fails
+            Exception: If product not found
         """
         try:
             # Check if product exists
             existing = await self.get_product(product_id)
             if not existing:
-                raise ProductNotFoundException(f"Product {product_id} not found")
+                raise Exception(f"Product {product_id} not found")
             
             # Perform update (convert to sync call)
             result = self._api_client.update_product(product_id, updates)
             if result.get('success'):
                 return result['product']
             else:
-                raise ProductUpdateException(
+                raise Exception(
                     f"Product update failed: {result.get('error', 'Unknown error')}"
                 )
-        except ProductNotFoundException:
+        except Exception:
             raise
         except Exception as e:
             self._logger.error(f"Product update error: {str(e)}")
-            raise ProductUpdateException(f"Failed to update product: {str(e)}")
+            raise Exception(f"Failed to update product: {str(e)}")
     
     async def get_product(self, product_id: str) -> Optional[Dict[str, Any]]:
         """
@@ -151,7 +144,7 @@ class ShopifyProductRepository(ProductRepository):
             Product data if found, None otherwise
             
         Raises:
-            ProductRetrievalException: If retrieval fails
+            Exception: If retrieval fails
         """
         try:
             # Convert to sync call
@@ -161,7 +154,7 @@ class ShopifyProductRepository(ProductRepository):
             return None
         except Exception as e:
             self._logger.error(f"Product retrieval error: {str(e)}")
-            raise ProductRetrievalException(f"Failed to retrieve product: {str(e)}")
+            raise Exception(f"Failed to retrieve product: {str(e)}")
     
     async def assign_metafields(self, product_id: str, metafields: List[Dict[str, Any]]) -> Dict[str, Any]:
         """
@@ -175,7 +168,7 @@ class ShopifyProductRepository(ProductRepository):
             Assignment result
             
         Raises:
-            MetafieldAssignmentException: If assignment fails
+            Exception: If assignment fails
         """
         try:
             # Format metafields for product
@@ -192,13 +185,13 @@ class ShopifyProductRepository(ProductRepository):
             # Call API to assign metafields
             result = self._api_client.assign_metafields_to_variants(formatted_metafields)
             if not result.get('success'):
-                raise MetafieldAssignmentException(
+                raise Exception(
                     f"Metafield assignment failed: {result.get('error', 'Unknown error')}"
                 )
             return result
         except Exception as e:
             self._logger.error(f"Metafield assignment error: {str(e)}")
-            raise MetafieldAssignmentException(f"Failed to assign metafields: {str(e)}")
+            raise Exception(f"Failed to assign metafields: {str(e)}")
     
     async def assign_variant_metafields(self, variant_metafields: List[Dict[str, Any]]) -> Dict[str, Any]:
         """
@@ -211,18 +204,18 @@ class ShopifyProductRepository(ProductRepository):
             Assignment result
             
         Raises:
-            MetafieldAssignmentException: If assignment fails
+            Exception: If assignment fails
         """
         try:
             result = self._api_client.assign_metafields_to_variants(variant_metafields)
             if not result.get('success'):
-                raise MetafieldAssignmentException(
+                raise Exception(
                     f"Variant metafield assignment failed: {result.get('error', 'Unknown error')}"
                 )
             return result
         except Exception as e:
             self._logger.error(f"Variant metafield assignment error: {str(e)}")
-            raise MetafieldAssignmentException(f"Failed to assign variant metafields: {str(e)}")
+            raise Exception(f"Failed to assign variant metafields: {str(e)}")
     
     async def get_products_by_collection(self, collection_id: str, 
                                        limit: Optional[int] = None) -> List[Dict[str, Any]]:
@@ -237,7 +230,7 @@ class ShopifyProductRepository(ProductRepository):
             List of products in collection
             
         Raises:
-            ProductRetrievalException: If retrieval fails
+            Exception: If retrieval fails
         """
         try:
             # This would need to be implemented in the API client
@@ -246,7 +239,7 @@ class ShopifyProductRepository(ProductRepository):
             return []
         except Exception as e:
             self._logger.error(f"Collection products retrieval error: {str(e)}")
-            raise ProductRetrievalException(f"Failed to get products by collection: {str(e)}")
+            raise Exception(f"Failed to get products by collection: {str(e)}")
     
     async def search_products(self, query: str, filters: Optional[Dict[str, Any]] = None,
                             limit: Optional[int] = None) -> List[Dict[str, Any]]:
@@ -262,7 +255,7 @@ class ShopifyProductRepository(ProductRepository):
             List of matching products
             
         Raises:
-            ProductRetrievalException: If search fails
+            Exception: If search fails
         """
         try:
             # This would need to be implemented in the API client
@@ -271,7 +264,7 @@ class ShopifyProductRepository(ProductRepository):
             return []
         except Exception as e:
             self._logger.error(f"Product search error: {str(e)}")
-            raise ProductRetrievalException(f"Failed to search products: {str(e)}")
+            raise Exception(f"Failed to search products: {str(e)}")
     
     async def bulk_create_products(self, products: List[Dict[str, Any]]) -> List[Dict[str, Any]]:
         """
@@ -284,7 +277,7 @@ class ShopifyProductRepository(ProductRepository):
             List of created products
             
         Raises:
-            BulkOperationException: If bulk creation fails
+            Exception: If bulk creation fails
         """
         created_products = []
         errors = []
@@ -297,7 +290,7 @@ class ShopifyProductRepository(ProductRepository):
                 errors.append(f"Product {i}: {str(e)}")
         
         if errors:
-            raise BulkOperationException(
+            raise Exception(
                 f"Bulk creation partially failed. Created {len(created_products)}/{len(products)}. "
                 f"Errors: {'; '.join(errors)}"
             )
@@ -315,7 +308,7 @@ class ShopifyProductRepository(ProductRepository):
             True if archived successfully
             
         Raises:
-            ProductArchiveException: If archiving fails
+            Exception: If archiving fails
         """
         try:
             # Set product status to archived
@@ -324,4 +317,4 @@ class ShopifyProductRepository(ProductRepository):
             return result is not None
         except Exception as e:
             self._logger.error(f"Product archive error: {str(e)}")
-            raise ProductArchiveException(f"Failed to archive product: {str(e)}")
+            raise Exception(f"Failed to archive product: {str(e)}")
