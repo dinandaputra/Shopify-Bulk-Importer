@@ -188,8 +188,28 @@ def laptop_entry_page():
                 on_change=on_laptop_template_change
             )
             
-            # Show current template info if selected with better error handling
+            # Manual fallback for deployment - ensure template data is loaded
             if selected_template and selected_template != "":
+                # Check if laptop_form_data needs to be populated (deployment fix)
+                if (not hasattr(st.session_state, 'laptop_form_data') or
+                    not st.session_state.laptop_form_data or
+                    st.session_state.get('current_laptop_template') != selected_template):
+
+                    try:
+                        extracted_info = template_service.parse_template(selected_template)
+                        if extracted_info:
+                            # Initialize laptop_form_data if needed
+                            if 'laptop_form_data' not in st.session_state:
+                                st.session_state.laptop_form_data = {}
+
+                            # Update form data and current template
+                            st.session_state.laptop_form_data.update(extracted_info)
+                            st.session_state.current_laptop_template = selected_template
+
+                    except Exception as e:
+                        print(f"❌ Error in manual template parsing: {e}")
+
+                # Show current template info if selected with better error handling
                 try:
                     extracted_info = template_service.parse_template(selected_template)
                     if extracted_info:

@@ -88,8 +88,24 @@ def smartphone_entry_page():
             on_change=on_template_change
         )
         
-        # Show current template info if selected
+        # Manual fallback for deployment - ensure template data is loaded
         if selected_template and selected_template != "":
+            # Check if form_data needs to be populated (deployment fix)
+            if (not hasattr(st.session_state, 'form_data') or
+                not st.session_state.form_data or
+                st.session_state.get('current_template') != selected_template):
+
+                extracted_info = extract_info_from_template(selected_template)
+                if extracted_info:
+                    # Initialize form_data if needed
+                    if 'form_data' not in st.session_state:
+                        st.session_state.form_data = {}
+
+                    # Update form data and current template
+                    st.session_state.form_data.update(extracted_info)
+                    st.session_state.current_template = selected_template
+
+            # Show current template info if selected
             extracted_info = extract_info_from_template(selected_template)
             if extracted_info:
                 brand = detect_template_brand(selected_template)
