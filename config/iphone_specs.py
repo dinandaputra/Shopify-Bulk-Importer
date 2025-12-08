@@ -21,8 +21,7 @@ IPHONE_COLOR_GIDS = {
     "Midnight": "gid://shopify/Metaobject/125799497877",
     "Starlight": "gid://shopify/Metaobject/127394644117",
     "Space Black": "gid://shopify/Metaobject/126919508117",
-    "Midnight Green": "gid://shopify/Metaobject/138827726997",
-    "Alpine Green": "gid://shopify/Metaobject/127395266709",
+    "Midnight Green": "gid://shopify/Metaobject/127395266709",
     "Black Titanium": "gid://shopify/Metaobject/118601613461",
     "White Titanium": "gid://shopify/Metaobject/118601580693",
     "Natural Titanium": "gid://shopify/Metaobject/118601449621",
@@ -37,6 +36,14 @@ IPHONE_COLOR_GIDS = {
     "Red": "gid://shopify/Metaobject/127394676885",
     "Teal": "gid://shopify/Metaobject/126393909397",
     "Ultramarine": "gid://shopify/Metaobject/126394073237",
+    "Cosmic Orange": "gid://shopify/Metaobject/140204572821",
+    "Deep Blue": "gid://shopify/Metaobject/141497335957",
+    "Lavender": "gid://shopify/Metaobject/134320423061",
+    "Sage": "gid://shopify/Metaobject/144345432213",
+    "Mist Blue": "gid://shopify/Metaobject/144345563285",
+    "Sky Blue": "gid://shopify/Metaobject/133646876821",
+    "Light Gold": "gid://shopify/Metaobject/147059572885",
+    "Cloud White": "gid://shopify/Metaobject/133576851605"
 }
 
 @dataclass
@@ -51,6 +58,40 @@ class iPhoneSpec:
 
 # Complete iPhone specifications database
 IPHONE_SPECS: Dict[str, iPhoneSpec] = {
+        # iPhone 17 Series (2025) - All support 5G
+    "iPhone 17": iPhoneSpec(
+        model="iPhone 17",
+        storage_options=["256GB", "512GB"],
+        colors=["Black", "White", "Lavender", "Sage", "Mist Blue"],
+        has_5g=True,
+        series="iPhone 17",
+        year=2025
+    ),
+    "iPhone Air": iPhoneSpec(
+        model="iPhone Air",
+        storage_options=["256GB", "512GB", "1TB"],
+        colors=["Space Black", "Cloud White", "Sky Blue", "Light Gold"],
+        has_5g=True,
+        series="iPhone 17",
+        year=2025
+    ),
+    "iPhone 17 Pro": iPhoneSpec(
+        model="iPhone 17 Pro",
+        storage_options=["256GB", "512GB", "1TB"],
+        colors=["Cosmic Orange", "Deep Blue", "Silver"],
+        has_5g=True,
+        series="iPhone 17",
+        year=2025
+    ),
+    "iPhone 17 Pro Max": iPhoneSpec(
+        model="iPhone 17 Pro Max",
+        storage_options=["256GB", "512GB", "1TB", "2TB"],  # No 128GB option
+        colors=["Cosmic Orange", "Deep Blue", "Silver"],
+        has_5g=True,
+        series="iPhone 17",
+        year=2025
+    ),
+
     # iPhone 16 Series (2024) - All support 5G
     "iPhone 16": iPhoneSpec(
         model="iPhone 16",
@@ -173,7 +214,7 @@ IPHONE_SPECS: Dict[str, iPhoneSpec] = {
     "iPhone 13 Pro": iPhoneSpec(
         model="iPhone 13 Pro",
         storage_options=["128GB", "256GB", "512GB", "1TB"],
-        colors=["Sierra Blue", "Gold", "Silver", "Graphite", "Alpine Green"],
+        colors=["Sierra Blue", "Gold", "Silver", "Graphite"],
         has_5g=True,
         series="iPhone 13",
         year=2021
@@ -181,7 +222,7 @@ IPHONE_SPECS: Dict[str, iPhoneSpec] = {
     "iPhone 13 Pro Max": iPhoneSpec(
         model="iPhone 13 Pro Max",
         storage_options=["128GB", "256GB", "512GB", "1TB"],
-        colors=["Sierra Blue", "Gold", "Silver", "Graphite", "Alpine Green"],
+        colors=["Sierra Blue", "Gold", "Silver", "Graphite"],
         has_5g=True,
         series="iPhone 13",
         year=2021
@@ -457,6 +498,16 @@ def get_templates_by_series(series: str) -> List[str]:
 
 # Color mapping for metafields (to be populated with actual Shopify metaobject GIDs)
 COLOR_METAFIELD_MAPPINGS = {
+    # iPhone 17 Series Colors
+    "Cosmic Orange": "gid://shopify/Metaobject/140204572821",
+    "Deep Blue": "gid://shopify/Metaobject/141497335957",
+    "Lavender": "gid://shopify/Metaobject/134320423061",
+    "Sage": "gid://shopify/Metaobject/144345432213",
+    "Mist Blue": "gid://shopify/Metaobject/144345563285",
+    "Sky Blue": "gid://shopify/Metaobject/133646876821",
+    "Light Gold": "gid://shopify/Metaobject/147059572885",
+    "Cloud White": "gid://shopify/Metaobject/133576851605",
+
     # iPhone Standard Colors - Updated with correct GIDs from colors.json
     'Black': 'gid://shopify/Metaobject/108876857493',
     'White': 'gid://shopify/Metaobject/126394368149', 
