@@ -10,6 +10,7 @@ from services.collection_service import collection_service
 from services.laptop_metafield_service import laptop_metafield_service
 from config.iphone_specs import IPHONE_COLOR_GIDS
 from config.laptop_metafields import LAPTOP_METAFIELDS, ADDITIONAL_METAFIELDS
+import re
 
 class ProductService:
     """
@@ -1292,11 +1293,32 @@ class ProductService:
             publication_map = publications_result['publication_map']
             print(f"DEBUG: Available publications: {list(publication_map.keys())}")
             
-            # Map sales channel names to publication names
+            # Map sales channel input aliases to Shopify publication names (lowercased)
             channel_mapping = {
                 'online_store': 'online store',
-                'pos': 'point of sale', 
-                'shop': 'shop'
+                'online store': 'online store',
+                'online': 'online store',
+
+                'pos': 'point of sale',
+                'point of sale': 'point of sale',
+                'point_of_sale': 'point of sale',
+
+                'shop': 'shop',
+
+                # Facebook & Instagram aliases
+                'facebook': 'facebook & instagram',
+                'instagram': 'facebook & instagram',
+                'facebook_instagram': 'facebook & instagram',
+                'facebook & instagram': 'facebook & instagram',
+
+                # Google & YouTube aliases
+                'google': 'google & youtube',
+                'youtube': 'google & youtube',
+                'google_youtube': 'google & youtube',
+                'google & youtube': 'google & youtube',
+
+                # TikTok
+                'tiktok': 'tiktok'
             }
             
             results = []
@@ -1304,7 +1326,23 @@ class ProductService:
             failed = 0
             
             for channel in sales_channels:
-                publication_name = channel_mapping.get(channel.lower())
+                # Normalize input: trim, lower, replace underscores/dashes with spaces
+                normalized = re.sub(r'[_\-]+', ' ', (channel or '').strip().lower())
+
+                # Try direct mapping
+                publication_name = channel_mapping.get(normalized)
+
+                # Fallback heuristics for common inputs
+                if not publication_name:
+                    if 'facebook' in normalized or 'instagram' in normalized:
+                        publication_name = 'facebook & instagram'
+                    elif 'google' in normalized or 'youtube' in normalized:
+                        publication_name = 'google & youtube'
+                    elif 'tiktok' in normalized or 'tik tok' in normalized:
+                        publication_name = 'tiktok'
+                    else:
+                        publication_name = None
+
                 if not publication_name:
                     print(f"WARNING: Unknown sales channel '{channel}', skipping")
                     failed += 1
@@ -1314,8 +1352,8 @@ class ProductService:
                         'error': f'Unknown sales channel: {channel}'
                     })
                     continue
-                
-                # Find the publication by name
+
+                # Find the publication by name (publication_map keys are lowercased names)
                 publication_info = publication_map.get(publication_name)
                 if not publication_info:
                     print(f"WARNING: Publication '{publication_name}' not found in store")
@@ -1327,9 +1365,9 @@ class ProductService:
                         'error': f'Publication not found: {publication_name}'
                     })
                     continue
-                
+
                 publication_id = publication_info['id']
-                
+
                 try:
                     print(f"DEBUG: Publishing to {publication_info['name']} ({publication_id})")
                     
@@ -1423,7 +1461,7 @@ class ProductService:
         for field_name, value in laptop_data.items():
             if not value:  # Skip empty values
                 continue
-                
+            
             # Get metafield configuration with special mappings for laptop fields
             metafield_config = None
             
@@ -1508,7 +1546,7 @@ class ProductService:
                             if gids:
                                 metafields[metafield_config.key] = {
                                     'namespace': metafield_config.namespace,
-                                    'key': metafield_config.key,
+                                    'key': metaffield_config.key,
                                     'type': 'list.metaobject_reference',  # List type for multi-select
                                     'value': json.dumps(gids)  # JSON encode the list
                                 }
