@@ -310,7 +310,7 @@ def smartphone_entry_page():
                     "product_inclusions": inclusions if inclusions else None,
                     "minus": minus if minus else None,
                     "collections": parsed_collections,
-                    "sales_channels": ["online_store", "pos", "shop"],
+                    "sales_channels": ["online_store", "pos", "shop", "facebook_instagram", "google_youtube", "tiktok"],
                     "color_metafield_gid": st.session_state.form_data.get("color_metafield_gid"),
                     "template": st.session_state.form_data.get("template", ""),
                     "image_urls": image_urls if image_urls else None  # Add image URLs
