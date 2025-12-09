@@ -446,26 +446,41 @@ def parse_template(template: str) -> Dict[str, str]:
     except Exception:
         return {}
 
-def generate_product_title(model: str, storage: str, sim_variant: str = "SIM Free") -> str:
-    """Generate product title with correct 5G designation
-    
+def generate_product_title(model: str, storage: str, sim_variant: str = "SIM Free", esim: bool | None = None) -> str:
+    """Generate product title with correct 5G designation and optional eSIM tag
+
     Args:
         model: iPhone model (e.g., "iPhone 15 Pro Max")
         storage: Storage capacity (e.g., "256GB")
         sim_variant: SIM variant type (default: "SIM Free")
-        
+        esim: If True forces 'eSIM' in title, if False omits it.
+              If None (default), eSIM is added automatically for iPhone 17 series.
     Returns:
-        Complete product title with 5G if supported
+        Complete product title with 5G if supported and optional eSIM tag.
     """
     spec = get_iphone_spec(model)
     if not spec:
-        return f"{model} {storage} ({sim_variant})"
-    
-    # Add 5G for iPhone 12 and newer
+        base = f"{model} {storage}"
+        if esim is None:
+            esim = False
+        if esim:
+            base = f"{base} eSIM"
+        return f"{base} ({sim_variant})"
+
+    # decide eSIM default: enable for iPhone 17 series
+    if esim is None:
+        esim = (spec.series == "iPhone 17")
+
+    # Add 5G for models that support it
     if spec.has_5g:
-        return f"{model} 5G {storage} ({sim_variant})"
+        title_core = f"{model} 5G {storage}"
     else:
-        return f"{model} {storage} ({sim_variant})"
+        title_core = f"{model} {storage}"
+
+    if esim:
+        title_core = f"{title_core} eSIM"
+
+    return f"{title_core} ({sim_variant})"
 
 # Template search and filtering functions
 def search_templates(search_term: str) -> List[str]:
