@@ -16,7 +16,10 @@ class SmartphoneProduct(BaseModel):
     
     # New fields for enhanced template system
     collections: Optional[List[str]] = Field(None, description="Shopify collections to assign product to")
-    sales_channels: List[str] = Field(["online_store", "pos", "shop"], description="Sales channels where product should be available")
+    sales_channels: List[str] = Field(
+        ["online_store", "pos", "shop", "facebook_instagram", "google_youtube", "tiktok"],
+        description="Sales channels where product should be available"
+    )
     color_metafield_gid: Optional[str] = Field(None, description="Shopify color metaobject GID")
     template: Optional[str] = Field(None, description="Source template used for product creation")
     
