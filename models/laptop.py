@@ -24,7 +24,10 @@ class LaptopProduct(BaseModel):
     
     # Product details
     collections: Optional[List[str]] = Field(None, description="Shopify collections to assign product to")
-    sales_channels: List[str] = Field(["online_store", "pos", "shop"], description="Sales channels where product should be available")
+    sales_channels: List[str] = Field(
+        ["online_store", "pos", "shop", "facebook_instagram", "google_youtube", "tiktok"],
+        description="Sales channels where product should be available"
+    )
     color: Optional[str] = Field(None, description="Laptop color/finish")
     template: Optional[str] = Field(None, description="Source template used for product creation")
     
