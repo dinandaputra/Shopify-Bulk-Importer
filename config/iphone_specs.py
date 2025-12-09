@@ -579,7 +579,7 @@ def get_inclusion_presets_for_model(model: str) -> List[str]:
     # iPhone 12 (2020) was first to exclude charger
     if spec.year >= 2020 and model != "iPhone 11":  # iPhone 11 is 2019
         # iPhone 12+ only get cable option since no charger included
-        return ["No box", "With box", "Full set cable"]
+        return ["No box", "With box", "Full set cable", "Bukan box bawaan"]
     else:
         # iPhone 11 and older get charger option since charger was included
-        return ["No box", "With box", "Full set cable", "Full set (charger)"]
+        return ["No box", "With box", "Full set cable", "Full set (charger)", "Bukan box bawaan"]
