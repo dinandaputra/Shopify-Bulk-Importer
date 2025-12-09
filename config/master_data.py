@@ -99,7 +99,8 @@ INCLUSION_MAPPINGS = {
     "Full set cable": ["Full set cable", "Bonus adapter", "Bonus softcase", "Bonus anti gores"],
     "Full set (charger)": ["Full set (charger)", "Bonus softcase", "Bonus anti gores"],
     "With box": ["With box", "Bonus charger", "Bonus softcase", "Bonus anti gores"],
-    "No box": ["No box", "Bonus charger", "Bonus softcase", "Bonus anti gores"]
+    "No box": ["No box", "Bonus charger", "Bonus softcase", "Bonus anti gores"],
+    "Bukan box bawaan": ["Bukan box bawaan", "Bonus charger", "Bonus softcase", "Bonus anti gores"]
 }
 
 # Minus Options (5 options, multi-select)
