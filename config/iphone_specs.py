@@ -198,7 +198,7 @@ IPHONE_SPECS: Dict[str, iPhoneSpec] = {
     "iPhone 13 mini": iPhoneSpec(
         model="iPhone 13 mini",
         storage_options=["128GB", "256GB", "512GB"],
-        colors=["Pink", "Blue", "Midnight", "Starlight", "(PRODUCT)RED"],
+        colors=["Pink", "Blue", "Green", "Midnight", "Starlight", "(PRODUCT)RED"],
         has_5g=True,
         series="iPhone 13",
         year=2021
