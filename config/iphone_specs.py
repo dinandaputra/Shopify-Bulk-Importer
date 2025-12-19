@@ -22,6 +22,7 @@ IPHONE_COLOR_GIDS = {
     "Starlight": "gid://shopify/Metaobject/127394644117",
     "Space Black": "gid://shopify/Metaobject/126919508117",
     "Midnight Green": "gid://shopify/Metaobject/127395266709",
+    "Alpine Green": "gid://shopify/Metaobject/127395266709",
     "Black Titanium": "gid://shopify/Metaobject/118601613461",
     "White Titanium": "gid://shopify/Metaobject/118601580693",
     "Natural Titanium": "gid://shopify/Metaobject/118601449621",
@@ -206,7 +207,7 @@ IPHONE_SPECS: Dict[str, iPhoneSpec] = {
     "iPhone 13": iPhoneSpec(
         model="iPhone 13",
         storage_options=["128GB", "256GB", "512GB"],
-        colors=["Pink", "Blue", "Midnight", "Starlight", "(PRODUCT)RED"],
+        colors=["Pink", "Blue", "Green", "Midnight", "Starlight", "(PRODUCT)RED"],
         has_5g=True,
         series="iPhone 13",
         year=2021
@@ -214,7 +215,7 @@ IPHONE_SPECS: Dict[str, iPhoneSpec] = {
     "iPhone 13 Pro": iPhoneSpec(
         model="iPhone 13 Pro",
         storage_options=["128GB", "256GB", "512GB", "1TB"],
-        colors=["Sierra Blue", "Gold", "Silver", "Graphite"],
+        colors=["Sierra Blue", "Alpine Green", "Gold", "Silver", "Graphite"],
         has_5g=True,
         series="iPhone 13",
         year=2021
@@ -222,7 +223,7 @@ IPHONE_SPECS: Dict[str, iPhoneSpec] = {
     "iPhone 13 Pro Max": iPhoneSpec(
         model="iPhone 13 Pro Max",
         storage_options=["128GB", "256GB", "512GB", "1TB"],
-        colors=["Sierra Blue", "Gold", "Silver", "Graphite"],
+        colors=["Sierra Blue", "Alpine Green", "Gold", "Silver", "Graphite"],
         has_5g=True,
         series="iPhone 13",
         year=2021
