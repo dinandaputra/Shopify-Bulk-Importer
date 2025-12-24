@@ -110,7 +110,9 @@ MINUS_OPTIONS = [
     "Speaker pecah",        # Speaker damaged/cracked
     "White spot",          # White spot on screen
     "Shadow",              # Screen burn-in present
-    "Dead Pixel"           # Dead pixel on screen
+    "Dead Pixel",           # Dead pixel on screen
+    "Dent",                # Physical dent on body
+    "Speaker Kecil"        # Low speaker volume
 ]
 
 # RAM Options (6 options)
