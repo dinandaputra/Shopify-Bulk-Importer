@@ -8,19 +8,13 @@ operations using the Shopify GraphQL API.
 from typing import Dict, List, Optional, Any
 import logging
 import json
-from repositories.interfaces.metaobject_repository import MetaobjectRepository
 from services.shopify_api import ShopifyAPIClient
-from infrastructure.exceptions import (
-    MetaobjectCreationException,
-    MetaobjectRetrievalException,
-    MetaobjectUpdateException,
-    MetaobjectNotFoundException,
-    GraphQLQueryException,
-    BulkOperationException
-)
+
+# Note: Interface and infrastructure imports removed - moved to archive/enhanced_architecture/
+# This file now works as a standalone concrete implementation
 
 
-class ShopifyMetaobjectRepository(MetaobjectRepository):
+class ShopifyMetaobjectRepository:
     """
     Shopify implementation of metaobject repository.
     
@@ -50,7 +44,7 @@ class ShopifyMetaobjectRepository(MetaobjectRepository):
             Dictionary mapping values to GIDs
             
         Raises:
-            MetaobjectRetrievalException: If retrieval fails
+            Exception: If retrieval fails
         """
         try:
             # Check cache first
@@ -76,7 +70,7 @@ class ShopifyMetaobjectRepository(MetaobjectRepository):
             
             definition_id = definition_mapping.get(metaobject_type)
             if not definition_id:
-                raise MetaobjectRetrievalException(
+                raise Exception(
                     f"Unknown metaobject type: {metaobject_type}"
                 )
             
@@ -102,7 +96,7 @@ class ShopifyMetaobjectRepository(MetaobjectRepository):
             result = self._api_client.graphql_query(query)
             
             if 'errors' in result:
-                raise GraphQLQueryException(
+                raise Exception(
                     f"GraphQL query failed: {result['errors']}"
                 )
             
@@ -131,7 +125,7 @@ class ShopifyMetaobjectRepository(MetaobjectRepository):
             
         except Exception as e:
             self._logger.error(f"Failed to get metaobject GIDs for {metaobject_type}: {str(e)}")
-            raise MetaobjectRetrievalException(
+            raise Exception(
                 f"Failed to retrieve metaobject GIDs: {str(e)}"
             )
     
@@ -146,7 +140,7 @@ class ShopifyMetaobjectRepository(MetaobjectRepository):
             Created metaobject data
             
         Raises:
-            MetaobjectCreationException: If creation fails
+            Exception: If creation fails
         """
         try:
             # Extract required fields
@@ -154,7 +148,7 @@ class ShopifyMetaobjectRepository(MetaobjectRepository):
             fields = metaobject_data.get('fields', [])
             
             if not definition_id:
-                raise MetaobjectCreationException("definition_id is required")
+                raise Exception("definition_id is required")
             
             # Build GraphQL mutation
             mutation = """
@@ -186,7 +180,7 @@ class ShopifyMetaobjectRepository(MetaobjectRepository):
             result = self._api_client.graphql_query(mutation, variables)
             
             if 'errors' in result:
-                raise GraphQLQueryException(
+                raise Exception(
                     f"GraphQL mutation failed: {result['errors']}"
                 )
             
@@ -195,7 +189,7 @@ class ShopifyMetaobjectRepository(MetaobjectRepository):
             
             if user_errors:
                 error_messages = [f"{err['field']}: {err['message']}" for err in user_errors]
-                raise MetaobjectCreationException(
+                raise Exception(
                     f"Metaobject creation failed: {'; '.join(error_messages)}"
                 )
             
@@ -203,7 +197,7 @@ class ShopifyMetaobjectRepository(MetaobjectRepository):
             
         except Exception as e:
             self._logger.error(f"Failed to create metaobject: {str(e)}")
-            raise MetaobjectCreationException(
+            raise Exception(
                 f"Failed to create metaobject: {str(e)}"
             )
     
@@ -218,13 +212,13 @@ class ShopifyMetaobjectRepository(MetaobjectRepository):
             List of metaobjects
             
         Raises:
-            GraphQLQueryException: If query fails
+            Exception: If query fails
         """
         try:
             result = self._api_client.graphql_query(query)
             
             if 'errors' in result:
-                raise GraphQLQueryException(
+                raise Exception(
                     f"GraphQL query failed: {result['errors']}"
                 )
             
@@ -234,7 +228,7 @@ class ShopifyMetaobjectRepository(MetaobjectRepository):
             
         except Exception as e:
             self._logger.error(f"GraphQL query failed: {str(e)}")
-            raise GraphQLQueryException(f"Query execution failed: {str(e)}")
+            raise Exception(f"Query execution failed: {str(e)}")
     
     async def get_metaobject_by_gid(self, gid: str) -> Optional[Dict[str, Any]]:
         """
@@ -247,7 +241,7 @@ class ShopifyMetaobjectRepository(MetaobjectRepository):
             Metaobject data if found
             
         Raises:
-            MetaobjectRetrievalException: If retrieval fails
+            Exception: If retrieval fails
         """
         try:
             query = f"""
@@ -266,7 +260,7 @@ class ShopifyMetaobjectRepository(MetaobjectRepository):
             result = self._api_client.graphql_query(query)
             
             if 'errors' in result:
-                raise GraphQLQueryException(
+                raise Exception(
                     f"GraphQL query failed: {result['errors']}"
                 )
             
@@ -274,7 +268,7 @@ class ShopifyMetaobjectRepository(MetaobjectRepository):
             
         except Exception as e:
             self._logger.error(f"Failed to get metaobject by GID: {str(e)}")
-            raise MetaobjectRetrievalException(
+            raise Exception(
                 f"Failed to retrieve metaobject: {str(e)}"
             )
     
@@ -328,7 +322,7 @@ class ShopifyMetaobjectRepository(MetaobjectRepository):
             result = self._api_client.graphql_query(mutation, variables)
             
             if 'errors' in result:
-                raise GraphQLQueryException(
+                raise Exception(
                     f"GraphQL mutation failed: {result['errors']}"
                 )
             
@@ -359,7 +353,7 @@ class ShopifyMetaobjectRepository(MetaobjectRepository):
             List of metaobject definitions
             
         Raises:
-            MetaobjectRetrievalException: If retrieval fails
+            Exception: If retrieval fails
         """
         try:
             query = """
@@ -388,7 +382,7 @@ class ShopifyMetaobjectRepository(MetaobjectRepository):
             result = self._api_client.graphql_query(query)
             
             if 'errors' in result:
-                raise GraphQLQueryException(
+                raise Exception(
                     f"GraphQL query failed: {result['errors']}"
                 )
             
@@ -397,7 +391,7 @@ class ShopifyMetaobjectRepository(MetaobjectRepository):
             
         except Exception as e:
             self._logger.error(f"Failed to get metaobject definitions: {str(e)}")
-            raise MetaobjectRetrievalException(
+            raise Exception(
                 f"Failed to retrieve metaobject definitions: {str(e)}"
             )
     
@@ -414,7 +408,7 @@ class ShopifyMetaobjectRepository(MetaobjectRepository):
             List of metaobjects
             
         Raises:
-            MetaobjectRetrievalException: If retrieval fails
+            Exception: If retrieval fails
         """
         try:
             first = limit or 250
@@ -439,7 +433,7 @@ class ShopifyMetaobjectRepository(MetaobjectRepository):
             result = self._api_client.graphql_query(query)
             
             if 'errors' in result:
-                raise GraphQLQueryException(
+                raise Exception(
                     f"GraphQL query failed: {result['errors']}"
                 )
             
@@ -448,7 +442,7 @@ class ShopifyMetaobjectRepository(MetaobjectRepository):
             
         except Exception as e:
             self._logger.error(f"Failed to get metaobjects by definition: {str(e)}")
-            raise MetaobjectRetrievalException(
+            raise Exception(
                 f"Failed to retrieve metaobjects: {str(e)}"
             )
     
@@ -497,7 +491,7 @@ class ShopifyMetaobjectRepository(MetaobjectRepository):
             Metaobject if found
             
         Raises:
-            MetaobjectRetrievalException: If search fails
+            Exception: If search fails
         """
         try:
             # Get all metaobjects of this type
@@ -512,6 +506,6 @@ class ShopifyMetaobjectRepository(MetaobjectRepository):
             
         except Exception as e:
             self._logger.error(f"Failed to find metaobject by value: {str(e)}")
-            raise MetaobjectRetrievalException(
+            raise Exception(
                 f"Failed to find metaobject: {str(e)}"
             )
